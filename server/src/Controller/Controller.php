@@ -13,14 +13,4 @@ class Controller extends AbstractController
     public function health(): Response {
         return new Response();
     }
-
-    #[Route('/log/{name}')]
-    public function log(string $name, LoggerInterface $logger): Response {
-        // See these in /var/log/ of your project root
-        $logger->info("Hello, $name");
-        return $this->json([
-            'success' => true,
-            'name' => $name
-        ]);
-    }
 }

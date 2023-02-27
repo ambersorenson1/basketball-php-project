@@ -31,15 +31,15 @@ class Game
     #[ORM\Column]
     private ?int $tournament_id = null;
 
-    #[ORM\OneToOne(inversedBy: 'game', targetEntity: team::class)]
+    #[ORM\OneToOne(targetEntity: Team::class)]
     #[ORM\JoinColumn(name: 'team_one_id', referencedColumnName: 'team_id')]
     private Team $team_one;
 
-    #[ORM\OneToOne(inversedBy: 'game', targetEntity: team::class)]
+    #[ORM\OneToOne(targetEntity: Team::class)]
     #[ORM\JoinColumn(name: 'team_two_id', referencedColumnName: 'team_id')]
     private Team $team_two;
 
-    #[ORM\ManyToOne(targetEntity: tournament::class)]
+    #[ORM\ManyToOne(targetEntity: Tournament::class)]
     #[ORM\JoinColumn(name: 'tournament_id', referencedColumnName: 'tournament_id')]
     private Tournament $tournament;
 
@@ -109,93 +109,3 @@ class Game
     }
 }
 
-//    /**
-//     * @return Collection<int, team>
-//     */
-//    public function getTeamOne(): Collection
-//    {
-//        return $this->team_one;
-//    }
-
-//    public function addTeamOne(team $teamOne): self
-//    {
-//        if (!$this->team_one->contains($teamOne)) {
-//            $this->team_one->add($teamOne);
-//            $teamOne->setGame($this);
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function removeTeamOne(team $teamOne): self
-//    {
-//        if ($this->team_one->removeElement($teamOne)) {
-//            // set the owning side to null (unless already changed)
-//            if ($teamOne->getGame() === $this) {
-//                $teamOne->setGame(null);
-//            }
-//        }
-//
-//        return $this;
-//    }
-
-//    /**
-//     * @return Collection<int, team>
-//     */
-//    public function getTeamTwo(): Collection
-//    {
-//        return $this->team_two;
-//    }
-
-//    public function addTeamTwo(team $teamTwo): self
-//    {
-//        if (!$this->team_two->contains($teamTwo)) {
-//            $this->team_two->add($teamTwo);
-//            $teamTwo->setGame($this);
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function removeTeamTwo(team $teamTwo): self
-//    {
-//        if ($this->team_two->removeElement($teamTwo)) {
-//            // set the owning side to null (unless already changed)
-//            if ($teamTwo->getGame() === $this) {
-//                $teamTwo->setGame(null);
-//            }
-//        }
-//
-//        return $this;
-//    }
-
-//    /**
-//     * @return Collection<int, tournament>
-//     */
-//    public function getTournament(): Collection
-//    {
-//        return $this->tournament;
-//    }
-
-//    public function addTournament(tournament $tournament): self
-//    {
-//        if (!$this->tournament->contains($tournament)) {
-//            $this->tournament->add($tournament);
-//            $tournament->setGame($this);
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function removeTournament(tournament $tournament): self
-//    {
-//        if ($this->tournament->removeElement($tournament)) {
-//            // set the owning side to null (unless already changed)
-//            if ($tournament->getGame() === $this) {
-//                $tournament->setGame(null);
-//            }
-//        }
-//
-//        return $this;
-//    }
-//}

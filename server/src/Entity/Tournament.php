@@ -4,9 +4,9 @@ namespace App\Entity;
 
 use App\Repository\TournamentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use phpDocumentor\Reflection\Types\Collection;
 
 #[ORM\Entity(repositoryClass: TournamentRepository::class)]
 class Tournament
@@ -38,11 +38,11 @@ class Tournament
         return $this->tournament_id;
     }
 
-    public function getStartDate(): ?\DateTimeInterface
+    public function getStartDate(): ?string
     {
-        return $this->start_date;
-    }
+        return $this->start_date?->format('F j, Y, g:i a');
 
+    }
     public function setStartDate(\DateTimeInterface $start_date): self
     {
         $this->start_date = $start_date;
@@ -50,11 +50,11 @@ class Tournament
         return $this;
     }
 
-    public function getEndDate(): ?\DateTimeInterface
+    public function getEndDate(): ?string
     {
-        return $this->end_date;
-    }
+        return $this->end_date?->format('F j, Y, g:i a');
 
+    }
     public function setEndDate(\DateTimeInterface $end_date): self
     {
         $this->end_date = $end_date;

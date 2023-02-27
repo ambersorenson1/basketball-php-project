@@ -3,10 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\PlayerRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+
 
 #[ORM\Entity(repositoryClass: PlayerRepository::class)]
 class Player
@@ -28,21 +27,16 @@ class Player
     #[ORM\Column(length: 255)]
     private ?string $background = null;
 
-    #[ORM\Column]
-    private ?int $team_id = null;
-
-    #[ORM\Column]
-    private ?int $role_id = null;
-
-    #[ORM\OneToOne(inversedBy: 'player', targetEntity: team::class)]
+    #[ORM\OneToOne(targetEntity: Team::class, cascade: ["persist"])]
     #[ORM\JoinColumn(name: 'team_id', referencedColumnName: 'team_id')]
-    private Team $team;
+    private ?Team $team = null;
 
-    #[ORM\OneToOne(targetEntity: role::class)]
-    #[ORM\JoinColumn(name: 'role_id', referencedColumnName: 'role_id')]
-    private Role $role;
+    #[ORM\ManyToOne(cascade: ["persist"])]
+    #[ORM\JoinColumn(name: 'role_id', referencedColumnName: "role_id", nullable: false)]
+    private ?Role $role = null;
 
-    public function getPlayerId(): ?int
+
+    public function getId(): ?int
     {
         return $this->player_id;
     }
@@ -95,87 +89,28 @@ class Player
         return $this;
     }
 
-    public function getTeamId(): ?int
-    {
-        return $this->team_id;
-    }
-
-    public function setTeamId(int $team_id): self
-    {
-        $this->team_id = $team_id;
-
-        return $this;
-    }
-
-    public function getRoleId(): ?int
-    {
-        return $this->role_id;
-    }
-
-    public function setRoleId(int $role_id): self
-    {
-        $this->role_id = $role_id;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, team>
-     */
-    public function getTeam(): Collection
+    public function getTeam(): ?Team
     {
         return $this->team;
     }
 
-    public function addTeam(team $team): self
+    public function setTeam(Team $team = null): self
     {
-        if (!$this->team->contains($team)) {
-            $this->team->add($team);
-            $team->setPlayer($this);
-        }
+        $this->team = $team;
 
         return $this;
     }
 
-    public function removeTeam(team $team): self
-    {
-        if ($this->team->removeElement($team)) {
-            // set the owning side to null (unless already changed)
-            if ($team->getPlayer() === $this) {
-                $team->setPlayer(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, role>
-     */
-    public function getRole(): Collection
+    public function getRole(): ?Role
     {
         return $this->role;
     }
 
-    public function addRole(role $role): self
+    public function setRole(Role $role = null): self
     {
-        if (!$this->role->contains($role)) {
-            $this->role->add($role);
-            $role->setPlayer($this);
-        }
+        $this->role = $role;
 
         return $this;
     }
 
-    public function removeRole(role $role): self
-    {
-        if ($this->role->removeElement($role)) {
-            // set the owning side to null (unless already changed)
-            if ($role->getPlayer() === $this) {
-                $role->setPlayer(null);
-            }
-        }
-
-        return $this;
-    }
 }

@@ -17,9 +17,6 @@ class Team
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToOne(mappedBy: 'team', targetEntity: Player::class)]
-    private ?Player $player = null;
-
     public function getTeamId(): ?int
     {
         return $this->team_id;
@@ -33,30 +30,6 @@ class Team
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getPlayer(): ?Player
-    {
-        return $this->player;
-    }
-
-    public function setPlayer(?Player $player): self
-    {
-        $this->player = $player;
-
-        return $this;
-    }
-
-    public function getGame(): ?Game
-    {
-        return $this->game;
-    }
-
-    public function setGame(?Game $game): self
-    {
-        $this->game = $game;
 
         return $this;
     }
