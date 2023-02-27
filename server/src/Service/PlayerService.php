@@ -46,7 +46,6 @@ class PlayerService
         $player->setForeground($data['foreground']);
         $player->setBackground($data['background']);
         $team = new Team();
-        $team->setName('Ruby');
         $role = $this->roleRepository->find(2);
         $player->setTeam($team);
         $player->setRole($role);
