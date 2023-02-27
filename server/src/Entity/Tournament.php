@@ -40,7 +40,7 @@ class Tournament
 
     public function getStartDate(): ?string
     {
-        return $this->start_date?->format('F j, Y, g:i a');
+        return $this->start_date?->format('F j, Y');
 
     }
     public function setStartDate(\DateTimeInterface $start_date): self
@@ -52,7 +52,7 @@ class Tournament
 
     public function getEndDate(): ?string
     {
-        return $this->end_date?->format('F j, Y, g:i a');
+        return $this->end_date?->format('F j, Y');
 
     }
     public function setEndDate(\DateTimeInterface $end_date): self
