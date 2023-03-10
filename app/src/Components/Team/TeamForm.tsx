@@ -56,6 +56,7 @@ function TeamForm() {
         name: teamName,
       });
       setTeams([...teams, response.data]);
+      setTeamName('');
       setError(null);
       setSuccess('');
       window.alert(`Best of luck ${teamName}`);
