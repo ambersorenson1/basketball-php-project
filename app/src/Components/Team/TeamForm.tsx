@@ -16,6 +16,8 @@ const useTeamStore = create<TeamStore>(set => ({
 function TeamForm() {
   const { teams, setTeams } = useTeamStore();
   const [teamName, setTeamName] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const fetchTeams = async (): Promise<Team[]> => {
     try {
       const response = await axios.get('http://localhost:8000/api/teams');
@@ -38,11 +40,25 @@ function TeamForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const isTeamNameDuplicate = teams.some(team => team.name === teamName);
+
+    if (isTeamNameDuplicate) {
+      setError('');
+      window.alert(
+        `Sorry the team name ${teamName} already exist. Please choose a unique name to get started!`,
+      );
+      setSuccess(null);
+      return;
+    }
     try {
       const response = await axios.post('http://localhost:8000/api/teams', {
         name: teamName,
       });
       setTeams([...teams, response.data]);
+      setError(null);
+      setSuccess('');
+      window.alert(`Best of luck ${teamName}`);
     } catch (error) {
       console.error(error);
     }
@@ -63,6 +79,8 @@ function TeamForm() {
         <input type="text" value={teamName} onChange={handleInputChange} />
         <button type="submit">Add your team</button>
       </form>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {success && <p style={{ color: 'green' }}>{success}</p>}
     </div>
   );
 }
