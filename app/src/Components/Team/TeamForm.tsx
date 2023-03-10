@@ -70,15 +70,22 @@ function TeamForm() {
   }
   return (
     <div>
-      {/*<h1>Teams:</h1>*/}
-      {/*<ul>*/}
-      {/*  {teams.map((team, index) => (*/}
-      {/*    <li key={`${index}-${team.team_id}`}>{team.name}</li>*/}
-      {/*  ))}*/}
-      {/*</ul>*/}
-      <form onSubmit={handleSubmit}>
-        <input type="text" value={teamName} onChange={handleInputChange} />
-        <button type="submit">Add your team</button>
+      <form
+        onSubmit={handleSubmit}
+        className="flex items-center justify-center space-x-2"
+      >
+        <input
+          type="text"
+          value={teamName}
+          onChange={handleInputChange}
+          className="rounded-lg border border-gray-300  py-2 px-4 shadow-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <button
+          type="submit"
+          className="inline-flex items-center rounded-md border border-transparent bg-blue-500 px-4 py-2 text-white shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-blue-500 focus:ring-offset-2"
+        >
+          Add your team
+        </button>
       </form>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {success && <p style={{ color: 'green' }}>{success}</p>}
