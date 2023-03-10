@@ -70,12 +70,12 @@ function TeamForm() {
   }
   return (
     <div>
-      <h1>Teams:</h1>
-      <ul>
-        {teams.map((team, index) => (
-          <li key={`${index}-${team.team_id}`}>{team.name}</li>
-        ))}
-      </ul>
+      {/*<h1>Teams:</h1>*/}
+      {/*<ul>*/}
+      {/*  {teams.map((team, index) => (*/}
+      {/*    <li key={`${index}-${team.team_id}`}>{team.name}</li>*/}
+      {/*  ))}*/}
+      {/*</ul>*/}
       <form onSubmit={handleSubmit}>
         <input type="text" value={teamName} onChange={handleInputChange} />
         <button type="submit">Add your team</button>
