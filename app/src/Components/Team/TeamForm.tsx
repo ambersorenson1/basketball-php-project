@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Team } from './TeamInterface';
 import { create } from 'zustand';
 import axios from 'axios';
@@ -15,6 +15,7 @@ const useTeamStore = create<TeamStore>(set => ({
 }));
 function TeamForm() {
   const { teams, setTeams } = useTeamStore();
+  const [teamName, setTeamName] = useState('');
   const fetchTeams = async (): Promise<Team[]> => {
     try {
       const response = await axios.get('http://localhost:8000/api/teams');
@@ -30,6 +31,19 @@ function TeamForm() {
       setTeams(data);
     },
   });
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:8000/api/teams', {
+        name: teamName,
+      });
+      setTeams([...teams, response.data]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   if (!teams.length) {
     return <div>Loading...</div>;
   }
@@ -41,6 +55,10 @@ function TeamForm() {
           <li key={`${index}-${team.team_id}`}>{team.name}</li>
         ))}
       </ul>
+      <form onSubmit={handleSubmit}>
+        <input type="text" value={teamName} />
+        <button type="submit">Add your team</button>
+      </form>
     </div>
   );
 }
