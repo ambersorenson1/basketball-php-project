@@ -34,7 +34,9 @@ function TeamForm() {
     },
   });
 
-  const handleInputChange = event => {
+  const handleInputChange = (event: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
     setTeamName(event.target.value);
   };
 
