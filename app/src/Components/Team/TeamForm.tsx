@@ -32,6 +32,10 @@ function TeamForm() {
     },
   });
 
+  const handleInputChange = event => {
+    setTeamName(event.target.value);
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -56,7 +60,7 @@ function TeamForm() {
         ))}
       </ul>
       <form onSubmit={handleSubmit}>
-        <input type="text" value={teamName} />
+        <input type="text" value={teamName} onChange={handleInputChange} />
         <button type="submit">Add your team</button>
       </form>
     </div>
