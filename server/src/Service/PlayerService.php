@@ -46,6 +46,8 @@ class PlayerService
         $player->setForeground($data['foreground']);
         $player->setBackground($data['background']);
         $team = new Team();
+        $team->setName($data['name']);
+        $this->entityManager->persist($team);
         $role = $this->roleRepository->find(2);
         $player->setTeam($team);
         $player->setRole($role);
@@ -53,6 +55,7 @@ class PlayerService
         $this->entityManager->flush();
         return $player;
     }
+
 
     /**
      * @return Player[]

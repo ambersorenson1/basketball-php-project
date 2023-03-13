@@ -32,8 +32,14 @@ class TeamService
         return $this->teamRepository->find($id);
     }
 
+    /**
+     * @return Team[]
+     */
     public function getAllTeams(): array
     {
         return $this->teamRepository->findAll();
     }
+
+
+
 }
