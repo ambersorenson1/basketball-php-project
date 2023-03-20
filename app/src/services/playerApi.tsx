@@ -9,7 +9,7 @@ interface PlayerData {
 }
 
 export async function createPlayer(playerData: PlayerData): Promise<Player[]> {
-  const response = await fetch('/api/players', {
+  const response = await fetch('http://localhost:8000/api/players', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -41,13 +41,11 @@ function TournamentForm() {
       <ul>
         {tournaments.map((tournament, index) => (
           <li key={`${index}-${tournament.tournament_id}`} className="mb-2">
-            <strong className="font-bold">{tournament.name}</strong>
-            <br />
-            <strong className="text-sm">
-              Start date: {tournament.start_date}
-            </strong>
-            <br />
-            <strong className="text-sm">End date: {tournament.end_date}</strong>
+            <div>
+              <div className="font-bold">{tournament.name}</div>
+              <div className="text-sm">Start date: {tournament.start_date}</div>
+              <div className="text-sm">End date: {tournament.end_date}</div>
+            </div>
           </li>
         ))}
       </ul>

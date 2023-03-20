@@ -3,37 +3,35 @@ import { create } from 'zustand';
 import { Player, ProfilePageState } from './ProfileInterface';
 import axios from 'axios/index';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { createPlayer } from '../../services/playerApi';
 
 const ProfilePage = () => {
-  const [firstName, setFirstName] = useState<string>();
-  const [lastName, setLastName] = useState<string>();
-  const [foreground, setForeground] = useState<string>();
-  const [background, setBackground] = useState<string>();
-  const [teamName, setTeamName] = useState<string>();
+  const [firstName, setFirstName] = useState<string>('');
+  const [lastName, setLastName] = useState<string>('');
+  const [foreground, setForeground] = useState<string>('');
+  const [background, setBackground] = useState<string>('');
+  const [teamName, setTeamName] = useState<string>('');
 
-  const mutation = useMutation({
-    mutationFn: playerData => {
-      return fetch('/api/players', playerData);
+  const addPlayer = useMutation({
+    mutationFn: () =>
+      createPlayer({
+        firstName: firstName,
+        lastName: lastName,
+        foreground: foreground,
+        background: background,
+        teamName: teamName,
+      }),
+    onMutate: () => {
+      console.log('mutate');
+    },
+    onSettled: () => {
+      console.log('complete');
     },
   });
-  // const onSubmit = (event) => {
-  //   event.preventDefault()
-  //   mutation.mutate(new PlayerData(event.target))
-  // }
-
-  // return <form onSubmit={onSubmit}>...</form>;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const playerData = {
-      firstName,
-      lastName,
-      foreground,
-      background,
-      teamName,
-    };
-    console.log(playerData);
+    addPlayer.mutate();
   };
 
   return (
