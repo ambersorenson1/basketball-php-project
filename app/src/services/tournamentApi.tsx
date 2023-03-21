@@ -2,6 +2,8 @@ import { Tournament } from './DTOs';
 
 interface TournamentData {
   tournamentName: string;
+  startDate: Date;
+  endDate: Date;
 }
 
 export async function createTournament(
