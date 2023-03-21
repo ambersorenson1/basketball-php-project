@@ -4,7 +4,6 @@
 namespace App\Controller;
 
 use App\DTO\TeamDTO;
-use App\Entity\Team;
 use App\Service\TeamService;
 use http\Client\Request;
 use http\Client\Response;
@@ -23,7 +22,7 @@ class TeamController extends AbstractController
     }
 
     #[Route('/api/teams', methods: ['GET'])]
-    public function getCollection(): Response
+    public function getCollection(): JsonResponse
     {
         $teams = $this->teamService->getAllTeams();
         return $this->json($teams);

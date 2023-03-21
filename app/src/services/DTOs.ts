@@ -12,3 +12,8 @@ export interface Tournament {
   startDate?: Date;
   endDate?: Date;
 }
+
+export interface Team {
+  name: string;
+  teamId?: number;
+}

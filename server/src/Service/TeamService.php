@@ -23,15 +23,6 @@ class TeamService
         $this->entityManager = $entityManager;
     }
 
-//    public function createTeam(TeamDTO $teamDTO): Team
-//    {
-//        $team = new Team();
-//        $team->setName($teamDTO->getName());
-//        $this->entityManager->persist($team);
-//        $this->entityManager->flush();
-//        return $team;
-//    }
-
 
     public function deleteTeam(Team $team): void
     {
