@@ -3,12 +3,14 @@
 
 namespace App\Controller;
 
+use App\DTO\TeamDTO;
 use App\Entity\Team;
 use App\Service\TeamService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use http\Client\Request;
+use http\Client\Response;
+use JsonException;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 class TeamController extends AbstractController
@@ -24,7 +26,7 @@ class TeamController extends AbstractController
     public function getCollection(): Response
     {
         $teams = $this->teamService->getAllTeams();
-        return new JsonResponse($teams);
+        return $this->json($teams);
     }
 
     #[Route('/api/teams/{id}', methods: ['GET'])]
@@ -32,20 +34,24 @@ class TeamController extends AbstractController
     {
         $team = $this->teamService->getTeamById($id);
         if (!$team) {
-            return new JsonResponse(['error' => 'Team not found'], Response::HTTP_NOT_FOUND);
+            return $this->json(['error' => 'Team not found'], Response::HTTP_NOT_FOUND);
         }
-        return new JsonResponse($team);
+        return $this->json($team);
     }
 
+
+    /**
+     * @throws JsonException
+     */
     #[Route('/api/teams', methods: ['POST'])]
     public function createTeam(Request $request): Response
     {
-        $name = $request->request->get('name');
-        if (!$name) {
-            return new JsonResponse(['error' => 'Name is required'], Response::HTTP_BAD_REQUEST);
-        }
-        $team = $this->teamService->createTeam($name);
-        return new JsonResponse($team, Response::HTTP_CREATED);
+        $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $teamDTO = new TeamDTO();
+        $teamDTO->setName($data['name']);
+        $team = $this->teamService->createTeam($teamDTO);
+        return $this->json($teamDTO);
+
     }
 
     #[Route('/api/teams/{team_id}', methods: ['DELETE'])]

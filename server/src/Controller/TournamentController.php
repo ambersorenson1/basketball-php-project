@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\DTO\Transformers\TournamentResponseDtoTransformer;
 use App\Service\TournamentService;
 use Exception;
 use JsonException;
@@ -18,6 +19,7 @@ class TournamentController extends AbstractController
     public function __construct(TournamentService $tournamentService)
     {
         $this->tournamentService = $tournamentService;
+
     }
 
     /**

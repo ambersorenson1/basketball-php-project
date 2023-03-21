@@ -1,15 +1,17 @@
 <?php
 
-
 namespace App\Service;
 
 use App\Entity\Tournament;
 use App\Repository\TournamentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use http\Client\Request;
 use JsonException;
 use phpDocumentor\Reflection\Types\Boolean;
+use Symfony\Component\HttpFoundation\Request;
+use App\DTO\TournamentDTO;
+use DateTime;
+
 
 class TournamentService {
     private EntityManagerInterface $entityManager;
@@ -33,12 +35,24 @@ class TournamentService {
     {
         $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
         $tournament = new Tournament();
-        $tournament->setName($data['name']);
-        $tournament->setStartDate($data['start_date']);
-        $tournament->setEndDate($data['end_date']);
+        $tournament->setName($data['tournamentName']);
+
+// Create a DateTime object from the date string
+        $dateString = $data['startDate'];
+//        $dateString2 = $data['endDate'];
+        $dateFormat = 'm-d-Y';
+        $dateObject = DateTime::createFromFormat($dateFormat, $dateString);
+
+// Set the start and end dates of the tournament
+        $tournament->setStartDate($dateObject);
+        $tournament->setEndDate($dateObject);
+
         $this->entityManager->persist($tournament);
         $this->entityManager->flush();
+
         return $tournament;
+
+
     }
 
 
@@ -54,12 +68,17 @@ class TournamentService {
     {
         $tournament = $this->tournamentRepository->find($tournamentId);
         $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
-        $tournament->setName($data['name']);
-        $tournament->setStartDate($data['start_date']);
-        $tournament->setEndDate($data['end_date']);
 
+        $tournamentDTO = new TournamentDTO();
+        $tournamentDTO->setName($data['name']);
+        $tournamentDTO->setStartDate($data['start_date']);
+        $tournamentDTO->setEndDate($data['end_date']);
 
-        $this->tournamentRepository->save($tournament, true);
+        $tournament->setName($tournamentDTO->getName());
+        $tournament->setStartDate($tournamentDTO->getStartDate());
+        $tournament->setEndDate($tournamentDTO->getEndDate());
+
+        $this->tournamentRepository->save($tournament);
 
         return $tournament;
     }
@@ -67,7 +86,7 @@ class TournamentService {
     /**
      * @throws Exception
      */
-    public function deleteTournament(int $tournamentId): Boolean
+    public function deleteTournament(int $tournamentId): bool
     {
         $tournament = $this->tournamentRepository->find($tournamentId);
 
@@ -75,7 +94,7 @@ class TournamentService {
             throw new Exception("Tournament not found");
         }
 
-        $this->tournamentRepository->remove($tournament, true);
+        $this->tournamentRepository->remove($tournament);
         return true;
     }
 
@@ -85,4 +104,3 @@ class TournamentService {
         return $this->tournamentRepository->findAll();
     }
 }
-

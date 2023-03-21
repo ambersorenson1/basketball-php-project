@@ -2,6 +2,8 @@
 
 namespace App\Service;
 
+use App\DTO\PlayerDTO;
+use App\DTO\TeamDTO;
 use App\Entity\Player;
 use App\Entity\Team;
 use App\Repository\PlayerRepository;
@@ -19,6 +21,7 @@ class PlayerService
     private PlayerRepository $playerRepository;
     private EntityManagerInterface $entityManager;
 
+
     /**
      * @param RoleRepository $roleRepository
      * @param TeamRepository $teamRepository
@@ -33,28 +36,33 @@ class PlayerService
         $this->entityManager = $entityManager;
     }
 
-
     /**
      * @throws JsonException
      */
-    public function createPlayer(Request $request): ?Player
+    public function createPlayer(PlayerDTO $playerDTO): Player
     {
-        $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
         $player = new Player();
-        $player->setFirstName($data['first_name']);
-        $player->setLastName($data['last_name']);
-        $player->setForeground($data['foreground']);
-        $player->setBackground($data['background']);
-        $team = new Team();
-        $team->setName($data['name']);
-        $this->entityManager->persist($team);
+        $player->setFirstName($playerDTO->getFirstName());
+        $player->setLastName($playerDTO->getLastName());
+        $player->setForeground($playerDTO->getForeground());
+        $player->setBackground($playerDTO->getBackground());
+
+        $team = $this->teamRepository->findOneBy(['name' => $playerDTO->getTeamName()]);
+        if (!$team) {
+            $team = new Team();
+            $team->setName($playerDTO->getTeamName());
+            $this->entityManager->persist($team);
+        }
+
         $role = $this->roleRepository->find(2);
         $player->setTeam($team);
         $player->setRole($role);
         $this->entityManager->persist($player);
         $this->entityManager->flush();
+
         return $player;
     }
+
 
 
     /**
@@ -67,37 +75,28 @@ class PlayerService
 
     public function getPlayer(int $playerId): ?Player
     {
-        return $this->playerRepository->find($playerId);
+        $player = $this->playerRepository->find($playerId);
+
+        if ($player === null) {
+            return null;
+        }
+
+        return $player;
     }
 
-    /**
-     * @throws JsonException
-     */
-    public function updatePlayer(int $playerId, Request $request): ?Player
+
+    public function updatePlayer(int $playerId, PlayerDTO $playerDTO): ?Player
     {
-        $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
-        $first_name = $data['first_name'] ?? null;
-        $last_name = $data['last_name'] ?? null;
-        $background = $data['background'] ?? null;
-        $foreground = $data['foreground'] ?? null;
-
-
         $player = $this->playerRepository->find($playerId);
         if (!$player) {
             return null;
         }
-        if ($first_name) {
-            $player->setFirstName($first_name);
-        }
-        if ($last_name) {
-            $player->setLastName($last_name);
-        }
-        if ($background) {
-            $player->setBackground($background);
-        }
-        if ($foreground) {
-            $player->setForeground($foreground);
-        }
+
+        $player->setFirstName($playerDTO->getFirstName() ?? $player->getFirstName());
+        $player->setLastName($playerDTO->getLastName() ?? $player->getLastName());
+        $player->setBackground($playerDTO->getBackground() ?? $player->getBackground());
+        $player->setForeground($playerDTO->getForeground() ?? $player->getForeground());
+
         $this->playerRepository->save($player, true);
         return $player;
     }
@@ -111,4 +110,6 @@ class PlayerService
         $this->playerRepository->remove($player, true);
         return true;
     }
+
+
 }

@@ -4,7 +4,7 @@ namespace App\Service;
 
 use App\Entity\Game;
 use App\Repository\GameRepository;
-use Doctrine\Common\Collections\ArrayCollection;
+//use App\DTO\GameDTO;
 use Symfony\Component\HttpFoundation\Request;
 
 class GameService
@@ -16,28 +16,28 @@ class GameService
         $this->gameRepository = $gameRepository;
     }
 
-    public function createGame(Request $request): ?Game
-    {
-        // Parse request data and create a new Game entity
-//        $games = new ArrayCollection();
-        $game = new Game();
-            // Save the new Game entity to the database
-        $this->gameRepository->save($game);
-        return $game;
-    }
+//    public function createGame(GameDTO $gameDTO): ?Game
+//    {
+//        $game = new Game();
+//
+//        $game->setName($gameDTO->getName());
+//
+//
+//        $this->gameRepository->save($game);
+//
+//        return $game;
+//    }
 
     public function getGames(): array
     {
-        // Return all games from the repository
         return $this->gameRepository->findAll();
     }
 
     public function getGame(int $id): ?Game
     {
-        // Return a single game by ID from the repository
         $game = $this->gameRepository->find($id);
 
-        if (!$game) {
+        if ($game === null) {
             return null;
         }
 
@@ -51,14 +51,8 @@ class GameService
         if (!$game) {
             return false;
         }
-
         // Remove the Game entity from the repository
-        try {
-            $this->gameRepository->remove($game);
-        } catch (\Exception $e) {
-            return false;
-        }
-
+        $this->gameRepository->remove($game, true);
         return true;
     }
 }

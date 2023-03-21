@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-import { create } from 'zustand';
-import { Player, ProfilePageState } from './ProfileInterface';
-import axios from 'axios/index';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { createPlayer } from '../../services/playerApi';
 
 const ProfilePage = () => {
@@ -23,6 +20,9 @@ const ProfilePage = () => {
       }),
     onMutate: () => {
       console.log('mutate');
+    },
+    onError: (error, variables, context) => {
+      console.log(error, variables, context);
     },
     onSettled: () => {
       console.log('complete');

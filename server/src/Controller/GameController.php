@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\GameService;
+use App\DTO\GameDTO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,19 +18,28 @@ class GameController extends AbstractController
         $this->gameService = $gameService;
     }
 
-    #[Route('/api/games', methods: ['POST'])]
-    public function createInstance(Request $request): Response {
-        return $this->json($this->gameService->createGame($request));
-    }
+//    #[Route('/api/games', methods: ['POST'])]
+//    public function createInstance(Request $request): Response
+//    {
+//        $gameDto = new GameDTO(
+//            $request->request->get('name'),
+//        );
+//
+//        $game = $this->gameService->createGame($gameDto);
+//        return $this->json($game);
+//    }
 
     #[Route('/api/games', methods: ['GET'])]
-    public function getCollection(): Response {
+    public function getCollection(): Response
+    {
         return $this->json($this->gameService->getGames());
     }
 
     #[Route('/api/games/{gameId}', methods: ['GET'])]
-    public function getInstance(int $gameId): Response {
-        return $this->json($this->gameService->getGame($gameId));
+    public function getInstance(int $gameId): Response
+    {
+        $game = $this->gameService->getGame($gameId);
+        return $this->json($game);
     }
 
     #[Route('/api/games/{gameId}', methods: ['DELETE'])]

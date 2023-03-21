@@ -5,3 +5,10 @@ export interface Player {
   background: string;
   teamName: string;
 }
+
+export interface Tournament {
+  tournamentId?: number;
+  tournamentName?: string;
+  startDate?: Date;
+  endDate?: Date;
+}

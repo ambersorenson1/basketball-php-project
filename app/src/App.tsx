@@ -6,6 +6,7 @@ import NavBar from './Components/NavBar/NavBar';
 import Main from './Components/Main/Main';
 import Tournament from './Components/Tournaments/Tournament';
 import GameForm from './Components/Game/Game';
+import AdminsPage from './Components/AdminsPage/AdminsPage';
 
 const queryClient = new QueryClient();
 
@@ -16,10 +17,11 @@ function App() {
       <div>
         <NavBar />
         <QueryClientProvider client={queryClient}>
+          <AdminsPage />
           {/*<GameForm />*/}
           {/*<Tournament />*/}
           {/*<Main />*/}
-          <ProfilePage />
+          {/*<ProfilePage />*/}
         </QueryClientProvider>
       </div>
     </Router>
