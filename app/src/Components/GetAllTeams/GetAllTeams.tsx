@@ -37,7 +37,12 @@ const GetAllTeams = () => {
     </div>
   );
 
-  return <div>{teamSelect}</div>;
+  return (
+    <div>
+      {teamSelect}
+      {teamSelect}
+    </div>
+  );
 };
 
 export default GetAllTeams;

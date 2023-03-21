@@ -18,22 +18,21 @@ class GameController extends AbstractController
         $this->gameService = $gameService;
     }
 
-//    #[Route('/api/games', methods: ['POST'])]
-//    public function createInstance(Request $request): Response
-//    {
-//        $gameDto = new GameDTO(
-//            $request->request->get('name'),
-//        );
-//
-//        $game = $this->gameService->createGame($gameDto);
-//        return $this->json($game);
-//    }
-
-    #[Route('/api/games', methods: ['GET'])]
-    public function getCollection(): Response
+    #[Route('/api/games', methods: ['POST'])]
+    public function create(Request $request): Response
     {
-        return $this->json($this->gameService->getGames());
+        $data = json_decode($request->getContent(), true);
+        $tournamentId = $data['tournament_id'] ?? null;
+        $teamOneId = $data['team_one_id'] ?? null;
+        $teamTwoId = $data['team_two_id'] ?? null;
+        $game = $this->gameService->createGame($tournamentId, $teamOneId, $teamTwoId);
+        if ($game === null) {
+            return $this->json(['error' => 'Unable to create a game with the provided data'], Response::HTTP_BAD_REQUEST);
+        }
+
+        return $this->json($game, Response::HTTP_CREATED);
     }
+
 
     #[Route('/api/games/{gameId}', methods: ['GET'])]
     public function getInstance(int $gameId): Response
