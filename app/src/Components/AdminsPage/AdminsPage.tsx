@@ -1,16 +1,52 @@
-import { useMutation } from '@tanstack/react-query';
-import { createTournament } from '../../services/tournamentApi';
-import React, { useState } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import {
+  createTournament,
+  getAllTournaments,
+} from '../../services/tournamentApi';
+import React, { useEffect, useState } from 'react';
+import { Tournament } from '../../services/DTOs';
 
 const AdminsPage = () => {
-  const [tournamentName, setTournamentName] = useState<string>('');
+  const [name, setName] = useState<string>('');
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
+  const {
+    data: tournaments,
+    isLoading,
+    isError,
+  } = useQuery<Tournament[], Error>(['tournaments'], getAllTournaments);
+
+  useEffect(() => {}, []);
+
+  const tournamentSelect = isLoading ? (
+    <p>Loading tournaments...</p>
+  ) : isError ? (
+    <p>Error loading tournaments</p>
+  ) : (
+    <div className="mb-4">
+      <label
+        className="mb-2 block text-sm font-bold text-gray-700"
+        htmlFor="tournament-select"
+      >
+        Select Tournament:
+      </label>
+      <select
+        className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-orange-500 text-gray-700 shadow focus:outline-none"
+        id="tournament-select"
+      >
+        {tournaments.map((tournament: Tournament) => (
+          <option key={tournament.tournamentId} value={tournament.name}>
+            {tournament.name}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
 
   const addTournament = useMutation({
     mutationFn: () =>
       createTournament({
-        tournamentName: tournamentName,
+        name: name,
         startDate: startDate,
         endDate: endDate,
       }),
@@ -36,18 +72,19 @@ const AdminsPage = () => {
         onSubmit={handleAddTournament}
         className="mb-4 rounded bg-white px-8 pt-6 pb-8 shadow-lg"
       >
+        {tournamentSelect}
         <div className="mb-4">
           <label
             className="mb-2 block text-sm font-bold text-gray-700"
             htmlFor="tournament"
           >
-            Tournament:
+            Tournament Name:
           </label>
           <input
             className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
             type="text"
-            value={tournamentName}
-            onChange={e => setTournamentName(e.target.value)}
+            value={name}
+            onChange={e => setName(e.target.value)}
           />
         </div>
         <div className="mb-4">
@@ -59,8 +96,8 @@ const AdminsPage = () => {
           </label>
           <input
             className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-            type="date"
-            value={startDate.toISOString().substring(0, 10)}
+            type="datetime-local"
+            value={startDate.toISOString().substring(0, 19)}
             onChange={e => setStartDate(new Date(e.target.value))}
           />
         </div>
@@ -73,8 +110,8 @@ const AdminsPage = () => {
           </label>
           <input
             className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-            type="date"
-            value={endDate.toISOString().substring(0, 10)}
+            type="datetime-local"
+            value={endDate.toISOString().substring(0, 19)}
             onChange={e => setEndDate(new Date(e.target.value))}
           />
         </div>
@@ -88,4 +125,5 @@ const AdminsPage = () => {
     </div>
   );
 };
+
 export default AdminsPage;

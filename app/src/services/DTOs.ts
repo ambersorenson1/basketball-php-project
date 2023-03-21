@@ -8,7 +8,7 @@ export interface Player {
 
 export interface Tournament {
   tournamentId?: number;
-  tournamentName?: string;
+  name?: string;
   startDate?: Date;
   endDate?: Date;
 }

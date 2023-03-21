@@ -37,7 +37,7 @@ class TournamentService {
         $tournament = new Tournament();
         $tournament->setName($data['tournamentName']);
         $dateString = $data['startDate'];
-        $dateFormat = 'm-d-Y';
+        $dateFormat = 'Y-m-d\TH:i:s.u\Z';
         $dateObject = DateTime::createFromFormat($dateFormat, $dateString);
         $tournament->setStartDate($dateObject);
         $tournament->setEndDate($dateObject);

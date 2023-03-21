@@ -1,7 +1,7 @@
 import { Tournament } from './DTOs';
 
 interface TournamentData {
-  tournamentName: string;
+  name: string;
   startDate: Date;
   endDate: Date;
 }
@@ -22,5 +22,27 @@ export async function createTournament(
   }
 
   const data = await response.json();
-  return data.players;
+  return data;
+}
+
+export async function getAllTournaments(): Promise<Tournament[]> {
+  try {
+    const response = await fetch('http://localhost:8000/api/tournaments', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'GET',
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch tournaments: ${response.statusText}`);
+    }
+
+    const data: Tournament[] = await response.json();
+    console.log('Fetched tournaments:', data);
+    return data;
+  } catch (error) {
+    console.error('Error fetching tournaments:', error);
+    throw error;
+  }
 }
