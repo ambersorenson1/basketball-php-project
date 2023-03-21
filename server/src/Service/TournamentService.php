@@ -36,23 +36,14 @@ class TournamentService {
         $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
         $tournament = new Tournament();
         $tournament->setName($data['tournamentName']);
-
-// Create a DateTime object from the date string
         $dateString = $data['startDate'];
-//        $dateString2 = $data['endDate'];
         $dateFormat = 'm-d-Y';
         $dateObject = DateTime::createFromFormat($dateFormat, $dateString);
-
-// Set the start and end dates of the tournament
         $tournament->setStartDate($dateObject);
         $tournament->setEndDate($dateObject);
-
         $this->entityManager->persist($tournament);
         $this->entityManager->flush();
-
         return $tournament;
-
-
     }
 
 
