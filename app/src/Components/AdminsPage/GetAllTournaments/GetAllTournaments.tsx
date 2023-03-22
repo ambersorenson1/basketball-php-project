@@ -1,17 +1,42 @@
+import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Team, Tournament } from '../../../services/DTOs';
-import { useEffect } from 'react';
 import { getAllTournaments } from '../../../services/tournamentApi';
 import GetAllTeams from '../../GetAllTeams/GetAllTeams';
 
-const GetAllTournaments = () => {
+type GetAllTournamentsProps = {
+  onTournamentSelect: (tournament: Tournament) => void;
+  onTeamOneSelect: (team: Team) => void;
+  onTeamTwoSelect: (team: Team) => void;
+};
+
+const GetAllTournaments: React.FC<GetAllTournamentsProps> = ({
+  onTournamentSelect,
+  onTeamOneSelect,
+  onTeamTwoSelect,
+}) => {
   const {
     data: tournaments,
     isLoading,
     isError,
   } = useQuery<Tournament[], Error>(['tournaments'], getAllTournaments);
 
-  useEffect(() => {}, []);
+  const [selectedTournament, setSelectedTournament] = useState<
+    number | undefined
+  >(undefined);
+
+  const handleTournamentChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    const tournamentId = parseInt(event.target.value, 10);
+    setSelectedTournament(tournamentId);
+    const selectedTournament = tournaments?.find(
+      t => t.tournamentId === tournamentId,
+    );
+    if (selectedTournament) {
+      onTournamentSelect(selectedTournament);
+    }
+  };
 
   const tournamentSelect = isLoading ? (
     <p>Loading tournaments...</p>
@@ -28,9 +53,12 @@ const GetAllTournaments = () => {
       <select
         className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-orange-500 text-gray-700 shadow focus:outline-none"
         id="tournament-select"
+        value={selectedTournament}
+        onChange={handleTournamentChange}
       >
-        {tournaments.map((tournament: Tournament) => (
-          <option key={tournament.tournamentId} value={tournament.name}>
+        <option value="">Select a tournament</option>
+        {tournaments?.map((tournament: Tournament) => (
+          <option key={tournament.tournamentId} value={tournament.tournamentId}>
             {tournament.name}
           </option>
         ))}
@@ -41,7 +69,10 @@ const GetAllTournaments = () => {
   return (
     <div>
       {tournamentSelect}
-      <GetAllTeams />
+      <GetAllTeams
+        onTeamOneSelect={onTeamOneSelect}
+        onTeamTwoSelect={onTeamTwoSelect}
+      />
     </div>
   );
 };

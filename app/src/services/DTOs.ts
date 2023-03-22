@@ -17,3 +17,9 @@ export interface Team {
   name: string;
   teamId?: number;
 }
+
+export interface Game {
+  teamOneId?: number;
+  teamTwoId?: number;
+  tournamentId?: number;
+}
