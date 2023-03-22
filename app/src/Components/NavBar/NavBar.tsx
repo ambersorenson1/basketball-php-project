@@ -1,8 +1,27 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import useNavBarStore from './useNavBarStore';
+import React from 'react';
+import { Link } from 'react-router-dom'; // Add this import to use the Link component
 
 function BasketballNavBar() {
   const { isDropdownOpen, toggleDropdown } = useNavBarStore();
+
+  const navigate = useNavigate();
+
+  const handleHomeClick = () => {
+    navigate('/');
+    toggleDropdown();
+  };
+
+  const handleTournamentsClick = () => {
+    navigate('/tournaments');
+    toggleDropdown();
+  };
+
+  const handleProfilePageClick = () => {
+    navigate('/profile-page');
+    toggleDropdown();
+  };
 
   return (
     <nav className="bg-gray-800">
@@ -14,53 +33,42 @@ function BasketballNavBar() {
               src="http://llw-magento-images-prod.s3.amazonaws.com/catalog/product/f/o/fo25479708x.jpg"
               alt="My App Logo"
             />
-            <Link to="/" className="font-bold text-white">
-              My Basketball App
-            </Link>
+            <div className="font-bold text-white">My Basketball App</div>
           </div>
-          <div className="hidden md:block">
-            <div className="ml-4 flex items-center md:ml-6">
-              <div className="relative">
+          <div className="ml-auto">
+            <button
+              className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+              onClick={toggleDropdown}
+            >
+              Menu
+            </button>
+            {isDropdownOpen && (
+              <div
+                className="absolute right-0 mt-2 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5"
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="options-menu"
+              >
                 <button
-                  className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                  onClick={toggleDropdown}
+                  className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
+                  onClick={handleHomeClick}
                 >
-                  Menu
+                  Home
                 </button>
-                {isDropdownOpen && (
-                  <div className="absolute right-0 z-10 mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
-                    <div
-                      className="py-1"
-                      role="menu"
-                      aria-orientation="vertical"
-                      aria-labelledby="options-menu"
-                    >
-                      <Link
-                        to="/"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                        role="menuitem"
-                      >
-                        Home
-                      </Link>
-                      <Link
-                        to="/tournaments"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                        role="menuitem"
-                      >
-                        Tournaments
-                      </Link>
-                      <Link
-                        to="/profile-page"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                        role="menuitem"
-                      >
-                        Profile Page
-                      </Link>
-                    </div>
-                  </div>
-                )}
+                <button
+                  className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
+                  onClick={handleTournamentsClick}
+                >
+                  Tournaments
+                </button>
+                <button
+                  className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
+                  onClick={handleProfilePageClick}
+                >
+                  Profile Page
+                </button>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
