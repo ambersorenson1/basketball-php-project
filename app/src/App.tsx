@@ -10,7 +10,7 @@ import AdminsPage from './Components/AdminsPage/AdminsPage';
 
 const queryClient = new QueryClient();
 
-function App() {
+const App: React.FC = () => {
   return (
     <BrowserRouter>
       <div>
@@ -27,6 +27,6 @@ function App() {
       </div>
     </BrowserRouter>
   );
-}
+};
 
 export default App;

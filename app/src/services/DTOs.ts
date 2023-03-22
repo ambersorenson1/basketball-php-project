@@ -9,8 +9,8 @@ export interface Player {
 export interface Tournament {
   tournamentId?: number;
   name?: string;
-  startDate?: Date;
-  endDate?: Date;
+  startDate?: string;
+  endDate?: string;
 }
 
 export interface Team {
@@ -19,7 +19,10 @@ export interface Team {
 }
 
 export interface Game {
+  gameId: number;
   teamOneId?: number;
   teamTwoId?: number;
   tournamentId?: number;
+  teamOneName: string;
+  teamTwoName: string;
 }

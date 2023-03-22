@@ -1,11 +1,13 @@
 import { useNavigate } from 'react-router-dom';
-import useNavBarStore from './useNavBarStore';
-import React from 'react';
+import React, { useState } from 'react';
 
-function BasketballNavBar() {
-  const { isDropdownOpen, toggleDropdown } = useNavBarStore();
-
+const BasketballNavBar: React.FC = () => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
   const handleHomeClick = () => {
     navigate('/');
@@ -14,6 +16,10 @@ function BasketballNavBar() {
 
   const handleTournamentsClick = () => {
     navigate('/tournaments');
+    toggleDropdown();
+  };
+  const handleAdminsClick = () => {
+    navigate('/admins-page');
     toggleDropdown();
   };
 
@@ -66,6 +72,12 @@ function BasketballNavBar() {
                 >
                   Profile Page
                 </button>
+                <button
+                  className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
+                  onClick={handleAdminsClick}
+                >
+                  Admin Page
+                </button>
               </div>
             )}
           </div>
@@ -73,5 +85,5 @@ function BasketballNavBar() {
       </div>
     </nav>
   );
-}
+};
 export default BasketballNavBar;

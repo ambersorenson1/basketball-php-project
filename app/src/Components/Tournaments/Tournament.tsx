@@ -1,8 +1,8 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Tournament } from './TournamentInterface';
 import axios from 'axios';
 import { create } from 'zustand';
+import { Tournament } from '../../services/DTOs';
 
 interface TournamentStore {
   tournaments: Tournament[];
@@ -40,11 +40,11 @@ function TournamentForm() {
       <h1 className="mb-4 text-2xl font-bold">Tournaments</h1>
       <ul>
         {tournaments.map((tournament, index) => (
-          <li key={`${index}-${tournament.tournament_id}`} className="mb-2">
+          <li key={`${index}-${tournament.tournamentId}`} className="mb-2">
             <div>
               <div className="font-bold">{tournament.name}</div>
-              <div className="text-sm">Start date: {tournament.start_date}</div>
-              <div className="text-sm">End date: {tournament.end_date}</div>
+              <div className="text-sm">Start date: {tournament.startDate}</div>
+              <div className="text-sm">End date: {tournament.endDate}</div>
             </div>
           </li>
         ))}

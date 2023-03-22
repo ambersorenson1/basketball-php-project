@@ -35,9 +35,9 @@ const GetAllTeams: React.FC<GetAllTeamsProps> = ({
   };
 
   const teamOptions = isLoading ? (
-    <p>Loading teams...</p>
+    <option>Loading teams...</option>
   ) : isError ? (
-    <p>Error loading teams</p>
+    <option>Error loading teams</option>
   ) : (
     teams?.map((team: Team) => (
       <option key={team.teamId} value={team.name}>

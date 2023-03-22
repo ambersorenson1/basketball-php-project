@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Team, Tournament } from '../../../services/DTOs';
+import { Game, Team, Tournament } from '../../../services/DTOs';
 import { getAllTournaments } from '../../../services/tournamentApi';
 import GetAllTeams from '../../GetAllTeams/GetAllTeams';
+import TournamentOption from './TournamentOptions';
 
 type GetAllTournamentsProps = {
   onTournamentSelect: (tournament: Tournament) => void;
   onTeamOneSelect: (team: Team) => void;
   onTeamTwoSelect: (team: Team) => void;
+  setCreatedGame: (game: Game | null) => void;
 };
 
 const GetAllTournaments: React.FC<GetAllTournamentsProps> = ({
   onTournamentSelect,
   onTeamOneSelect,
   onTeamTwoSelect,
+  setCreatedGame,
 }) => {
   const {
     data: tournaments,
@@ -58,9 +61,10 @@ const GetAllTournaments: React.FC<GetAllTournamentsProps> = ({
       >
         <option value="">Select a tournament</option>
         {tournaments?.map((tournament: Tournament) => (
-          <option key={tournament.tournamentId} value={tournament.tournamentId}>
-            {tournament.name}
-          </option>
+          <TournamentOption
+            key={tournament.tournamentId}
+            tournament={tournament}
+          />
         ))}
       </select>
     </div>

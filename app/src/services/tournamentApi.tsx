@@ -15,7 +15,11 @@ export async function createTournament(
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(tournamentData),
+    body: JSON.stringify({
+      tournamentName: tournamentData.name,
+      startDate: tournamentData.startDate,
+      endDate: tournamentData.endDate,
+    }),
   });
 
   if (!response.ok) {
