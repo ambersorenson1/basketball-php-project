@@ -79,4 +79,18 @@ class TournamentService
     {
         return $this->tournamentRepository->findAll();
     }
+
+    public function deleteTournament(int $tournamentId): bool
+    {
+        $tournament = $this->tournamentRepository->find($tournamentId);
+
+        if (!$tournament) {
+            return false;
+        }
+
+        $this->entityManager->remove($tournament);
+        $this->entityManager->flush();
+
+        return true;
+    }
 }
