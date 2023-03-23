@@ -4,13 +4,17 @@ namespace App\DTO;
 
 class PlayerDTO
 {
-    private ?string $firstName;
-    private ?string $lastName;
-    private ?string $foreground;
-    private ?string $background;
-    private ?string $teamName;
+    private string $firstName;
+    private string $lastName;
+    private string $foreground;
+    private string $background;
+    private string $teamName;
 
-    public function getFirstName(): ?string
+
+
+
+
+public function getFirstName(): ?string
     {
         return $this->firstName;
     }
