@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useTournamentStore } from './tournamentStore';
-import { fetchTournaments } from '../../services/tournamentApi'; //
+import { fetchTournaments } from '../../services/tournamentApi';
 
 function TournamentForm() {
   const { tournaments, setTournaments } = useTournamentStore();
@@ -12,13 +12,20 @@ function TournamentForm() {
     },
   });
 
-  // @ts-ignore
-  // @ts-ignore
+  const currentDate = new Date();
+
+  const currentTournaments = tournaments.filter(tournament => {
+    if (tournament.endDate) {
+      return new Date(tournament.endDate) >= currentDate;
+    }
+    return false;
+  });
+
   return (
     <div className="bg-gray-100 p-4">
-      <h1 className="mb-4 text-2xl font-bold">Tournaments</h1>
+      <h1 className="mb-4 text-2xl font-bold">Current Tournaments</h1>
       <ul>
-        {tournaments.map((tournament, index) => (
+        {currentTournaments.map((tournament, index) => (
           <li key={`${index}-${tournament.tournamentId}`} className="mb-2">
             <div>
               <div className="font-bold">{tournament.name}</div>
