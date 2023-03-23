@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { createPlayer } from '../../services/playerApi';
+import ThemeContext from './ThemeContext';
 
 const ProfilePage = () => {
   const [firstName, setFirstName] = useState<string>('');
@@ -8,6 +9,39 @@ const ProfilePage = () => {
   const [foreground, setForeground] = useState<string>('');
   const [background, setBackground] = useState<string>('');
   const [teamName, setTeamName] = useState<string>('');
+  const [foregroundError, setForegroundError] = useState<string | null>(null);
+  const [backgroundError, setBackgroundError] = useState<string | null>(null);
+  const { theme, setTheme } = useContext(ThemeContext);
+
+  useEffect(() => {
+    if (background) {
+      if (isValidRGB(background)) {
+        document.body.style.backgroundColor = `rgb(${background})`;
+        setBackgroundError(null);
+      } else {
+        setBackgroundError('Invalid RGB value');
+      }
+    } else {
+      document.body.style.backgroundColor = ''; // Reset to default if the background input is empty
+    }
+
+    return () => {
+      document.body.style.backgroundColor = ''; // Clean up on unmount
+    };
+  }, [background]);
+
+  const isValidRGB = (rgb: string) => {
+    const regex = /^(\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})$/;
+    const match = rgb.match(regex);
+
+    if (!match) return false;
+
+    const r = parseInt(match[1]);
+    const g = parseInt(match[2]);
+    const b = parseInt(match[3]);
+
+    return r >= 0 && r <= 255 && g >= 0 && g <= 255 && b >= 0 && b <= 255;
+  };
 
   const addPlayer = useMutation({
     mutationFn: () =>
@@ -93,8 +127,18 @@ const ProfilePage = () => {
             className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
             type="text"
             value={foreground}
-            onChange={e => setForeground(e.target.value)}
+            onChange={e => {
+              setForeground(e.target.value);
+              if (!isValidRGB(e.target.value)) {
+                setForegroundError('Invalid RGB value');
+              } else {
+                setForegroundError(null);
+              }
+            }}
           />
+          {foregroundError && (
+            <p className="text-xs italic text-red-500">{foregroundError}</p>
+          )}
         </div>
         <div className="mb-4">
           <label
@@ -109,6 +153,9 @@ const ProfilePage = () => {
             value={background}
             onChange={e => setBackground(e.target.value)}
           />
+          {backgroundError && (
+            <p className="text-xs italic text-red-500">{backgroundError}</p>
+          )}
         </div>
         <div className="flex justify-center space-x-8">
           <button
