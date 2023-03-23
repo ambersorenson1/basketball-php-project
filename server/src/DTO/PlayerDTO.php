@@ -4,59 +4,58 @@ namespace App\DTO;
 
 class PlayerDTO
 {
-    public string $firstName;
-    public string $lastName;
-    public string $foreground;
-    public string $background;
-    private string $teamName;
+    private ?string $firstName;
+    private ?string $lastName;
+    private ?string $foreground;
+    private ?string $background;
+    private ?string $teamName;
 
-
-    public function getFirstName(): string
+    public function getFirstName(): ?string
     {
         return $this->firstName;
     }
 
-    public function setFirstName(string $firstName): void
+    public function setFirstName(?string $firstName): void
     {
         $this->firstName = $firstName;
     }
 
-    public function getLastName(): string
+    public function getLastName(): ?string
     {
         return $this->lastName;
     }
 
-    public function setLastName(string $lastName): void
+    public function setLastName(?string $lastName): void
     {
         $this->lastName = $lastName;
     }
 
-    public function getForeground(): string
+    public function getForeground(): ?string
     {
         return $this->foreground;
     }
 
-    public function setForeground(string $foreground): void
+    public function setForeground(?string $foreground): void
     {
         $this->foreground = $foreground;
     }
 
-    public function getBackground(): string
+    public function getBackground(): ?string
     {
         return $this->background;
     }
 
-    public function setBackground(string $background): void
+    public function setBackground(?string $background): void
     {
         $this->background = $background;
     }
 
-    public function getTeamName(): string
+    public function getTeamName(): ?string
     {
         return $this->teamName;
     }
 
-    public function setTeamName(string $teamName): void
+    public function setTeamName(?string $teamName): void
     {
         $this->teamName = $teamName;
     }
