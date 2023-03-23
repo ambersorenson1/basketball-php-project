@@ -2,10 +2,12 @@
 
 namespace App\DTO;
 
+use DateTime;
+
 class TournamentDTO {
     public string $tournamentName;
-    public string $startDate;
-    public string $endDate;
+    private DateTime $startDate;
+    private DateTime $endDate;
 
     public function getName(): string {
         return $this->tournamentName;
@@ -15,19 +17,20 @@ class TournamentDTO {
         $this->tournamentName = $tournamentName;
     }
 
-    public function getStartDate(): string {
+    public function getStartDate(): DateTime
+    {
         return $this->startDate;
     }
 
-    public function setStartDate(string $startDate): void {
+    public function setStartDate(DateTime $startDate): void {
         $this->startDate = $startDate;
     }
 
-    public function getEndDate(): string {
+    public function getEndDate(): DateTime {
         return $this->endDate;
     }
 
-    public function setEndDate(string $endDate): void {
+    public function setEndDate(DateTime $endDate): void {
         $this->endDate = $endDate;
     }
 }

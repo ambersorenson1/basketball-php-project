@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\DTO\Transformers\TournamentResponseDtoTransformer;
 use App\Service\TournamentService;
 use Exception;
 use JsonException;
@@ -31,8 +30,8 @@ class TournamentController extends AbstractController
     }
 
     #[Route('/api/tournaments', methods: ['GET'])]
-    public function getCollection(): Response {
-        return $this->json($this->tournamentService->getTournaments());
+    public function getAllTournaments(): Response {
+        return $this->json($this->tournamentService->getAllTournaments());
     }
 
     #[Route('/api/tournaments/{tournamentId}', methods: ['GET'])]
