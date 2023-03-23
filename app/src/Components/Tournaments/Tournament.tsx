@@ -1,31 +1,11 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-import { create } from 'zustand';
 import { Tournament } from '../../services/DTOs';
-
-interface TournamentStore {
-  tournaments: Tournament[];
-  setTournaments: (tournaments: Tournament[]) => void;
-}
-
-const useTournamentStore = create<TournamentStore>(set => ({
-  tournaments: [],
-  setTournaments: tournaments => set({ tournaments }),
-}));
+import { useTournamentStore } from './tournamentStore';
+import { fetchTournaments } from '../../services/tournamentApi'; //
 
 function TournamentForm() {
   const { tournaments, setTournaments } = useTournamentStore();
-
-  const fetchTournaments = async (): Promise<Tournament[]> => {
-    try {
-      const response = await axios.get('http://localhost:8000/api/tournaments');
-      return response.data;
-    } catch (error) {
-      console.error(error);
-      return [];
-    }
-  };
 
   useQuery(['tournament'], fetchTournaments, {
     onSuccess: data => {
