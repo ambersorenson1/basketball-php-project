@@ -6,6 +6,7 @@ interface PlayerData {
   foreground: string;
   background: string;
   teamName: string;
+  playerId: string;
 }
 
 export async function createPlayer(playerData: PlayerData): Promise<Player[]> {

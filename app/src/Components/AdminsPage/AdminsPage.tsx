@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import CreateTournaments from './CreateTournaments/CreateTournaments';
 import GetAllTournaments from './GetAllTournaments/GetAllTournaments';
-import { createGame, GameData } from '../../services/gamesApi';
+import { createGame } from '../../services/gamesApi';
 import { Team, Tournament } from '../../services/DTOs';
 
 const AdminsPage: React.FC = () => {
@@ -40,7 +40,7 @@ const AdminsPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="focus:shadow-outline rounded bg-cyan-500 py-2 px-4 font-bold text-white hover:bg-blue-700 focus:outline-none">
       <CreateTournaments />
       <GetAllTournaments
         onTournamentSelect={setSelectedTournament}
