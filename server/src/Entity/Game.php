@@ -3,10 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\GameRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use phpDocumentor\Reflection\Types\Integer;
 
 #[ORM\Entity(repositoryClass: GameRepository::class)]
 class Game
@@ -16,21 +13,6 @@ class Game
     #[ORM\Column]
     private ?int $game_id = null;
 
-    #[ORM\Column]
-    private ?int $team_one_id = null;
-
-    #[ORM\Column]
-    private ?int $team_two_id = null;
-
-    #[ORM\Column]
-    private ?int $team_one_score = null;
-
-    #[ORM\Column]
-    private ?int $team_two_score = null;
-
-    #[ORM\Column]
-    private ?int $tournament_id = null;
-
     #[ORM\OneToOne(targetEntity: Team::class)]
     #[ORM\JoinColumn(name: 'team_one_id', referencedColumnName: 'team_id')]
     private Team $team_one;
@@ -38,6 +20,12 @@ class Game
     #[ORM\OneToOne(targetEntity: Team::class)]
     #[ORM\JoinColumn(name: 'team_two_id', referencedColumnName: 'team_id')]
     private Team $team_two;
+
+    #[ORM\Column]
+    private ?int $team_one_score = null;
+
+    #[ORM\Column]
+    private ?int $team_two_score = null;
 
     #[ORM\ManyToOne(targetEntity: Tournament::class)]
     #[ORM\JoinColumn(name: 'tournament_id', referencedColumnName: 'tournament_id')]
@@ -48,26 +36,26 @@ class Game
         return $this->game_id;
     }
 
-    public function getTeamOneId(): ?int
+    public function getTeamOne(): Team
     {
-        return $this->team_one_id;
+        return $this->team_one;
     }
 
-    public function setTeamOneId(int $team_one_id): self
+    public function setTeamOne(Team $team_one): self
     {
-        $this->team_one_id = $team_one_id;
+        $this->team_one = $team_one;
 
         return $this;
     }
 
-    public function getTeamTwoId(): ?int
+    public function getTeamTwo(): Team
     {
-        return $this->team_two_id;
+        return $this->team_two;
     }
 
-    public function setTeamTwoId(int $team_two_id): self
+    public function setTeamTwo(Team $team_two): self
     {
-        $this->team_two_id = $team_two_id;
+        $this->team_two = $team_two;
 
         return $this;
     }
@@ -96,16 +84,15 @@ class Game
         return $this;
     }
 
-    public function getTournamentId(): ?int
+    public function getTournament(): Tournament
     {
-        return $this->tournament_id;
+        return $this->tournament;
     }
 
-    public function setTournamentId(int $tournament_id): self
+    public function setTournament(Tournament $tournament): self
     {
-        $this->tournament_id = $tournament_id;
+        $this->tournament = $tournament;
 
         return $this;
     }
 }
-

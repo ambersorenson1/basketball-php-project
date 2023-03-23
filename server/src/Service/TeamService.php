@@ -2,38 +2,53 @@
 
 namespace App\Service;
 
+use App\DTO\TeamDTO;
 use App\Entity\Team;
 use App\Repository\TeamRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class TeamService
 {
     private TeamRepository $teamRepository;
+    private EntityManagerInterface $entityManager;
 
-    public function __construct(TeamRepository $teamRepository)
+    public function __construct(TeamRepository $teamRepository, EntityManagerInterface $entityManager)
     {
         $this->teamRepository = $teamRepository;
+        $this->entityManager = $entityManager;
     }
 
-    public function createTeam(string $name): Team
+    public function getTeamById(int $id): ?TeamDTO
     {
-        $team = new Team();
-        $team->setName($name);
-        $this->teamRepository->save($team, true);
-        return $team;
+        $team = $this->teamRepository->find($id);
+        if (!$team) {
+            return null;
+        }
+
+        return $this->toDTO($team);
     }
 
-    public function deleteTeam(Team $team): void
-    {
-        $this->teamRepository->remove($team, true);
-    }
-
-    public function getTeamById(int $id): ?Team
-    {
-        return $this->teamRepository->find($id);
-    }
-
+    /**
+     * @return TeamDTO[]
+     */
     public function getAllTeams(): array
     {
-        return $this->teamRepository->findAll();
+        $teams = $this->teamRepository->findAll();
+        $teamDTOs = [];
+
+        foreach ($teams as $team) {
+            $teamDTOs[] = $this->toDTO($team);
+        }
+
+        return $teamDTOs;
+    }
+
+    private function toDTO(Team $team): TeamDTO
+    {
+        $teamDTO = new TeamDTO();
+        $teamDTO->setName($team->getName());
+        return $teamDTO;
     }
 }

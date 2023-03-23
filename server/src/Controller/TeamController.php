@@ -3,8 +3,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Team;
+use App\DTO\TeamDTO;
 use App\Service\TeamService;
+use JsonException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,39 +22,42 @@ class TeamController extends AbstractController
     }
 
     #[Route('/api/teams', methods: ['GET'])]
-    public function getCollection(): Response
+    public function getCollection(): JsonResponse
     {
         $teams = $this->teamService->getAllTeams();
-        return new JsonResponse($teams);
+        return $this->json($teams);
     }
 
     #[Route('/api/teams/{id}', methods: ['GET'])]
-    public function getInstance(int $id): Response
+    public function getInstance(int $id): JsonResponse
     {
         $team = $this->teamService->getTeamById($id);
+
         if (!$team) {
-            return new JsonResponse(['error' => 'Team not found'], Response::HTTP_NOT_FOUND);
+            return $this->json(['message' => 'Team not found'], JsonResponse::HTTP_NOT_FOUND);
         }
-        return new JsonResponse($team);
+
+        return $this->json($team);
     }
 
+    /**
+     * @throws JsonException
+     */
     #[Route('/api/teams', methods: ['POST'])]
-    public function createTeam(Request $request): Response
+    public function createTeam(Request $request): JsonResponse
     {
-        $name = $request->request->get('name');
-        if (!$name) {
-            return new JsonResponse(['error' => 'Name is required'], Response::HTTP_BAD_REQUEST);
-        }
-        $team = $this->teamService->createTeam($name);
-        return new JsonResponse($team, Response::HTTP_CREATED);
+        $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $teamDTO = new TeamDTO();
+        $teamDTO->setName($data['name']);
+        $team = $this->teamService->createTeam($teamDTO);
+        return $this->json($teamDTO);
     }
 
     #[Route('/api/teams/{team_id}', methods: ['DELETE'])]
-    public function deleteTeam(int $team_id): Response
+    public function deleteTeam(int $teamId): Response
     {
-        $team = $this->teamService->getTeamById($team_id);
+        $team = $this->teamService->getTeamById($teamId);
         $this->teamService->deleteTeam($team);
         return new Response('', Response::HTTP_NO_CONTENT);
     }
-
 }
