@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { createPlayer } from '../../services/playerApi';
-import ThemeContext from './ThemeContext';
 
 const ProfilePage = () => {
   const [firstName, setFirstName] = useState<string>('');
@@ -11,7 +10,6 @@ const ProfilePage = () => {
   const [teamName, setTeamName] = useState<string>('');
   const [foregroundError, setForegroundError] = useState<string | null>(null);
   const [backgroundError, setBackgroundError] = useState<string | null>(null);
-  const { theme, setTheme } = useContext(ThemeContext);
 
   useEffect(() => {
     if (background) {
@@ -22,11 +20,11 @@ const ProfilePage = () => {
         setBackgroundError('Invalid RGB value');
       }
     } else {
-      document.body.style.backgroundColor = ''; // Reset to default if the background input is empty
+      document.body.style.backgroundColor = '';
     }
 
     return () => {
-      document.body.style.backgroundColor = ''; // Clean up on unmount
+      document.body.style.backgroundColor = '';
     };
   }, [background]);
 
