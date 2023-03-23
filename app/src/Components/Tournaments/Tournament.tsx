@@ -1,6 +1,5 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Tournament } from '../../services/DTOs';
 import { useTournamentStore } from './tournamentStore';
 import { fetchTournaments } from '../../services/tournamentApi'; //
 

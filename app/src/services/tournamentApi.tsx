@@ -1,6 +1,5 @@
 import { Tournament } from './DTOs';
 import { Team } from './DTOs';
-import axios from 'axios';
 
 interface TournamentData {
   name: string;
