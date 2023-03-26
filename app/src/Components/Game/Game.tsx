@@ -1,50 +1,44 @@
-import { create } from 'zustand';
-import axios from 'axios/index';
-import { useQuery } from '@tanstack/react-query';
-import React from 'react';
-import { Game } from './GameInterface';
+import React, { useEffect, useState } from 'react';
+import { Game } from '../../services/DTOs';
 
-interface GameStore {
-  games: Game[];
-  setGames: (games: Game[]) => void;
-}
+const GameList: React.FC = () => {
+  const [games, setGames] = useState<Game[]>([]);
 
-const useGameStore = create<GameStore>(set => ({
-  games: [],
-  setGames: games => set({ games }),
-}));
+  useEffect(() => {
+    fetch('http://localhost:8000/api/games')
+      .then(response => response.json())
+      .then(data => {
+        console.log('Fetched games:', data);
+        setGames(data);
+      });
+  }, []);
 
-function GameForm() {
-  const { games, setGames } = useGameStore();
-
-  const fetchGames = async (): Promise<Game[]> => {
-    try {
-      const response = await axios.get('http://localhost:8000/api/games');
-      return response.data;
-    } catch (error) {
-      console.error(error);
-      return [];
-    }
+  const handleEnterGame = (gameId: number) => {
+    console.log(`Entering game with ID: ${gameId}`);
   };
 
-  useQuery(['game'], fetchGames, {
-    onSuccess: data => {
-      setGames(data);
-    },
-  });
-
   return (
-    <div className="bg-gray-100 p-4">
-      <h1 className="mb-4 text-2xl font-bold">Games</h1>
+    <div>
+      <h1>Games List</h1>
       <ul>
-        {games.map((game, index) => (
-          <li key={`${index}-${game.game_id}`} className="mb-2">
-            <strong className="font-bold">{game.game_id}</strong>
-          </li>
-        ))}
+        {games.map(game => {
+          const teamOne = game.teamOne;
+          const teamTwo = game.teamTwo;
+          console.log('Team One:', teamOne);
+          console.log('Team Two:', teamTwo);
+          return (
+            <li key={game.gameId}>
+              <button onClick={() => handleEnterGame(game.gameId)}>
+                Enter Game
+              </button>
+              {teamOne ? teamOne.name : 'Unknown'} vs{' '}
+              {teamTwo ? teamTwo.name : 'Unknown'}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
-}
+};
 
-export default GameForm;
+export default GameList;

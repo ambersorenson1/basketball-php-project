@@ -23,6 +23,6 @@ export interface Game {
   teamOneId?: number;
   teamTwoId?: number;
   tournamentId?: number;
-  teamOneName: string;
-  teamTwoName: string;
+  teamOne?: Team;
+  teamTwo?: Team;
 }

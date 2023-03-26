@@ -5,8 +5,8 @@ import ProfilePage from './Components/Player/ProfilePage';
 import NavBar from './Components/NavBar/NavBar';
 import Main from './Components/Main/Main';
 import Tournament from './Components/Tournaments/Tournament';
-import GameForm from './Components/Game/Game';
 import AdminsPage from './Components/AdminsPage/AdminsPage';
+import GameList from './Components/Game/Game';
 
 const queryClient = new QueryClient();
 
@@ -19,7 +19,7 @@ const App: React.FC = () => {
           <Routes>
             {/*<Route path="/" element={<Main />} />*/}
             <Route path="/tournaments" element={<Tournament />} />
-            {/*<Route path="/game-form" element={<GameForm />} />*/}
+            <Route path="/games" element={<GameList />} />
             <Route path="/admins-page" element={<AdminsPage />} />
             <Route path="/profile-page" element={<ProfilePage />} />
           </Routes>
