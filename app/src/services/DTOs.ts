@@ -4,6 +4,8 @@ export interface Player {
   foreground: string;
   background: string;
   teamName: string;
+  playerId?: number;
+  teamId?: number;
 }
 
 export interface Tournament {
