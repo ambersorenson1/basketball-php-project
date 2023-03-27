@@ -81,12 +81,12 @@ class PlayerController extends ApiController
         if ($request['firstName']) {
             $playerDTO->setFirstName($request['firstName']);
         }if ($request['lastName']) {
-            $playerDTO->setLastName($request['lastName']);
-        }if ($request['foreground']) {
-            $playerDTO->setForeground($request['foreground']);
-        }if ($request['background']) {
-            $playerDTO->setBackground($request['background']);
-        }
+        $playerDTO->setLastName($request['lastName']);
+    }if ($request['foreground']) {
+        $playerDTO->setForeground($request['foreground']);
+    }if ($request['background']) {
+        $playerDTO->setBackground($request['background']);
+    }
 
 
         return $playerDTO;

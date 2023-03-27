@@ -14,7 +14,7 @@ class PlayerDTO
 
 
 
-public function getFirstName(): ?string
+    public function getFirstName(): ?string
     {
         return $this->firstName;
     }

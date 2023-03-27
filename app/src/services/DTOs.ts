@@ -4,6 +4,8 @@ export interface Player {
   foreground: string;
   background: string;
   teamName: string;
+  playerId?: number;
+  teamId?: number;
 }
 
 export interface Tournament {
@@ -23,6 +25,6 @@ export interface Game {
   teamOneId?: number;
   teamTwoId?: number;
   tournamentId?: number;
-  teamOneName: string;
-  teamTwoName: string;
+  teamOne?: Team;
+  teamTwo?: Team;
 }
