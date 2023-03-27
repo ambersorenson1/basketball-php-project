@@ -41,6 +41,12 @@ class GameController extends AbstractController
         return $this->json($game);
     }
 
+    #[Route('/api/games', methods: ['GET'])]
+    public function getGames(): Response
+    {
+        return $this->json($this->gameService->getGames());
+    }
+
     #[Route('/api/games/{gameId}', methods: ['DELETE'])]
     public function deleteInstance(int $gameId): Response {
         return $this->json($this->gameService->deleteGame($gameId));
