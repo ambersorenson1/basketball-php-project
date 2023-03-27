@@ -3,31 +3,20 @@
 namespace App\Service;
 
 use App\DTO\PlayerDTO;
-use App\DTO\TeamDTO;
 use App\Entity\Player;
 use App\Entity\Team;
 use App\Repository\PlayerRepository;
 use App\Repository\RoleRepository;
 use App\Repository\TeamRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use JsonException;
-use Symfony\Component\HttpFoundation\Request;
 
 class PlayerService
 {
-
     private RoleRepository $roleRepository;
     private TeamRepository $teamRepository;
     private PlayerRepository $playerRepository;
     private EntityManagerInterface $entityManager;
 
-
-    /**
-     * @param RoleRepository $roleRepository
-     * @param TeamRepository $teamRepository
-     * @param PlayerRepository $playerRepository
-     * @param EntityManagerInterface $entityManager
-     */
     public function __construct(RoleRepository $roleRepository, TeamRepository $teamRepository, PlayerRepository $playerRepository, EntityManagerInterface $entityManager)
     {
         $this->roleRepository = $roleRepository;
@@ -37,7 +26,7 @@ class PlayerService
     }
 
     /**
-     * @throws JsonException
+     * Create a new player using the given PlayerDTO.
      */
     public function createPlayer(PlayerDTO $playerDTO): Player
     {
@@ -63,9 +52,9 @@ class PlayerService
         return $player;
     }
 
-
-
     /**
+     * Get all players.
+     *
      * @return Player[]
      */
     public function getPlayers(): array
@@ -73,18 +62,17 @@ class PlayerService
         return $this->playerRepository->findAll();
     }
 
+    /**
+     * Get a player by ID.
+     */
     public function getPlayer(int $playerId): ?Player
     {
-        $player = $this->playerRepository->find($playerId);
-
-        if ($player === null) {
-            return null;
-        }
-
-        return $player;
+        return $this->playerRepository->find($playerId);
     }
 
-
+    /**
+     * Update a player using the given PlayerDTO.
+     */
     public function updatePlayer(int $playerId, PlayerDTO $playerDTO): ?Player
     {
         $player = $this->playerRepository->find($playerId);
@@ -98,9 +86,13 @@ class PlayerService
         $player->setForeground($playerDTO->getForeground() ?? $player->getForeground());
 
         $this->playerRepository->save($player, true);
+
         return $player;
     }
 
+    /**
+     * Delete a player by ID.
+     */
     public function deletePlayer(int $playerId): bool
     {
         $player = $this->playerRepository->find($playerId);
@@ -108,8 +100,7 @@ class PlayerService
             return false;
         }
         $this->playerRepository->remove($player, true);
+
         return true;
     }
-
-
 }

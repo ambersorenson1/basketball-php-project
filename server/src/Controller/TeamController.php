@@ -5,11 +5,11 @@ namespace App\Controller;
 
 use App\DTO\TeamDTO;
 use App\Service\TeamService;
-use http\Client\Request;
-use http\Client\Response;
 use JsonException;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class TeamController extends AbstractController
@@ -29,36 +29,35 @@ class TeamController extends AbstractController
     }
 
     #[Route('/api/teams/{id}', methods: ['GET'])]
-    public function getInstance(int $id): Response
+    public function getInstance(int $id): JsonResponse
     {
         $team = $this->teamService->getTeamById($id);
+
         if (!$team) {
-            return $this->json(['error' => 'Team not found'], Response::HTTP_NOT_FOUND);
+            return $this->json(['message' => 'Team not found'], JsonResponse::HTTP_NOT_FOUND);
         }
+
         return $this->json($team);
     }
-
 
     /**
      * @throws JsonException
      */
     #[Route('/api/teams', methods: ['POST'])]
-    public function createTeam(Request $request): Response
+    public function createTeam(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
         $teamDTO = new TeamDTO();
         $teamDTO->setName($data['name']);
         $team = $this->teamService->createTeam($teamDTO);
         return $this->json($teamDTO);
-
     }
 
     #[Route('/api/teams/{team_id}', methods: ['DELETE'])]
-    public function deleteTeam(int $team_id): Response
+    public function deleteTeam(int $teamId): Response
     {
-        $team = $this->teamService->getTeamById($team_id);
+        $team = $this->teamService->getTeamById($teamId);
         $this->teamService->deleteTeam($team);
         return new Response('', Response::HTTP_NO_CONTENT);
     }
-
 }

@@ -9,9 +9,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-
-
-
 class TeamService
 {
     private TeamRepository $teamRepository;
@@ -23,23 +20,35 @@ class TeamService
         $this->entityManager = $entityManager;
     }
 
-
-    public function deleteTeam(Team $team): void
+    public function getTeamById(int $id): ?TeamDTO
     {
-        $this->entityManager->remove($team);
-        $this->entityManager->flush();
-    }
+        $team = $this->teamRepository->find($id);
+        if (!$team) {
+            return null;
+        }
 
-    public function getTeamById(int $id): ?Team
-    {
-        return $this->teamRepository->find($id);
+        return $this->toDTO($team);
     }
 
     /**
-     * @return Team[]
+     * @return TeamDTO[]
      */
     public function getAllTeams(): array
     {
-        return $this->teamRepository->findAll();
+        $teams = $this->teamRepository->findAll();
+        $teamDTOs = [];
+
+        foreach ($teams as $team) {
+            $teamDTOs[] = $this->toDTO($team);
+        }
+
+        return $teamDTOs;
+    }
+
+    private function toDTO(Team $team): TeamDTO
+    {
+        $teamDTO = new TeamDTO();
+        $teamDTO->setName($team->getName());
+        return $teamDTO;
     }
 }

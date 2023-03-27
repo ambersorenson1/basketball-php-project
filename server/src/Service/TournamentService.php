@@ -1,28 +1,25 @@
 <?php
 
+
 namespace App\Service;
 
 use App\Entity\Tournament;
 use App\Repository\TournamentRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use JsonException;
-use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\HttpFoundation\Request;
 use App\DTO\TournamentDTO;
 use DateTime;
 
-
-class TournamentService {
+class TournamentService
+{
     private EntityManagerInterface $entityManager;
     private TournamentRepository $tournamentRepository;
 
-    /**
-     * @param TournamentRepository $tournamentRepository
-     * @param EntityManagerInterface $entityManager
-     */
-
-    public function __construct(EntityManagerInterface $entityManager, TournamentRepository $tournamentRepository)
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        TournamentRepository   $tournamentRepository
+    )
     {
         $this->entityManager = $entityManager;
         $this->tournamentRepository = $tournamentRepository;
@@ -34,18 +31,21 @@ class TournamentService {
     public function createTournament(Request $request): Tournament
     {
         $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $tournamentDTO = new TournamentDTO();
+        $tournamentDTO->setName($data['tournamentName']);
+        $tournamentDTO->setStartDate(DateTime::createFromFormat('Y-m-d\TH:i:s.u\Z', $data['startDate']));
+        $tournamentDTO->setEndDate(DateTime::createFromFormat('Y-m-d\TH:i:s.u\Z', $data['endDate']));
+
         $tournament = new Tournament();
-        $tournament->setName($data['tournamentName']);
-        $dateString = $data['startDate'];
-        $dateFormat = 'Y-m-d\TH:i:s.u\Z';
-        $dateObject = DateTime::createFromFormat($dateFormat, $dateString);
-        $tournament->setStartDate($dateObject);
-        $tournament->setEndDate($dateObject);
+        $tournament->setName($tournamentDTO->getName());
+        $tournament->setStartDate($tournamentDTO->getStartDate());
+        $tournament->setEndDate($tournamentDTO->getEndDate());
+
         $this->entityManager->persist($tournament);
         $this->entityManager->flush();
+
         return $tournament;
     }
-
 
     public function getTournament(int $tournamentId): ?Tournament
     {
@@ -53,7 +53,7 @@ class TournamentService {
     }
 
     /**
-     * @throws Exception
+     * @throws JsonException
      */
     public function updateTournament(int $tournamentId, Request $request): ?Tournament
     {
@@ -62,36 +62,35 @@ class TournamentService {
 
         $tournamentDTO = new TournamentDTO();
         $tournamentDTO->setName($data['name']);
-        $tournamentDTO->setStartDate($data['start_date']);
-        $tournamentDTO->setEndDate($data['end_date']);
+        $tournamentDTO->setStartDate(DateTime::createFromFormat('Y-m-d\TH:i:s.u\Z', $data['start_date']));
+        $tournamentDTO->setEndDate(DateTime::createFromFormat('Y-m-d\TH:i:s.u\Z', $data['end_date']));
 
         $tournament->setName($tournamentDTO->getName());
         $tournament->setStartDate($tournamentDTO->getStartDate());
         $tournament->setEndDate($tournamentDTO->getEndDate());
 
-        $this->tournamentRepository->save($tournament);
+        $this->entityManager->persist($tournament);
+        $this->entityManager->flush();
 
         return $tournament;
     }
 
-    /**
-     * @throws Exception
-     */
+    public function getAllTournaments(): array
+    {
+        return $this->tournamentRepository->findAll();
+    }
+
     public function deleteTournament(int $tournamentId): bool
     {
         $tournament = $this->tournamentRepository->find($tournamentId);
 
         if (!$tournament) {
-            throw new Exception("Tournament not found");
+            return false;
         }
 
-        $this->tournamentRepository->remove($tournament);
+        $this->entityManager->remove($tournament);
+        $this->entityManager->flush();
+
         return true;
-    }
-
-
-    public function getTournaments(): array
-    {
-        return $this->tournamentRepository->findAll();
     }
 }

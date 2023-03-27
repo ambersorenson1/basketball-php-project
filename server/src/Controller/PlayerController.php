@@ -74,32 +74,5 @@ class PlayerController extends ApiController
         return $this->json($this->playerService->getPlayer($playerId));
     }
 
-    private function createPlayerDTOFromRequest(array $request): PlayerDTO
-    {
-        $playerDTO = new PlayerDTO();
 
-        if ($request['firstName']) {
-            $playerDTO->setFirstName($request['firstName']);
-        }if ($request['lastName']) {
-        $playerDTO->setLastName($request['lastName']);
-    }if ($request['foreground']) {
-        $playerDTO->setForeground($request['foreground']);
-    }if ($request['background']) {
-        $playerDTO->setBackground($request['background']);
-    }
-
-
-        return $playerDTO;
-    }
-
-
-
-    /**
-     * Delete a player by ID.
-     */
-    #[Route('/api/players/{playerId}', methods: ['DELETE'])]
-    public function deletePlayer(int $playerId): Response
-    {
-        return $this->json($this->playerService->deletePlayer($playerId));
-    }
 }
