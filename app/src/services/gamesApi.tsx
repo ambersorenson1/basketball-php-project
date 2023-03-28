@@ -7,6 +7,7 @@ export interface GameData {
 }
 
 export async function createGame(gameData: GameData): Promise<Game[]> {
+  console.log(gameData);
   const response = await fetch('http://localhost:8000/api/games', {
     method: 'POST',
     headers: {

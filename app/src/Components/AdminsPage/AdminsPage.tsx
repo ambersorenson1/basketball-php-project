@@ -17,9 +17,9 @@ const AdminsPage: React.FC = () => {
       console.error('Error details:', error);
     },
   });
-
+  console.log(selectedTeamOne);
   const handleCreateGame = async () => {
-    console.log(selectedTournament, selectedTeamOne, selectedTeamTwo);
+    console.log(selectedTeamOne);
 
     if (selectedTournament && selectedTeamOne && selectedTeamTwo) {
       try {

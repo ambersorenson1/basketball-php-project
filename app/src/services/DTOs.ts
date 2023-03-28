@@ -17,7 +17,7 @@ export interface Tournament {
 
 export interface Team {
   name: string;
-  teamId?: number;
+  teamId: number;
 }
 
 export interface Game {
