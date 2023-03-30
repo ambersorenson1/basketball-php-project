@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-// import { Player } from '../../services/DTOs';
 import { usePlayerStore } from './playerStore';
 import { SelectedPlayer } from '../../services/DTOs';
 

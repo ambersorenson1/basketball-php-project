@@ -12,10 +12,6 @@ const ProfilePage = () => {
   const [foregroundError, setForegroundError] = useState<string | null>(null);
   const [backgroundError, setBackgroundError] = useState<string | null>(null);
 
-  const team: Team = {
-    name: teamName,
-  };
-
   useEffect(() => {
     if (background) {
       if (isValidRGB(background)) {
