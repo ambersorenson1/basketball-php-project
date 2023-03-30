@@ -1,17 +1,9 @@
 export interface Player {
-  id: number;
   firstName: string;
   lastName: string;
   foreground: string;
   background: string;
-  role: {
-    roleId: number;
-    name: string;
-  };
-  team: {
-    teamId: number;
-    name: string;
-  };
+  teamName: string;
 }
 
 export interface Tournament {
@@ -23,7 +15,7 @@ export interface Tournament {
 
 export interface Team {
   name: string;
-  teamId: number;
+  teamId?: number;
 }
 
 export interface Game {
@@ -33,4 +25,17 @@ export interface Game {
   tournamentId?: number;
   teamOne?: Team;
   teamTwo?: Team;
+}
+
+export interface SelectedPlayer {
+  id: number;
+  firstName: string;
+  lastName: string;
+  foreground: string;
+  background: string;
+  name: string;
+  team: {
+    teamId?: number;
+    name: string;
+  };
 }

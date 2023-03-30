@@ -1,20 +1,12 @@
 import { Player } from './DTOs';
 
-interface PlayerData {
-  firstName: string;
-  lastName: string;
-  foreground: string;
-  background: string;
-  teamName: string;
-}
-
-export async function createPlayer(playerData: PlayerData): Promise<Player[]> {
+export async function createPlayer(player: Player): Promise<Player[]> {
   const response = await fetch('http://localhost:8000/api/players', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(playerData),
+    body: JSON.stringify(player),
   });
 
   if (!response.ok) {

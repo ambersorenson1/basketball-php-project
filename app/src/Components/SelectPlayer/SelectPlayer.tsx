@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Player } from '../../services/DTOs';
+// import { Player } from '../../services/DTOs';
 import { usePlayerStore } from './playerStore';
+import { SelectedPlayer } from '../../services/DTOs';
 
 interface SelectPlayerProps {}
 
 const SelectPlayer: React.FC<SelectPlayerProps> = () => {
-  const [players, setPlayers] = useState<Player[]>([]);
-  const navigate = useNavigate();
+  const [players, setPlayers] = useState<SelectedPlayer[]>([]);
   const selectedPlayer = usePlayerStore(state => state.selectedPlayer);
   const setSelectedPlayer = usePlayerStore(state => state.setSelectedPlayer);
 
