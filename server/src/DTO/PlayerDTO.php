@@ -2,7 +2,7 @@
 
 namespace App\DTO;
 
-class PlayerDTO
+class CreatePlayerDTO
 {
     #[NotNull]
     #[Type('string')]
