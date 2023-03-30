@@ -34,22 +34,19 @@ export async function fetchPlayers() {
 }
 
 export const updatePlayer = async (
-  playerId: string,
-  updatedPlayer: Partial<Player>,
-): Promise<Player> => {
-  const response = await fetch(
-    `http://localhost:8000/api/players/${playerId}`,
-    {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updatedPlayer),
+  id: number,
+  player: Partial<Player> & { teamName: string },
+) => {
+  const response = await fetch(`localhost:8000/api/players/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
     },
-  );
+    body: JSON.stringify(player),
+  });
 
   if (!response.ok) {
-    throw new Error('Error updating player');
+    throw new Error('Failed to update player');
   }
 
   return response.json();
