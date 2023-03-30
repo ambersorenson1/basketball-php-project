@@ -1,11 +1,17 @@
 export interface Player {
+  id: number;
   firstName: string;
   lastName: string;
   foreground: string;
   background: string;
-  teamName: string;
-  playerId?: number;
-  teamId?: number;
+  role: {
+    roleId: number;
+    name: string;
+  };
+  team: {
+    teamId: number;
+    name: string;
+  };
 }
 
 export interface Tournament {

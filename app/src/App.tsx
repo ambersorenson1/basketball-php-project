@@ -5,9 +5,9 @@ import ProfilePage from './Components/Player/ProfilePage';
 import NavBar from './Components/NavBar/NavBar';
 import Tournament from './Components/Tournaments/Tournament';
 import AdminsPage from './Components/AdminsPage/AdminsPage';
-import GameList from './Components/Game/Game';
+import GameList from './Components/ListOfGames/ListOfGames';
 import ActualGame from './Components/ActualGame/ActualGame';
-import SelectPlayer from './Components/GetPlayers/GetPlayers';
+import SelectPlayer from './Components/SelectPlayer/SelectPlayer';
 import { Game, Player } from './services/DTOs';
 
 const queryClient = new QueryClient();
@@ -38,22 +38,10 @@ const App: React.FC = () => {
         <NavBar />
         <QueryClientProvider client={queryClient}>
           <Routes>
-            {selectedGame && gameStarted && (
-              <Route
-                path="/"
-                element={
-                  <ActualGame
-                    teamOne={
-                      selectedGame.teamOne || { id: -1, name: 'Unknown' }
-                    } // Add a fallback value for teamOne
-                    teamTwo={
-                      selectedGame.teamTwo || { id: -1, name: 'Unknown' }
-                    } // Add a fallback value for teamTwo
-                    onGameStarted={handleGameStarted}
-                  />
-                }
-              />
-            )}
+            <Route
+              path="/"
+              element={<SelectPlayer onPlayerSelected={handlePlayerSelected} />}
+            />
             <Route path="/tournaments" element={<Tournament />} />
             <Route
               path="/games"
@@ -62,13 +50,8 @@ const App: React.FC = () => {
             <Route path="/admins-page" element={<AdminsPage />} />
             <Route path="/profile-page" element={<ProfilePage />} />
             <Route
-              path="/"
-              element={
-                <SelectPlayer
-                  onPlayerSelected={handlePlayerSelected}
-                  selectedPlayer={selectedPlayer}
-                />
-              }
+              path="/actual-game"
+              element={<ActualGame onGameStarted={handleGameStarted} />}
             />
           </Routes>
         </QueryClientProvider>
