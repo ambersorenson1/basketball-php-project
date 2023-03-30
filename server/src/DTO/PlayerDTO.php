@@ -4,13 +4,22 @@ namespace App\DTO;
 
 class PlayerDTO
 {
-    private string $firstName;
-    private string $lastName;
-    private string $foreground;
-    private string $background;
-    private string $teamName;
+    #[NotNull]
+    #[Type('string')]
+    public string $firstName;
 
-
+    #[NotNull]
+    #[Type('string')]
+    public string $lastName;
+    #[NotNull]
+    #[Type('string')]
+    public string $foreground;
+    #[NotNull]
+    #[Type('string')]
+    public string $background;
+    #[NotNull]
+    #[Type('string')]
+    public string $teamName;
 
 
 

@@ -198,19 +198,11 @@ const ProfilePage = () => {
           )}
         </div>
         <div className="flex justify-center space-x-8">
-          {selectedPlayer && (
-            <button
-              type="submit"
-              className="focus:shadow-outline rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700 focus:outline-none"
-            >
-              Edit
-            </button>
-          )}
           <button
             type="submit"
             className="focus:shadow-outline rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700 focus:outline-none"
           >
-            {selectedPlayer ? 'Save' : 'Create'}
+            {selectedPlayer ? 'Update' : 'Create'}
           </button>
         </div>
       </form>
