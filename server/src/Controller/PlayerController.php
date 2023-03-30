@@ -33,7 +33,7 @@ class PlayerController extends ApiController
         $playerDTO->setLastName($data['lastName']);
         $playerDTO->setForeground($data['foreground']);
         $playerDTO->setBackground($data['background']);
-        $playerDTO->setTeamName($data['teamName']);
+        $playerDTO->setTeamName($data['team']['name']);
 
         $player = $this->playerService->createPlayer($playerDTO);
 

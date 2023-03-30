@@ -45,11 +45,19 @@ const ProfilePage = () => {
   const addPlayer = useMutation({
     mutationFn: () =>
       createPlayer({
+        id: 0,
         firstName: firstName,
         lastName: lastName,
         foreground: foreground,
         background: background,
-        teamName: teamName,
+        team: {
+          teamId: 0,
+          name: teamName,
+        },
+        role: {
+          roleId: 2,
+          name: 'Player',
+        },
       }),
     onMutate: () => {
       console.log('mutate');

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { usePlayerStore } from './playerStore';
-import { SelectedPlayer } from '../../services/DTOs';
+import { Player } from '../../services/DTOs';
 
 interface SelectPlayerProps {}
 
 const SelectPlayer: React.FC<SelectPlayerProps> = () => {
-  const [players, setPlayers] = useState<SelectedPlayer[]>([]);
+  const [players, setPlayers] = useState<Player[]>([]);
   const selectedPlayer = usePlayerStore(state => state.selectedPlayer);
   const setSelectedPlayer = usePlayerStore(state => state.setSelectedPlayer);
 

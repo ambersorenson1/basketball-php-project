@@ -38,10 +38,7 @@ const App: React.FC = () => {
         <NavBar />
         <QueryClientProvider client={queryClient}>
           <Routes>
-            <Route
-              path="/"
-              element={<SelectPlayer onPlayerSelected={handlePlayerSelected} />}
-            />
+            <Route path="/" element={<SelectPlayer />} />
             <Route path="/tournaments" element={<Tournament />} />
             <Route
               path="/games"
