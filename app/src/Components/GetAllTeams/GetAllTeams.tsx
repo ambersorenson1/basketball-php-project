@@ -60,6 +60,7 @@ const GetAllTeams: React.FC<GetAllTeamsProps> = ({
           id="team-one-select"
           onChange={handleTeamOneChange}
         >
+          <option value="">Select a team</option>
           {teamOptions}
         </select>
       </div>
@@ -75,6 +76,7 @@ const GetAllTeams: React.FC<GetAllTeamsProps> = ({
           id="team-two-select"
           onChange={handleTeamTwoChange}
         >
+          <option value="">Select a team</option>
           {teamOptions}
         </select>
       </div>
