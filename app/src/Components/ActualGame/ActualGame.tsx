@@ -1,21 +1,43 @@
 import React, { useState } from 'react';
 import { Team } from '../../services/DTOs';
+import { usePlayerStore } from '../SelectPlayer/playerStore';
+import { useLocation } from 'react-router-dom';
 
 interface ActualGameProps {
-  teamOne?: Team;
-  teamTwo?: Team;
   onGameStarted: () => void;
 }
 
-const ActualGame: React.FC<ActualGameProps> = ({
-  teamOne,
-  teamTwo,
-  onGameStarted,
-}) => {
+interface LocationState {
+  teamOne: Team;
+  teamTwo: Team;
+}
+
+const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
   const [gameStarted, setGameStarted] = useState(false);
+  const selectedPlayer = usePlayerStore(state => state.selectedPlayer);
+  const location = useLocation();
+  const { teamOne, teamTwo } = location.state as LocationState;
+
+  const isPlayerInGame = (): boolean => {
+    if (!selectedPlayer) return false;
+    return (
+      selectedPlayer.team.teamId === teamOne?.teamId ||
+      selectedPlayer.team.teamId === teamTwo?.teamId
+    );
+  };
 
   const generateRandomNumber = (min: number, max: number): number => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
+
+  const getShotType = (randomNumber: number): number => {
+    if (randomNumber >= 1 && randomNumber <= 25) {
+      return 1;
+    } else if (randomNumber >= 26 && randomNumber <= 88) {
+      return 2;
+    } else {
+      return 3;
+    }
   };
 
   const getClosestTeam = (
@@ -43,6 +65,9 @@ const ActualGame: React.FC<ActualGameProps> = ({
       10,
     );
 
+    const teamOneShotType = getShotType(generateRandomNumber(1, 100));
+    const teamTwoShotType = getShotType(generateRandomNumber(1, 100));
+
     const closestTeam = getClosestTeam(
       randomNumber,
       teamOneNumber,
@@ -66,7 +91,13 @@ const ActualGame: React.FC<ActualGameProps> = ({
 
   return (
     <div>
-      {!gameStarted && (
+      {selectedPlayer && (
+        <p>
+          Selected player: {selectedPlayer.firstName} {selectedPlayer.lastName}{' '}
+          - {selectedPlayer.team.name}
+        </p>
+      )}
+      {!gameStarted && isPlayerInGame() && (
         <button onClick={() => playGame(teamOne, teamTwo)}>Start Game</button>
       )}
       {gameStarted && (
@@ -75,8 +106,13 @@ const ActualGame: React.FC<ActualGameProps> = ({
           {/* Add your game logic here */}
         </div>
       )}
+      {!isPlayerInGame() && (
+        <p>
+          Only players from either {teamOne?.name} or {teamTwo?.name} can start
+          the game.
+        </p>
+      )}
     </div>
   );
 };
-
 export default ActualGame;

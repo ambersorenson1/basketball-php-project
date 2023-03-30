@@ -4,8 +4,7 @@ namespace App\DTO;
 
 class TeamDTO
 {
-    private string $name;
-    private int $id;
+    public string $name;
 
     public function getName(): string
     {
@@ -16,10 +15,6 @@ class TeamDTO
     {
         $this->name = $name;
         return $this;
-    }
-    public function getId(int $id): int
-    {
-        return $this->id;
     }
 }
 

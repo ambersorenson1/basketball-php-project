@@ -40,12 +40,10 @@ class GameService
 
     public function deleteGame(int $id): bool
     {
-        // Find the Game entity by ID
         $game = $this->gameRepository->find($id);
         if (!$game) {
             return false;
         }
-        // Remove the Game entity from the repository
         $this->gameRepository->remove($game, true);
         return true;
     }

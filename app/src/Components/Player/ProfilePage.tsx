@@ -1,6 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import { createPlayer } from '../../services/playerApi';
+import React, { useEffect, useState } from 'react';
+import { QueryKey, useMutation, useQuery } from '@tanstack/react-query';
+import {
+  createPlayer,
+  fetchPlayers,
+  updatePlayer,
+} from '../../services/playerApi';
 
 const ProfilePage = () => {
   const [firstName, setFirstName] = useState<string>('');
@@ -8,8 +12,17 @@ const ProfilePage = () => {
   const [foreground, setForeground] = useState<string>('');
   const [background, setBackground] = useState<string>('');
   const [teamName, setTeamName] = useState<string>('');
+  const [selectedPlayer, setSelectedPlayer] = useState<any>(null);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
   const [foregroundError, setForegroundError] = useState<string | null>(null);
   const [backgroundError, setBackgroundError] = useState<string | null>(null);
+
+  const queryKey: QueryKey = ['players'];
+  const {
+    data: players,
+    isLoading,
+    isError,
+  } = useQuery(queryKey, fetchPlayers);
 
   useEffect(() => {
     if (background) {
@@ -61,15 +74,76 @@ const ProfilePage = () => {
     },
   });
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    addPlayer.mutate();
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleSave = async () => {
+    if (selectedPlayer) {
+      await updatePlayer(selectedPlayer.id, {
+        firstName,
+        lastName,
+        foreground,
+        background,
+        teamName,
+      });
+    } else {
+      addPlayer.mutate();
+    }
+
+    setIsEditing(false);
+  };
+
+  const handlePlayerSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedPlayerId = e.target.value;
+    const foundPlayer = players.find(
+      (player: any) => player.id === selectedPlayerId,
+    );
+    if (foundPlayer) {
+      setSelectedPlayer(foundPlayer);
+      setFirstName(foundPlayer.firstName);
+      setLastName(foundPlayer.lastName);
+      setForeground(foundPlayer.foreground);
+      setBackground(foundPlayer.background);
+      setTeamName(foundPlayer.teamName);
+    }
   };
 
   return (
     <div className="mx-auto max-w-md">
+      <div className="font-semi-bold mb-4 text-center text-lg">
+        Please choose a name from the drop down
+      </div>
+      {isLoading && <div>Loading players...</div>}
+      {isError && <div>Error loading players</div>}
+      {players && (
+        <div className="mb-4">
+          <label
+            className="mb-2 block text-sm font-bold text-gray-700"
+            htmlFor="player-select"
+          >
+            Players:
+          </label>
+          <select
+            className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+            name="player-select"
+            id="player-select"
+            onChange={handlePlayerSelect}
+            value={selectedPlayer?.id || ''}
+          >
+            <option value="" disabled>
+              Select a player
+            </option>
+            {players.map((player: any) => (
+              <option key={player.id} value={player.id}>
+                {player.firstName} {player.lastName}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
       <form
-        onSubmit={handleSubmit}
+        onSubmit={e => e.preventDefault()}
         className="mb-4 rounded bg-white px-8 pt-6 pb-8 shadow-lg"
       >
         <div className="mb-4">
@@ -156,18 +230,27 @@ const ProfilePage = () => {
           )}
         </div>
         <div className="flex justify-center space-x-8">
-          <button
-            type="submit"
-            className="focus:shadow-outline rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700 focus:outline-none"
-          >
-            Edit
-          </button>
-          <button
-            type="submit"
-            className="focus:shadow-outline rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700 focus:outline-none"
-          >
-            Save
-          </button>
+          {isEditing ? (
+            <React.Fragment>
+              <button
+                type="button"
+                onClick={handleSave}
+                className="focus:shadow-outline rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700 focus:outline-none"
+              >
+                Save
+              </button>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <button
+                type="button"
+                onClick={handleEdit}
+                className="focus:shadow-outline rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700 focus:outline-none"
+              >
+                Edit
+              </button>
+            </React.Fragment>
+          )}
         </div>
       </form>
     </div>

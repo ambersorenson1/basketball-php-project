@@ -22,19 +22,19 @@ class TeamController extends AbstractController
     }
 
     #[Route('/api/teams', methods: ['GET'])]
-    public function getCollection(): JsonResponse
+    public function getCollection(): Response
     {
         $teams = $this->teamService->getAllTeams();
         return $this->json($teams);
     }
 
     #[Route('/api/teams/{id}', methods: ['GET'])]
-    public function getInstance(int $id): JsonResponse
+    public function getInstance(int $id): Response
     {
         $team = $this->teamService->getTeamById($id);
 
         if (!$team) {
-            return $this->json(['message' => 'Team not found'], JsonResponse::HTTP_NOT_FOUND);
+            return $this->json(['error' => 'Team not found'], Response::HTTP_NOT_FOUND);
         }
 
         return $this->json($team);
@@ -44,7 +44,7 @@ class TeamController extends AbstractController
      * @throws JsonException
      */
     #[Route('/api/teams', methods: ['POST'])]
-    public function createTeam(Request $request): JsonResponse
+    public function createTeam(Request $request): Response
     {
         $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
         $teamDTO = new TeamDTO();
