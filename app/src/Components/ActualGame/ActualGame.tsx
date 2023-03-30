@@ -109,6 +109,7 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
       {gameStarted && (
         <div>
           <h2 className="mt-4 text-center">Game in progress...</h2>
+          <h2 className="mt-4 text-center">May the best player win!!</h2>
           <p className="mt-4 text-center">Time remaining: {timer} seconds</p>
           <div className="flex justify-center">
             <button

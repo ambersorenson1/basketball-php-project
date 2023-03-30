@@ -38,7 +38,8 @@ const GameList: React.FC<GameListProps> = ({ onGameSelected }) => {
       <h1 className="mb-4 text-2xl font-bold">Games List</h1>
       {selectedPlayer && (
         <p>
-          Selected player: {selectedPlayer.firstName} {selectedPlayer.lastName}
+          Player - {selectedPlayer.firstName} {selectedPlayer.lastName} is
+          playing for {selectedPlayer.team.name}
         </p>
       )}
       <ul>
