@@ -29,7 +29,7 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
       }, 1000);
     } else if (interval !== null) {
       clearInterval(interval);
-      // Submit scores to the database here
+      // I would submit scores to the database here
     }
     return () => {
       if (interval !== null) {
@@ -93,8 +93,9 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
     <div className="mx-auto max-w-md">
       {selectedPlayer && (
         <p className="mt-4 text-center">
-          Selected player: {selectedPlayer.firstName} {selectedPlayer.lastName}{' '}
-          - {selectedPlayer.team.name}
+          This is your selected player - {selectedPlayer.firstName}{' '}
+          {selectedPlayer.lastName} - playing for Team{' '}
+          {selectedPlayer.team.name}
         </p>
       )}
       {!gameStarted && isPlayerInGame() && (

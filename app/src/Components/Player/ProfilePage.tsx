@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { createPlayer } from '../../services/playerApi';
-import { Team } from '../../services/DTOs';
+import { usePlayerStore } from '../SelectPlayer/playerStore';
 
 const ProfilePage = () => {
   const [firstName, setFirstName] = useState<string>('');
@@ -11,6 +11,7 @@ const ProfilePage = () => {
   const [teamName, setTeamName] = useState<string>('');
   const [foregroundError, setForegroundError] = useState<string | null>(null);
   const [backgroundError, setBackgroundError] = useState<string | null>(null);
+  const selectedPlayer = usePlayerStore(state => state.selectedPlayer);
 
   useEffect(() => {
     if (background) {
@@ -75,8 +76,21 @@ const ProfilePage = () => {
     addPlayer.mutate();
   };
 
+  const handleEdit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
+
   return (
     <div className="mx-auto max-w-md">
+      <div className="mx-auto max-w-md">
+        {selectedPlayer && (
+          <p className="mt-4 text-center">
+            You can update your first name last name and colors here!{' '}
+            {selectedPlayer.firstName} {selectedPlayer.lastName} -{' '}
+            {selectedPlayer.team.name}
+          </p>
+        )}
+      </div>
       <form
         onSubmit={handleSubmit}
         className="mb-4 rounded bg-white px-8 pt-6 pb-8 shadow-lg"

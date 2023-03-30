@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class TeamController extends AbstractController
+class TeamController extends ApiController
 {
     private TeamService $teamService;
 

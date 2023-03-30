@@ -38,9 +38,9 @@ const SelectPlayer: React.FC<SelectPlayerProps> = () => {
           <p>
             You have selected {selectedPlayer.firstName}{' '}
             {selectedPlayer.lastName}. Please visit the profile page to update
-            your profile information:
+            your profile information.
           </p>
-          <p>Team: {selectedPlayer.team.name}</p>
+          <p>You are on team {selectedPlayer.team.name}. Best of luck!!!</p>
         </div>
       )}
     </div>
