@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { createPlayer } from '../../services/playerApi';
+import { createPlayer, updatePlayer } from '../../services/playerApi';
 import { usePlayerStore } from '../SelectPlayer/playerStore';
 
 const ProfilePage = () => {
@@ -71,13 +71,32 @@ const ProfilePage = () => {
     },
   });
 
+  const editPlayer = useMutation({
+    mutationFn: () =>
+      selectedPlayer
+        ? updatePlayer(selectedPlayer.id, {
+            firstName: firstName,
+            lastName: lastName,
+            foreground: foreground,
+            background: background,
+            teamName: teamName,
+          })
+        : Promise.reject('No selected player'),
+    onError: (error, variables, context) => {
+      console.log(error, variables, context);
+    },
+    onSettled: () => {
+      console.log('update complete');
+    },
+  });
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    addPlayer.mutate();
-  };
-
-  const handleEdit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    if (selectedPlayer) {
+      editPlayer.mutate();
+    } else {
+      addPlayer.mutate();
+    }
   };
 
   return (
@@ -179,17 +198,19 @@ const ProfilePage = () => {
           )}
         </div>
         <div className="flex justify-center space-x-8">
+          {selectedPlayer && (
+            <button
+              type="submit"
+              className="focus:shadow-outline rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700 focus:outline-none"
+            >
+              Edit
+            </button>
+          )}
           <button
             type="submit"
             className="focus:shadow-outline rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700 focus:outline-none"
           >
-            Edit
-          </button>
-          <button
-            type="submit"
-            className="focus:shadow-outline rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700 focus:outline-none"
-          >
-            Save
+            {selectedPlayer ? 'Save' : 'Create'}
           </button>
         </div>
       </form>

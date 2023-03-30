@@ -29,7 +29,7 @@ export const updatePlayer = async (
   id: number,
   player: Partial<Player> & { teamName: string },
 ) => {
-  const response = await fetch(`localhost:8000/api/players/${id}`, {
+  const response = await fetch(`http://localhost:8000/api/players/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
