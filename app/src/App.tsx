@@ -39,7 +39,7 @@ const App: React.FC = () => {
         <NavBar />
         <QueryClientProvider client={queryClient}>
           <Routes>
-            <Route path="/" element={<Leaderboard />} />
+            <Route path="/" element={<SelectPlayer />} />
             <Route path="/tournaments" element={<ListAllTournaments />} />
             <Route
               path="/games"

@@ -12,6 +12,7 @@ const ProfilePage = () => {
   const [foregroundError, setForegroundError] = useState<string | null>(null);
   const [backgroundError, setBackgroundError] = useState<string | null>(null);
   const selectedPlayer = usePlayerStore(state => state.selectedPlayer);
+  const setSelectedPlayer = usePlayerStore(state => state.setSelectedPlayer);
 
   useEffect(() => {
     if (background) {
@@ -84,6 +85,9 @@ const ProfilePage = () => {
         : Promise.reject('No selected player'),
     onError: (error, variables, context) => {
       console.log(error, variables, context);
+    },
+    onSuccess: data => {
+      setSelectedPlayer(data);
     },
     onSettled: () => {
       console.log('update complete');
@@ -198,14 +202,6 @@ const ProfilePage = () => {
           )}
         </div>
         <div className="flex justify-center space-x-8">
-          {selectedPlayer && (
-            <button
-              type="submit"
-              className="focus:shadow-outline rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700 focus:outline-none"
-            >
-              Edit
-            </button>
-          )}
           <button
             type="submit"
             className="focus:shadow-outline rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700 focus:outline-none"
