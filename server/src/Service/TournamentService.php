@@ -6,10 +6,8 @@ namespace App\Service;
 use App\Entity\Tournament;
 use App\Repository\TournamentRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use JsonException;
-use Symfony\Component\HttpFoundation\Request;
 use App\DTO\TournamentDTO;
-use DateTime;
+
 
 class TournamentService
 {
