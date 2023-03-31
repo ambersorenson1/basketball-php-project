@@ -47,6 +47,10 @@ class TeamService
         $this->entityManager->persist($team);
     }
 
+    /**
+     * @param int $teamId
+     * @return void
+     */
     public function deleteTeam(int $teamId): void
     {
         $team = $this->teamRepository->find($teamId);
