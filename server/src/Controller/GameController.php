@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Game;
 use App\Service\GameService;
 use App\DTO\GameDTO;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,19 +18,22 @@ class GameController extends ApiController
         $this->gameService = $gameService;
     }
 
+    /**
+     * Create a new Game
+     * @param Request $request
+     * @return Response
+     */
     #[Route('/api/games', methods: ['POST'])]
     public function create(Request $request): Response
     {
         $data = json_decode($request->getContent(), true);
-        $tournamentId = $data['tournamentId'] ?? null;
-        $teamOneId = $data['teamOneId'] ?? null;
-        $teamTwoId = $data['teamTwoId'] ?? null;
-        $game = $this->gameService->createGame($tournamentId, $teamOneId, $teamTwoId);
-        if ($game === null) {
-            return $this->json(['error' => 'Unable to create a game with the provided data'], Response::HTTP_BAD_REQUEST);
-        }
+        $gameDTO = new GameDTO();
+        $gameDTO->setTournament($data['tournamentId'] ?? null);
+        $gameDTO->setTeamOne($data['teamOneId'] ?? null);
+        $gameDTO->setTeamTwo($data['teamTwoId'] ?? null);
+        $this->gameService->createGame($gameDTO);
 
-        return $this->json($game, Response::HTTP_CREATED);
+        return $this->json($gameDTO);
     }
 
 

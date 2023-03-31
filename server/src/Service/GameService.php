@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\DTO\GameDTO;
 use App\Entity\Game;
 use App\Repository\GameRepository;
 use App\Repository\TeamRepository;
@@ -48,23 +49,16 @@ class GameService
         return true;
     }
 
-    public function createGame(int $tournamentId, int $teamOneId, int $teamTwoId): ?Game
+    public function createGame(GameDTO $gameDTO): ?Game
     {
+        $tournamentId = $gameDTO->getTournament();
         $tournament = $this->tournamentRepository->find($tournamentId);
-        $teamOne = $this->teamRepository->find($teamOneId);
-        $teamTwo = $this->teamRepository->find($teamTwoId);
-        if (!$tournament) {
-        error_log('Tournament not found with id: ' . $tournamentId);
-        }
 
-        if (!$teamOne) {
-        error_log('Team one not found with id: ' . $teamOneId);
-        }
+        $teamId = $gameDTO->getTeamOne();
+        $teamOne = $this->teamRepository->find($teamId);
 
-        if (!$teamTwo) {
-        error_log('Team two not found with id: ' . $teamTwoId);
-
-        }
+        $teamId = $gameDTO->getTeamTwo();
+        $teamTwo = $this->teamRepository->find($teamId);
 
         $game = new Game();
         $game->setTournament($tournament);
@@ -72,10 +66,11 @@ class GameService
         $game->setTeamTwo($teamTwo);
         $game->setTeamOneScore(0);
         $game->setTeamTwoScore(0);
-        $this->gameRepository->save($game);
         $this->entityManager->persist($game);
         $this->entityManager->flush();
         return $game;
     }
+
+
 
 }
