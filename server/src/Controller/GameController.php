@@ -36,7 +36,11 @@ class GameController extends ApiController
         return $this->json($gameDTO);
     }
 
-
+    /**
+     * Get a game by Id
+     * @param int $gameId
+     * @return Response
+     */
     #[Route('/api/games/{gameId}', methods: ['GET'])]
     public function getInstance(int $gameId): Response
     {
@@ -44,12 +48,21 @@ class GameController extends ApiController
         return $this->json($game);
     }
 
+    /**
+     * Get all Games
+     * @return Response
+     */
     #[Route('/api/games', methods: ['GET'])]
     public function getGames(): Response
     {
         return $this->json($this->gameService->getGames());
     }
 
+    /**
+     * Delete a Game
+     * @param int $gameId
+     * @return Response
+     */
     #[Route('/api/games/{gameId}', methods: ['DELETE'])]
     public function deleteInstance(int $gameId): Response {
         return $this->json($this->gameService->deleteGame($gameId));
