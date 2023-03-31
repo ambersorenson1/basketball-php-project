@@ -35,7 +35,7 @@ class PlayerController extends ApiController
         $playerDTO->setBackground($data['background']);
         $playerDTO->setTeamName($data['team']['name']);
 
-        $player = $this->playerService->createPlayer($playerDTO);
+        $this->playerService->createPlayer($playerDTO);
 
         return $this->json($playerDTO);
     }
@@ -67,31 +67,16 @@ class PlayerController extends ApiController
     public function updatePlayer(int $playerId, Request $request): Response
     {
         $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
-        $playerDTO = $this->createPlayerDTOFromRequest($data);
+        $playerDTO = new PlayerDTO();
+        $playerDTO->setFirstName($data['firstName'] ?? null);
+        $playerDTO->setLastName($data['lastName'] ?? null);
+        $playerDTO->setForeground($data['foreground'] ?? null);
+        $playerDTO->setBackground($data['background'] ?? null);
 
-        $player = $this->playerService->updatePlayer($playerId, $playerDTO);
+        $this->playerService->updatePlayer($playerId, $playerDTO);
 
         return $this->json($this->playerService->getPlayer($playerId));
     }
-
-    private function createPlayerDTOFromRequest(array $request): PlayerDTO
-    {
-        $playerDTO = new PlayerDTO();
-
-        if ($request['firstName']) {
-            $playerDTO->setFirstName($request['firstName']);
-        }if ($request['lastName']) {
-        $playerDTO->setLastName($request['lastName']);
-    }if ($request['foreground']) {
-        $playerDTO->setForeground($request['foreground']);
-    }if ($request['background']) {
-        $playerDTO->setBackground($request['background']);
-    }
-
-
-        return $playerDTO;
-    }
-
 
 
     /**
