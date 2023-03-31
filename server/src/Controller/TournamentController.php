@@ -68,7 +68,16 @@ class TournamentController extends ApiController
     #[Route('/api/tournaments/{tournamentId}', methods: ['PATCH', 'PUT'])]
     public function updateTournament(int $tournamentId, Request $request): Response
     {
-        return $this->json($this->tournamentService->updateTournament($tournamentId, $request));
+        $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $tournamentDTO = new TournamentDTO();
+        $tournamentDTO->setName($data['tournamentName']);
+        $tournamentDTO->setStartDate(DateTime::createFromFormat('Y-m-d\TH:i:s.u\Z', $data['startDate']));
+        $tournamentDTO->setEndDate(DateTime::createFromFormat('Y-m-d\TH:i:s.u\Z', $data['endDate']));
+
+        $this->tournamentService->updateTournament($tournamentId, $tournamentDTO);
+
+        return $this->json($this->tournamentService->getTournament($tournamentId));
+
     }
 
     /**
