@@ -76,16 +76,13 @@ class PlayerService
     public function updatePlayer(int $playerId, PlayerDTO $playerDTO): ?Player
     {
         $player = $this->playerRepository->find($playerId);
-        if (!$player) {
-            return null;
-        }
-
         $player->setFirstName($playerDTO->getFirstName() ?? $player->getFirstName());
         $player->setLastName($playerDTO->getLastName() ?? $player->getLastName());
         $player->setBackground($playerDTO->getBackground() ?? $player->getBackground());
         $player->setForeground($playerDTO->getForeground() ?? $player->getForeground());
 
-        $this->playerRepository->save($player, true);
+        $this->entityManager->persist($player);
+        $this->entityManager->flush();
 
         return $player;
     }

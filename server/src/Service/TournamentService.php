@@ -53,21 +53,14 @@ class TournamentService
 
     /**
      * Update a tournament
-     * @throws JsonException
      */
-    public function updateTournament(int $tournamentId, Request $request): ?Tournament
+    public function updateTournament(int $tournamentId, TournamentDTO $tournamentDTO): ?Tournament
     {
+
         $tournament = $this->tournamentRepository->find($tournamentId);
-        $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
-
-        $tournamentDTO = new TournamentDTO();
-        $tournamentDTO->setName($data['name']);
-        $tournamentDTO->setStartDate(DateTime::createFromFormat('Y-m-d\TH:i:s.u\Z', $data['start_date']));
-        $tournamentDTO->setEndDate(DateTime::createFromFormat('Y-m-d\TH:i:s.u\Z', $data['end_date']));
-
-        $tournament->setName($tournamentDTO->getName());
-        $tournament->setStartDate($tournamentDTO->getStartDate());
-        $tournament->setEndDate($tournamentDTO->getEndDate());
+        $tournament->setName($tournamentDTO->getName() ?? $tournament->getName());
+        $tournament->setStartDate($tournamentDTO->getStartDate() ?? $tournament->getStartDate());
+        $tournament->setEndDate($tournamentDTO->getEndDate() ?? $tournament->getEndDate());
 
         $this->entityManager->persist($tournament);
         $this->entityManager->flush();
