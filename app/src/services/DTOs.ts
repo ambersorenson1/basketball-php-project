@@ -31,6 +31,8 @@ export interface Game {
   teamOneId?: number;
   teamTwoId?: number;
   tournamentId?: number;
-  teamOne?: Team;
-  teamTwo?: Team;
+  teamOne: Team;
+  teamTwo: Team;
+  teamOneScore?: number;
+  teamTwoScore?: number;
 }

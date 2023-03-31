@@ -11,7 +11,7 @@ const SelectPlayer: React.FC<SelectPlayerProps> = () => {
   const selectedPlayer = usePlayerStore(state => state.selectedPlayer);
   const setSelectedPlayer = usePlayerStore(state => state.setSelectedPlayer);
 
-  const { isLoading, data, error } = useQuery({
+  const { isLoading, error } = useQuery({
     queryKey: ['players'],
     queryFn: fetchPlayers,
   });
