@@ -3,12 +3,12 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import ProfilePage from './Components/Player/ProfilePage';
 import NavBar from './Components/NavBar/NavBar';
-import Tournament from './Components/Tournaments/Tournament';
 import AdminsPage from './Components/AdminsPage/AdminsPage';
 import GameList from './Components/ListOfGames/ListOfGames';
 import ActualGame from './Components/ActualGame/ActualGame';
 import SelectPlayer from './Components/SelectPlayer/SelectPlayer';
 import { Game, Player } from './services/DTOs';
+import ListAllTournaments from './Components/ListAllTournaments/ListAllTournaments';
 
 const queryClient = new QueryClient();
 
@@ -39,7 +39,7 @@ const App: React.FC = () => {
         <QueryClientProvider client={queryClient}>
           <Routes>
             <Route path="/" element={<SelectPlayer />} />
-            <Route path="/tournaments" element={<Tournament />} />
+            <Route path="/tournaments" element={<ListAllTournaments />} />
             <Route
               path="/games"
               element={<GameList onGameSelected={handleGameSelected} />}

@@ -22,11 +22,11 @@ const ProfilePage = () => {
         setBackgroundError('Invalid RGB value');
       }
     } else {
-      document.body.style.backgroundColor = ''; // Reset to default if the background input is empty
+      document.body.style.backgroundColor = '';
     }
 
     return () => {
-      document.body.style.backgroundColor = ''; // Clean up on unmount
+      document.body.style.backgroundColor = '';
     };
   }, [background]);
 

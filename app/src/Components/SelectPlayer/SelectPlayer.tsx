@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { usePlayerStore } from './playerStore';
 import { Player } from '../../services/DTOs';
+import { useQuery } from '@tanstack/react-query';
+import { fetchPlayers } from '../../services/playerApi';
 
 interface SelectPlayerProps {}
 
@@ -8,6 +10,11 @@ const SelectPlayer: React.FC<SelectPlayerProps> = () => {
   const [players, setPlayers] = useState<Player[]>([]);
   const selectedPlayer = usePlayerStore(state => state.selectedPlayer);
   const setSelectedPlayer = usePlayerStore(state => state.setSelectedPlayer);
+
+  const { isLoading, data, error } = useQuery({
+    queryKey: ['players'],
+    queryFn: fetchPlayers,
+  });
 
   useEffect(() => {
     fetch('http://localhost:8000/api/players')
@@ -27,6 +34,8 @@ const SelectPlayer: React.FC<SelectPlayerProps> = () => {
         <option value="" disabled>
           Select a player
         </option>
+        {isLoading ? <option>Loading...</option> : ''}
+        {error ? <option>Error loading players</option> : ''}
         {players.map(player => (
           <option key={player.id} value={player.id}>
             {player.firstName} {player.lastName} - {player.team.name}

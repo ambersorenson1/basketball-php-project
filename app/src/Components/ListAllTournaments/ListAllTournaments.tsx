@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useTournamentStore } from './tournamentStore';
 import { fetchTournaments } from '../../services/tournamentApi';
 
-function TournamentForm() {
+function ListAllTournaments() {
   const { tournaments, setTournaments } = useTournamentStore();
 
   useQuery(['tournament'], fetchTournaments, {
@@ -39,4 +39,4 @@ function TournamentForm() {
   );
 }
 
-export default TournamentForm;
+export default ListAllTournaments;
