@@ -6,16 +6,23 @@ class TeamDTO
 {
     public string $name;
 
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(string $name): self
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
     {
         $this->name = $name;
-        return $this;
     }
+
+
 }
 
 
