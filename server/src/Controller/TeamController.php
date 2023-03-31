@@ -6,8 +6,6 @@ namespace App\Controller;
 use App\DTO\TeamDTO;
 use App\Service\TeamService;
 use JsonException;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,15 +30,11 @@ class TeamController extends ApiController
     public function getInstance(int $id): Response
     {
         $team = $this->teamService->getTeamById($id);
-
-        if (!$team) {
-            return $this->json(['error' => 'Team not found'], Response::HTTP_NOT_FOUND);
-        }
-
         return $this->json($team);
     }
 
     /**
+     * Create a new team
      * @throws JsonException
      */
     #[Route('/api/teams', methods: ['POST'])]
@@ -49,10 +43,15 @@ class TeamController extends ApiController
         $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
         $teamDTO = new TeamDTO();
         $teamDTO->setName($data['name']);
-        $team = $this->teamService->createTeam($teamDTO);
+        $this->teamService->createTeam($teamDTO);
         return $this->json($teamDTO);
     }
 
+    /**
+     * Delete a team by ID
+     * @param int $teamId
+     * @return Response
+     */
     #[Route('/api/teams/{team_id}', methods: ['DELETE'])]
     public function deleteTeam(int $teamId): Response
     {

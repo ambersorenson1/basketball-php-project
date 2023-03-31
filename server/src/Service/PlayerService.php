@@ -96,11 +96,7 @@ class PlayerService
     public function deletePlayer(int $playerId): bool
     {
         $player = $this->playerRepository->find($playerId);
-        if (!$player) {
-            return false;
-        }
         $this->playerRepository->remove($player, true);
-
         return true;
     }
 }
