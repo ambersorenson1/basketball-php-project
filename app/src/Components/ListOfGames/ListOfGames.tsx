@@ -11,6 +11,7 @@ const GameList: React.FC<GameListProps> = ({ onGameSelected }) => {
   const [games, setGames] = useState<Game[]>([]);
   const navigate = useNavigate();
   const selectedPlayer = usePlayerStore(state => state.selectedPlayer);
+  const backgroundColor = usePlayerStore(state => state.backgroundColor);
 
   useEffect(() => {
     fetch('http://localhost:8000/api/games')

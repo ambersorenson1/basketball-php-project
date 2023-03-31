@@ -7,17 +7,19 @@ const ProfilePage = () => {
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [foreground, setForeground] = useState<string>('');
-  const [background, setBackground] = useState<string>('');
+  // const [background, setBackground] = useState<string>('');
   const [teamName, setTeamName] = useState<string>('');
   const [foregroundError, setForegroundError] = useState<string | null>(null);
   const [backgroundError, setBackgroundError] = useState<string | null>(null);
+  const backgroundColor = usePlayerStore(state => state.backgroundColor);
+  const setBackgroundColor = usePlayerStore(state => state.setBackgroundColor);
   const selectedPlayer = usePlayerStore(state => state.selectedPlayer);
   const setSelectedPlayer = usePlayerStore(state => state.setSelectedPlayer);
 
   useEffect(() => {
-    if (background) {
-      if (isValidRGB(background)) {
-        document.body.style.backgroundColor = `rgb(${background})`;
+    if (backgroundColor) {
+      if (isValidRGB(backgroundColor)) {
+        document.body.style.backgroundColor = `rgb(${backgroundColor})`;
         setBackgroundError(null);
       } else {
         setBackgroundError('Invalid RGB value');
@@ -29,7 +31,7 @@ const ProfilePage = () => {
     return () => {
       document.body.style.backgroundColor = '';
     };
-  }, [background]);
+  }, [backgroundColor]);
 
   const isValidRGB = (rgb: string) => {
     const regex = /^(\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})$/;
@@ -51,7 +53,7 @@ const ProfilePage = () => {
         firstName: firstName,
         lastName: lastName,
         foreground: foreground,
-        background: background,
+        background: backgroundColor,
         team: {
           teamId: 0,
           name: teamName,
@@ -79,7 +81,7 @@ const ProfilePage = () => {
             firstName: firstName,
             lastName: lastName,
             foreground: foreground,
-            background: background,
+            background: backgroundColor,
             teamName: teamName,
           })
         : Promise.reject('No selected player'),
@@ -194,8 +196,8 @@ const ProfilePage = () => {
           <input
             className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
             type="text"
-            value={background}
-            onChange={e => setBackground(e.target.value)}
+            value={backgroundColor}
+            onChange={e => setBackgroundColor(e.target.value)}
           />
           {backgroundError && (
             <p className="text-xs italic text-red-500">{backgroundError}</p>

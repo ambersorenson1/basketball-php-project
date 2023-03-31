@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getAllScores } from '../../services/leaderboardApi';
 import { Game } from '../../services/DTOs';
+import { getAllScores } from '../../services/gamesApi';
 
 const Leaderboard = () => {
   const {
