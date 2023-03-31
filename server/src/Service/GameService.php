@@ -23,32 +23,43 @@ class GameService
         $this->teamRepository = $teamRepository;
         $this->tournamentRepository = $tournamentRepository;
     }
+
+    /**
+     * Get all Games
+     * @return array
+     */
     public function getGames(): array
     {
         return $this->gameRepository->findAll();
     }
 
+    /**
+     * Get a game by ID
+     * @param int $id
+     * @return Game|null
+     */
     public function getGame(int $id): ?Game
     {
-        $game = $this->gameRepository->find($id);
-
-        if ($game === null) {
-            return null;
-        }
-
-        return $game;
+       return $this->gameRepository->find($id);
     }
 
+    /**
+     * Delete a game by ID
+     * @param int $id
+     * @return bool
+     */
     public function deleteGame(int $id): bool
     {
         $game = $this->gameRepository->find($id);
-        if (!$game) {
-            return false;
-        }
         $this->gameRepository->remove($game, true);
         return true;
     }
 
+    /**
+     * Create a game with the given DTO
+     * @param GameDTO $gameDTO
+     * @return Game|null
+     */
     public function createGame(GameDTO $gameDTO): ?Game
     {
         $tournamentId = $gameDTO->getTournament();
@@ -70,7 +81,5 @@ class GameService
         $this->entityManager->flush();
         return $game;
     }
-
-
 
 }
