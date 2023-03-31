@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Game;
+
 use App\Service\GameService;
 use App\DTO\GameDTO;
 use Symfony\Component\HttpFoundation\Request;
