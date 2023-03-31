@@ -5,7 +5,6 @@ namespace App\Controller;
 
 use App\Service\TournamentService;
 use JsonException;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +19,7 @@ class TournamentController extends ApiController
     }
 
     /**
+     * Create a tournament
      * @throws JsonException
      */
     #[Route('/api/tournaments', methods: ['POST'])]
@@ -28,12 +28,22 @@ class TournamentController extends ApiController
         return $this->json($this->tournamentService->createTournament($request));
     }
 
+    /**
+     * Get all tournaments
+     * @return Response
+     */
+
     #[Route('/api/tournaments', methods: ['GET'])]
     public function getAllTournaments(): Response
     {
         return $this->json($this->tournamentService->getAllTournaments());
     }
 
+    /**
+     * Update a tournament by ID
+     * @param int $tournamentId
+     * @return Response
+     */
     #[Route('/api/tournaments/{tournamentId}', methods: ['GET'])]
     public function getTournament(int $tournamentId): Response
     {
@@ -41,6 +51,7 @@ class TournamentController extends ApiController
     }
 
     /**
+     * Update a tournament
      * @throws JsonException
      */
     #[Route('/api/tournaments/{tournamentId}', methods: ['PATCH', 'PUT'])]
@@ -49,6 +60,11 @@ class TournamentController extends ApiController
         return $this->json($this->tournamentService->updateTournament($tournamentId, $request));
     }
 
+    /**
+     * Delete a tournament
+     * @param int $tournamentId
+     * @return Response
+     */
     #[Route('/api/tournaments/{tournamentId}', methods: ['DELETE'])]
     public function deleteTournament(int $tournamentId): Response
     {

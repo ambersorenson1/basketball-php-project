@@ -26,6 +26,7 @@ class TournamentService
     }
 
     /**
+     * Create a new tournament
      * @throws JsonException
      */
     public function createTournament(Request $request): Tournament
@@ -47,12 +48,18 @@ class TournamentService
         return $tournament;
     }
 
+    /**
+     * Get a tournament by ID
+     * @param int $tournamentId
+     * @return Tournament|null
+     */
     public function getTournament(int $tournamentId): ?Tournament
     {
         return $this->tournamentRepository->find($tournamentId);
     }
 
     /**
+     * Update a tournament
      * @throws JsonException
      */
     public function updateTournament(int $tournamentId, Request $request): ?Tournament
@@ -75,22 +82,25 @@ class TournamentService
         return $tournament;
     }
 
+    /**
+     * Get all tournaments
+     * @return array
+     */
     public function getAllTournaments(): array
     {
         return $this->tournamentRepository->findAll();
     }
 
+    /**
+     * Delete a tournament
+     * @param int $tournamentId
+     * @return bool
+     */
     public function deleteTournament(int $tournamentId): bool
     {
         $tournament = $this->tournamentRepository->find($tournamentId);
-
-        if (!$tournament) {
-            return false;
-        }
-
         $this->entityManager->remove($tournament);
         $this->entityManager->flush();
-
         return true;
     }
 }

@@ -12,7 +12,7 @@ class TournamentDTO {
     /**
      * @return string
      */
-    public function getTournamentName(): string
+    public function getName(): string
     {
         return $this->tournamentName;
     }
@@ -20,7 +20,7 @@ class TournamentDTO {
     /**
      * @param string $tournamentName
      */
-    public function setTournamentName(string $tournamentName): void
+    public function setName(string $tournamentName): void
     {
         $this->tournamentName = $tournamentName;
     }
