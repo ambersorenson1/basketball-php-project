@@ -20,6 +20,7 @@ class TeamService
     }
 
     /**
+     * Get a team by ID
      * @param int $id
      * @return Team|null
      */
@@ -29,6 +30,7 @@ class TeamService
     }
 
     /**
+     * Get all teams
      * @return Team[]
      */
     public function getAllTeams(): array
@@ -37,6 +39,7 @@ class TeamService
     }
 
     /**
+     * Create a team
      * @param TeamDTO $teamDTO
      * @return void
      */
@@ -48,6 +51,7 @@ class TeamService
     }
 
     /**
+     * Delete a team
      * @param int $teamId
      * @return void
      */
