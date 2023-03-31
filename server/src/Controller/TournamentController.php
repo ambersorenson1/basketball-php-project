@@ -3,7 +3,9 @@
 
 namespace App\Controller;
 
+use App\DTO\TournamentDTO;
 use App\Service\TournamentService;
+use DateTime;
 use JsonException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +27,16 @@ class TournamentController extends ApiController
     #[Route('/api/tournaments', methods: ['POST'])]
     public function createTournamentInstance(Request $request): Response
     {
-        return $this->json($this->tournamentService->createTournament($request));
+        $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $tournamentDTO = new TournamentDTO();
+        $tournamentDTO->setName($data['tournamentName']);
+        $tournamentDTO->setStartDate(DateTime::createFromFormat('Y-m-d\TH:i:s.u\Z', $data['startDate']));
+        $tournamentDTO->setEndDate(DateTime::createFromFormat('Y-m-d\TH:i:s.u\Z', $data['endDate']));
+
+        $this->tournamentService->createTournament($tournamentDTO);
+
+        return $this->json($tournamentDTO);
+
     }
 
     /**

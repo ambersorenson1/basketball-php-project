@@ -27,16 +27,9 @@ class TournamentService
 
     /**
      * Create a new tournament
-     * @throws JsonException
      */
-    public function createTournament(Request $request): Tournament
+    public function createTournament(TournamentDTO $tournamentDTO): Tournament
     {
-        $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
-        $tournamentDTO = new TournamentDTO();
-        $tournamentDTO->setName($data['tournamentName']);
-        $tournamentDTO->setStartDate(DateTime::createFromFormat('Y-m-d\TH:i:s.u\Z', $data['startDate']));
-        $tournamentDTO->setEndDate(DateTime::createFromFormat('Y-m-d\TH:i:s.u\Z', $data['endDate']));
-
         $tournament = new Tournament();
         $tournament->setName($tournamentDTO->getName());
         $tournament->setStartDate($tournamentDTO->getStartDate());
