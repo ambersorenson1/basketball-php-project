@@ -22,15 +22,15 @@ export interface Tournament {
 }
 
 export interface Team {
-  name: string;
+  name?: string;
   teamId?: number;
 }
 
 export interface Game {
   gameId: number;
-  teamOneId?: number;
-  teamTwoId?: number;
-  tournamentId?: number;
+  teamOneId: number;
+  teamTwoId: number;
+  tournamentId: number;
   teamOne: Team;
   teamTwo: Team;
   teamOneScore?: number;

@@ -93,18 +93,20 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
     <div className="mx-auto max-w-md">
       {selectedPlayer && (
         <p className="mt-4 text-center">
-          This is your selected player - {selectedPlayer.firstName}{' '}
-          {selectedPlayer.lastName} - playing for Team{' '}
+          You have selected - {selectedPlayer.firstName}{' '}
+          {selectedPlayer.lastName} - who is playing for Team{' '}
           {selectedPlayer.team.name}
         </p>
       )}
       {!gameStarted && isPlayerInGame() && (
-        <button
-          className="mt-4 rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
-          onClick={() => playGame(teamOne, teamTwo)}
-        >
-          Start Game
-        </button>
+        <div className="mt-4 flex justify-center">
+          <button
+            className="rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+            onClick={() => playGame(teamOne, teamTwo)}
+          >
+            Start Game
+          </button>
+        </div>
       )}
       {gameStarted && (
         <div>

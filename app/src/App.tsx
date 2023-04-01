@@ -10,6 +10,7 @@ import SelectPlayer from './Components/SelectPlayer/SelectPlayer';
 import { Game, Player } from './services/DTOs';
 import ListAllTournaments from './Components/ListAllTournaments/ListAllTournaments';
 import Leaderboard from './Components/Leaderboard/Leaderboard';
+import Homepage from './Components/Homepage/Homepage';
 
 const queryClient = new QueryClient();
 
@@ -39,7 +40,7 @@ const App: React.FC = () => {
         <NavBar />
         <QueryClientProvider client={queryClient}>
           <Routes>
-            <Route path="/" element={<SelectPlayer />} />
+            <Route path="/" element={<Homepage />} />
             <Route path="/tournaments" element={<ListAllTournaments />} />
             <Route
               path="/games"
