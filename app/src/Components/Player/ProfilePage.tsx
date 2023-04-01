@@ -111,8 +111,8 @@ const ProfilePage = () => {
         {selectedPlayer && (
           <p className="mt-4 mb-2 text-center text-lg font-semibold">
             You can update your first name last name and colors here!{' '}
-            {selectedPlayer.firstName} {selectedPlayer.lastName} -{' '}
-            {selectedPlayer.team.name}
+            {selectedPlayer.firstName} {selectedPlayer.lastName} - "
+            {selectedPlayer.team.name}"
           </p>
         )}
       </div>

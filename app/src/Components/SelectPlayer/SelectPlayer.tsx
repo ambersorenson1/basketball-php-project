@@ -62,9 +62,12 @@ const SelectPlayer: React.FC<SelectPlayerProps> = () => {
           </p>
           <p className="text-lg font-semibold">
             You are on team{' '}
-            <span className="text-green-600">{selectedPlayer.team.name}</span>.
+            <span className="text-green-600">"{selectedPlayer.team.name}"</span>
+            .
           </p>
-          <p className="text-gray-700">Best of luck!!!</p>
+          <p className="text-bg-gray-200 text-lg font-semibold">
+            Best of luck!!!
+          </p>
         </div>
       )}
     </div>
