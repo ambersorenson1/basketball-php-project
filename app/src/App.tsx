@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import ProfilePage from './Components/Player/ProfilePage';
+import ProfilePage from './Components/ProfilePage/ProfilePage';
 import NavBar from './Components/NavBar/NavBar';
 import AdminsPage from './Components/AdminsPage/AdminsPage';
 import GameList from './Components/ListOfGames/ListOfGames';

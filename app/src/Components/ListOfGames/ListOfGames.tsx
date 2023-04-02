@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Game } from '../../services/DTOs';
 import { useNavigate } from 'react-router-dom';
-import { usePlayerStore } from '../SelectPlayer/playerStore';
+import { usePlayerStore } from '../zustand/playerStore';
 
 interface GameListProps {
   onGameSelected: (game: Game | null) => void;

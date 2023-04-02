@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Team } from '../../services/DTOs';
-import { usePlayerStore } from '../SelectPlayer/playerStore';
 import { useLocation } from 'react-router-dom';
+import { usePlayerStore } from '../zustand/playerStore';
+import { ScoreState, useScoreStore } from '../zustand/scoreStore';
 
 interface ActualGameProps {
   onGameStarted: () => void;
@@ -15,11 +16,18 @@ interface LocationState {
 const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
   const [gameStarted, setGameStarted] = useState(false);
   const [timer, setTimer] = useState(60);
-  const [teamOneScore, setTeamOneScore] = useState(0);
-  const [teamTwoScore, setTeamTwoScore] = useState(0);
+  const [message, setMessage] = useState('');
   const selectedPlayer = usePlayerStore(state => state.selectedPlayer);
   const location = useLocation();
   const { teamOne, teamTwo } = location.state as LocationState;
+
+  const { teamOneScore, setTeamOneScore, teamTwoScore, setTeamTwoScore } =
+    useScoreStore(state => ({
+      teamOneScore: (state as ScoreState).teamOneScore,
+      setTeamOneScore: (state as ScoreState).setTeamOneScore,
+      teamTwoScore: (state as ScoreState).teamTwoScore,
+      setTeamTwoScore: (state as ScoreState).setTeamTwoScore,
+    }));
 
   useEffect(() => {
     let interval: number | null = null;
@@ -29,7 +37,6 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
       }, 1000);
     } else if (interval !== null) {
       clearInterval(interval);
-      // I would submit scores to the database here
     }
     return () => {
       if (interval !== null) {
@@ -46,40 +53,25 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
     );
   };
 
-  const generateRandomNumber = (min: number, max: number): number => {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
-
-  const getShotType = (randomNumber: number): number => {
-    if (randomNumber >= 1 && randomNumber <= 2500) {
-      return 1;
-    } else if (randomNumber >= 2501 && randomNumber <= 8800) {
-      return 2;
-    } else {
-      return 3;
-    }
-  };
-
-  const playGame = (teamOne: Team, teamTwo: Team): void => {
-    const teamOneShotType = getShotType(generateRandomNumber(1, 10000));
-    const teamTwoShotType = getShotType(generateRandomNumber(1, 10000));
-
+  const playGame = (): void => {
     setGameStarted(true);
     onGameStarted();
   };
 
-  const handleShot = (team: 'teamOne' | 'teamTwo', shotType: number): void => {
-    if (timer <= 0) return;
-    if (team === 'teamOne') {
-      setTeamOneScore(prevScore => prevScore + shotType);
+  const handleShot = (team: 'teamOne' | 'teamTwo', points: number): void => {
+    const shotSuccess = Math.random() >= 0.5;
+    const teamName = team === 'teamOne' ? teamOne?.name : teamTwo?.name;
+
+    if (shotSuccess) {
+      if (team === 'teamOne') {
+        setTeamOneScore(teamOneScore + points);
+      } else {
+        setTeamTwoScore(teamTwoScore + points);
+      }
     } else {
-      setTeamTwoScore(prevScore => prevScore + shotType);
+      setMessage(`Player from ${teamName} missed the ${points} point shot.`);
     }
   };
-
-  // const submitScoresToDatabase = () => {
-  //    logic for submitting scores to the database would go here
-  // };
 
   if (!teamOne || !teamTwo) {
     return (
@@ -102,7 +94,7 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
         <div className="mt-4 flex justify-center">
           <button
             className="rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
-            onClick={() => playGame(teamOne, teamTwo)}
+            onClick={() => playGame()}
           >
             Start Game
           </button>
@@ -113,28 +105,57 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
           <h2 className="mt-4 text-center">Game in progress...</h2>
           <h2 className="mt-4 text-center">May the best player win!!</h2>
           <p className="mt-4 text-center">Time remaining: {timer} seconds</p>
-          <div className="flex justify-center">
-            <button
-              className="mt-4 mr-4 rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
-              disabled={timer <= 0}
-              onClick={() =>
-                handleShot('teamOne', getShotType(generateRandomNumber(1, 100)))
-              }
-            >
-              Team One Shot
-            </button>
-            <button
-              className="mt-4 rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
-              disabled={timer <= 0}
-              onClick={() =>
-                handleShot('teamTwo', getShotType(generateRandomNumber(1, 100)))
-              }
-            >
-              Team Two Shot
-            </button>
+          <div className="flex flex-col items-center">
+            <div>
+              <button
+                className="mt-4 mr-4 rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+                disabled={timer <= 0}
+                onClick={() => handleShot('teamOne', 1)}
+              >
+                1 Point Shot
+              </button>
+              <button
+                className="mt-4 mr-4 rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+                disabled={timer <= 0}
+                onClick={() => handleShot('teamOne', 2)}
+              >
+                2 Point Shot
+              </button>
+              <button
+                className="mt-4 rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+                disabled={timer <= 0}
+                onClick={() => handleShot('teamOne', 3)}
+              >
+                3 Point Shot
+              </button>
+            </div>
+            <div>
+              <button
+                className="mt-4 mr-4 rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+                disabled={timer <= 0}
+                onClick={() => handleShot('teamTwo', 1)}
+              >
+                Team Two 1 Point Shot
+              </button>
+              <button
+                className="mt-4 mr-4 rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+                disabled={timer <= 0}
+                onClick={() => handleShot('teamTwo', 2)}
+              >
+                Team Two 2 Point Shot
+              </button>
+              <button
+                className="mt-4 rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+                disabled={timer <= 0}
+                onClick={() => handleShot('teamTwo', 3)}
+              >
+                Team Two 3 Point Shot
+              </button>
+            </div>
           </div>
           <p className="mt-4 text-center">Team One Score: {teamOneScore}</p>
           <p className="mt-4 text-center">Team Two Score: {teamTwoScore}</p>
+          <p className="mt-4 text-center">{message}</p>
         </div>
       )}
       {!isPlayerInGame() && (

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useTournamentStore } from './tournamentStore';
+import { useTournamentStore } from '../zustand/tournamentStore';
 import { fetchTournaments } from '../../services/tournamentApi';
 
 function ListAllTournaments() {

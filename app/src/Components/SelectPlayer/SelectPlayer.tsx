@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { usePlayerStore } from './playerStore';
+import { usePlayerStore } from '../zustand/playerStore';
 import { Player } from '../../services/DTOs';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPlayers } from '../../services/playerApi';
@@ -66,7 +66,7 @@ const SelectPlayer: React.FC<SelectPlayerProps> = () => {
             .
           </p>
           <p className="text-bg-gray-200 text-lg font-semibold">
-            Best of luck!!!
+            Best of luck!!! Navigate to the games portion on the dropdown menu.
           </p>
         </div>
       )}

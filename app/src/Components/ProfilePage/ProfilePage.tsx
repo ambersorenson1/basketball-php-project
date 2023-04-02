@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { createPlayer, updatePlayer } from '../../services/playerApi';
-import { usePlayerStore } from '../SelectPlayer/playerStore';
+import { usePlayerStore } from '../zustand/playerStore';
 
 const ProfilePage = () => {
   const [firstName, setFirstName] = useState<string>('');
