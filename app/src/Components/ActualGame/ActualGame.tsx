@@ -17,6 +17,7 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
   const [gameStarted, setGameStarted] = useState(false);
   const [timer, setTimer] = useState(60);
   const [message, setMessage] = useState('');
+  const [hasPlayed, setHasPlayed] = useState(false);
   const selectedPlayer = usePlayerStore(state => state.selectedPlayer);
   const location = useLocation();
   const { teamOne, teamTwo } = location.state as LocationState;
@@ -48,13 +49,15 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
   const isPlayerInGame = (): boolean => {
     if (!selectedPlayer) return false;
     return (
-      selectedPlayer.team.teamId === teamOne?.teamId ||
-      selectedPlayer.team.teamId === teamTwo?.teamId
+      (selectedPlayer.team.teamId === teamOne?.teamId ||
+        selectedPlayer.team.teamId === teamTwo?.teamId) &&
+      !hasPlayed
     );
   };
 
   const playGame = (): void => {
     setGameStarted(true);
+    setHasPlayed(true);
     onGameStarted();
   };
 
@@ -95,11 +98,13 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
           <button
             className="rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
             onClick={() => playGame()}
+            disabled={!isPlayerInGame()}
           >
             Start Game
           </button>
         </div>
       )}
+
       {gameStarted && (
         <div>
           <h2 className="mt-4 text-center">Game in progress...</h2>

@@ -35,7 +35,7 @@ const GameList: React.FC<GameListProps> = ({ onGameSelected }) => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className={`container mx-auto p-4 ${backgroundColor}`}>
       <h1 className="mb-4 text-2xl font-bold">Games List</h1>
       {selectedPlayer && (
         <p className="text-lg font-medium text-gray-800">
