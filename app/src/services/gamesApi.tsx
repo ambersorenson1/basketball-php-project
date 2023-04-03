@@ -38,24 +38,26 @@ export async function getAllScores(): Promise<Game[]> {
     console.error('Error fetching games:', error);
     throw error;
   }
+}
 
-  const handleScoresUpdate = async (
-    gameId: number,
-    teamOneScore: number,
-    teamTwoScore: number,
-  ) => {
-    const response = await fetch(`http://localhost:8000/api/games/${gameId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ teamOneScore, teamTwoScore }),
-    });
+export async function updateScores(
+  gameId: number,
+  teamOneScore: number,
+  teamTwoScore: number,
+): Promise<Game> {
+  const response = await fetch(`http://localhost:8000/api/games/${gameId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ teamOneScore, teamTwoScore }),
+  });
 
-    if (response.ok) {
-      console.log('Scores updated successfully');
-    } else {
-      console.log('Failed to update scores');
-    }
-  };
+  if (response.ok) {
+    console.log('Scores updated successfully');
+  } else {
+    console.log('Failed to update scores');
+  }
+
+  return response.json();
 }
