@@ -53,18 +53,17 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
     };
   }, [gameStarted, timer, teamOne, teamTwo]);
 
-  const isPlayerInGame = (): boolean => {
-    if (!selectedPlayer) return false;
+  const isPlayerInGame = (): boolean | null => {
+    if (!selectedPlayer) return null;
     return (
-      (selectedPlayer.team.teamId === teamOne?.teamId ||
-        selectedPlayer.team.teamId === teamTwo?.teamId) &&
-      !hasPlayed &&
-      !finishedPlayers.has(selectedPlayer.id)
+      selectedPlayer.team.teamId === teamOne?.teamId ||
+      selectedPlayer.team.teamId === teamTwo?.teamId
     );
   };
 
   const playGame = (): void => {
     setGameStarted(true);
+    setHasPlayed(true);
     onGameStarted();
   };
 
@@ -200,7 +199,7 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
           <p className="mt-4 text-center">{message}</p>
         </div>
       )}
-      {!isPlayerInGame() && (
+      {isPlayerInGame() === false && (
         <p className="mt-4 text-center">
           Only players from either {teamOne?.name} or {teamTwo?.name} can start
           the game.
