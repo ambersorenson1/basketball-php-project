@@ -85,20 +85,8 @@ class GameService
     public function updateGame(int $gameId, GameDTO $gameDTO): Game
     {
         $game = $this->gameRepository->find($gameId);
-        $tournamentId = $gameDTO->getTournament();
-        $tournament = $this->tournamentRepository->find($tournamentId);
-
-        $teamId = $gameDTO->getTeamOne();
-        $teamOne = $this->teamRepository->find($teamId);
-
-        $teamId = $gameDTO->getTeamTwo();
-        $teamTwo = $this->teamRepository->find($teamId);
-
         $game->setTeamOneScore($gameDTO->getTeamOneScore());
         $game->setTeamTwoScore($gameDTO->getTeamTwoScore());
-        $game->setTournament($tournament);
-        $game->setTeamOne($teamOne);
-        $game->setTeamTwo($teamTwo);
         $this->entityManager->persist($game);
         $this->entityManager->flush();
         return $game;

@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { Team, Tournament } from '../../services/DTOs';
+import { Game, Team, Tournament } from '../../services/DTOs';
 import { getAllTournaments } from '../../services/tournamentApi';
 import { createGame } from '../../services/gamesApi';
 import CreateTournaments from './CreateTournaments/CreateTournaments';
 import GetAllTeams from '../GetAllTeams/GetAllTeams';
 import TournamentOption from '../GetAllTournaments/tournamentOptions';
+import { useScoreStore } from '../zustand/scoreStore';
 
 const AdminsPage: React.FC = () => {
   const [selectedTournament, setSelectedTournament] =
@@ -13,6 +14,8 @@ const AdminsPage: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState<string>('');
   const [selectedTeamOne, setSelectedTeamOne] = useState<Team | null>(null);
   const [selectedTeamTwo, setSelectedTeamTwo] = useState<Team | null>(null);
+  const gameId = useScoreStore(state => state.gameId);
+  const setGameId = useScoreStore(state => state.setGameId);
 
   const {
     data: tournaments,
@@ -64,11 +67,17 @@ const AdminsPage: React.FC = () => {
     </div>
   );
 
-  const addGame = useMutation(
+  const { data, mutate: addGameMutate } = useMutation(
     () => {
-      if (selectedTournament && selectedTeamOne && selectedTeamTwo) {
+      if (
+        selectedTournament &&
+        selectedTeamOne &&
+        selectedTeamTwo &&
+        selectedTournament.tournamentId &&
+        selectedTeamOne.teamId &&
+        selectedTeamTwo.teamId
+      ) {
         return createGame({
-          gameId: -0,
           tournamentId: selectedTournament.tournamentId,
           teamOneId: selectedTeamOne.teamId,
           teamTwoId: selectedTeamTwo.teamId,
@@ -98,10 +107,11 @@ const AdminsPage: React.FC = () => {
       ) => {
         console.log(error, variables, context);
       },
-      onSuccess: () => {
+      onSuccess: (data: Game) => {
         setSuccessMessage(
           `Game created successfully: ${selectedTeamOne?.name} vs ${selectedTeamTwo?.name} in ${selectedTournament?.name} tournament.`,
         );
+        setGameId(data.gameId);
       },
       onSettled: () => {
         console.log('complete');
@@ -109,9 +119,25 @@ const AdminsPage: React.FC = () => {
     },
   );
 
+  useEffect(() => {
+    if (data) {
+      setGameId(data.gameId);
+      console.log('zustand data.id', data.gameId);
+      console.log('zustand id', gameId);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    console.log('zustand id', gameId);
+  }, [gameId]);
+
   const handleAddGame = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    addGame.mutate();
+    addGameMutate({
+      onSuccess: data => {
+        setGameId(data.gameId);
+      },
+    });
   };
 
   return (

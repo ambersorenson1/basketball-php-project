@@ -3,12 +3,14 @@ import { Team } from '../../services/DTOs';
 import { useLocation } from 'react-router-dom';
 import { usePlayerStore } from '../zustand/playerStore';
 import { ScoreState, useScoreStore } from '../zustand/scoreStore';
+import { useMutation } from '@tanstack/react-query';
+import { updateScores } from '../../services/gamesApi';
 
 interface ActualGameProps {
   onGameStarted: () => void;
 }
 
-interface LocationState {
+interface TeamLocationState {
   teamOne: Team;
   teamTwo: Team;
 }
@@ -18,9 +20,12 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
   const [timer, setTimer] = useState(60);
   const [message, setMessage] = useState('');
   const [hasPlayed, setHasPlayed] = useState(false);
+  const [teamOneName, setTeamOneName] = useState('');
+  const [teamTwoName, setTeamTwoName] = useState('');
   const selectedPlayer = usePlayerStore(state => state.selectedPlayer);
   const location = useLocation();
-  const { teamOne, teamTwo } = location.state as LocationState;
+  const { teamOne, teamTwo } = location.state as TeamLocationState;
+  const gameId = useScoreStore(state => state.gameId);
 
   const { teamOneScore, setTeamOneScore, teamTwoScore, setTeamTwoScore } =
     useScoreStore(state => ({
@@ -31,11 +36,13 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
     }));
 
   useEffect(() => {
+    setTeamOneName(teamOne?.name ?? '');
+    setTeamTwoName(teamTwo?.name ?? '');
     let interval: number | null = null;
     if (gameStarted && timer > 0) {
       interval = setInterval(() => {
         setTimer(prevTimer => prevTimer - 1);
-      }, 1000);
+      }, 100);
     } else if (interval !== null) {
       clearInterval(interval);
     }
@@ -44,7 +51,7 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
         clearInterval(interval);
       }
     };
-  }, [gameStarted, timer]);
+  }, [gameStarted, timer, teamOne, teamTwo]);
 
   const isPlayerInGame = (): boolean => {
     if (!selectedPlayer) return false;
@@ -61,7 +68,33 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
     onGameStarted();
   };
 
-  const handleShot = (team: 'teamOne' | 'teamTwo', points: number): void => {
+  const saveTheScore = useMutation({
+    mutationFn: () =>
+      selectedPlayer && gameId !== 0
+        ? updateScores(gameId, teamOneScore, teamTwoScore)
+        : Promise.reject(
+            new Error(gameId === 0 ? 'Invalid gameId' : 'No selected player'),
+          ),
+    onMutate: () => {
+      console.log(
+        'gameId',
+        gameId,
+        'teamOneScore',
+        teamOneScore,
+        'teamTWOSCORE',
+        teamTwoScore,
+      );
+    },
+    onError: (error: Error) => {
+      console.error('Failed to save scores:', error.message);
+    },
+  });
+
+  const handleShot = (points: number): void => {
+    if (!selectedPlayer) return;
+
+    const team =
+      selectedPlayer.team.teamId === teamOne?.teamId ? 'teamOne' : 'teamTwo';
     const shotSuccess = Math.random() >= 0.5;
     const teamName = team === 'teamOne' ? teamOne?.name : teamTwo?.name;
 
@@ -112,54 +145,43 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
           <p className="mt-4 text-center">Time remaining: {timer} seconds</p>
           <div className="flex flex-col items-center">
             <div>
-              <button
-                className="mt-4 mr-4 rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
-                disabled={timer <= 0}
-                onClick={() => handleShot('teamOne', 1)}
-              >
-                1 Point Shot
-              </button>
-              <button
-                className="mt-4 mr-4 rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
-                disabled={timer <= 0}
-                onClick={() => handleShot('teamOne', 2)}
-              >
-                2 Point Shot
-              </button>
-              <button
-                className="mt-4 rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
-                disabled={timer <= 0}
-                onClick={() => handleShot('teamOne', 3)}
-              >
-                3 Point Shot
-              </button>
-            </div>
-            <div>
-              <button
-                className="mt-4 mr-4 rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
-                disabled={timer <= 0}
-                onClick={() => handleShot('teamTwo', 1)}
-              >
-                Team Two 1 Point Shot
-              </button>
-              <button
-                className="mt-4 mr-4 rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
-                disabled={timer <= 0}
-                onClick={() => handleShot('teamTwo', 2)}
-              >
-                Team Two 2 Point Shot
-              </button>
-              <button
-                className="mt-4 rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
-                disabled={timer <= 0}
-                onClick={() => handleShot('teamTwo', 3)}
-              >
-                Team Two 3 Point Shot
-              </button>
+              <div>
+                <button
+                  className="mt-4 mr-4 rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+                  disabled={timer <= 0}
+                  onClick={() => handleShot(1)}
+                >
+                  1 Point Shot
+                </button>
+                <button
+                  className="mt-4 mr-4 rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+                  disabled={timer <= 0}
+                  onClick={() => handleShot(2)}
+                >
+                  2 Point Shot
+                </button>
+                <button
+                  className="mt-4 rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+                  disabled={timer <= 0}
+                  onClick={() => handleShot(3)}
+                >
+                  3 Point Shot
+                </button>
+                <button
+                  className="rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+                  onClick={() => saveTheScore.mutate()}
+                >
+                  Save Game
+                </button>
+              </div>
             </div>
           </div>
-          <p className="mt-4 text-center">Team One Score: {teamOneScore}</p>
-          <p className="mt-4 text-center">Team Two Score: {teamTwoScore}</p>
+          <p className="mt-4 text-center">
+            {teamOneName} Score: {teamOneScore}
+          </p>
+          <p className="mt-4 text-center">
+            {teamTwoName} Score: {teamTwoScore}
+          </p>
           <p className="mt-4 text-center">{message}</p>
         </div>
       )}

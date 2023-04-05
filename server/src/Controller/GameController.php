@@ -31,9 +31,9 @@ class GameController extends ApiController
         $gameDTO->setTournament($data['tournamentId'] ?? null);
         $gameDTO->setTeamOne($data['teamOneId'] ?? null);
         $gameDTO->setTeamTwo($data['teamTwoId'] ?? null);
-        $this->gameService->createGame($gameDTO);
+        $game = $this->gameService->createGame($gameDTO);
 
-        return $this->json($gameDTO);
+        return $this->json($game);
     }
 
     /**
@@ -79,9 +79,6 @@ class GameController extends ApiController
     {
         $data = json_decode($request->getContent(), true);
         $gameDTO = new GameDTO();
-        $gameDTO->setTournament($data['tournamentId'] ?? null);
-        $gameDTO->setTeamOne($data['teamOneId'] ?? null);
-        $gameDTO->setTeamTwo($data['teamTwoId'] ?? null);
         $gameDTO->setTeamOneScore($data['teamOneScore']);
         $gameDTO->setTeamTwoScore($data['teamTwoScore']);
 

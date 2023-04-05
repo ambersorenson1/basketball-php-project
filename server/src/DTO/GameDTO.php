@@ -4,10 +4,30 @@ namespace App\DTO;
 
 class GameDTO
 {
+
   public int $tournamentId;
   public int $teamOneId;
   public int $teamTwoId;
   public int $teamOneScore;
+  public int $teamTwoScore;
+
+  public int $gameId;
+
+    /**
+     * @return int
+     */
+    public function getGameId(): int
+    {
+        return $this->gameId;
+    }
+
+    /**
+     * @param int $gameId
+     */
+    public function setGameId(int $gameId): void
+    {
+        $this->gameId = $gameId;
+    }
 
     /**
      * @return int
@@ -40,7 +60,6 @@ class GameDTO
     {
         $this->teamTwoScore = $teamTwoScore;
     }
-  public int $teamTwoScore;
 
     /**
      * @return string
