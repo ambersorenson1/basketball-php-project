@@ -6,11 +6,8 @@ import NavBar from './Components/NavBar/NavBar';
 import AdminsPage from './Components/AdminsPage/AdminsPage';
 import GameList from './Components/ListOfGames/ListOfGames';
 import ActualGame from './Components/ActualGame/ActualGame';
-import SelectPlayer from './Components/SelectPlayer/SelectPlayer';
-import { Game, Player } from './services/DTOs';
-import ListAllTournaments from './Components/ListAllTournaments/ListAllTournaments';
-import Leaderboard from './Components/Leaderboard/Leaderboard';
 import Homepage from './Components/Homepage/Homepage';
+import { Game, Player } from './services/DTOs';
 
 const queryClient = new QueryClient();
 
@@ -18,10 +15,6 @@ const App: React.FC = () => {
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
   const [gameStarted, setGameStarted] = useState(false);
-
-  const handlePlayerSelected = (player: Player | null) => {
-    setSelectedPlayer(player);
-  };
 
   const handleGameSelected = (game: Game | null) => {
     setSelectedGame(game);
@@ -41,7 +34,6 @@ const App: React.FC = () => {
         <QueryClientProvider client={queryClient}>
           <Routes>
             <Route path="/" element={<Homepage />} />
-            <Route path="/tournaments" element={<ListAllTournaments />} />
             <Route
               path="/games"
               element={<GameList onGameSelected={handleGameSelected} />}

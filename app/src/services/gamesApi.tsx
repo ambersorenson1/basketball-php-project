@@ -1,6 +1,6 @@
-import { Game } from './DTOs';
+import { CreatedGame, Game, NewGame } from './DTOs';
 
-export async function createGame(game: Game): Promise<Game> {
+export async function createGame(game: NewGame): Promise<CreatedGame> {
   console.log(game);
   const response = await fetch('http://localhost:8000/api/games', {
     method: 'POST',

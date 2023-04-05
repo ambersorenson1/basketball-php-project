@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { Game, Team, Tournament } from '../../services/DTOs';
+import { CreatedGame, Team, Tournament } from '../../services/DTOs';
 import { getAllTournaments } from '../../services/tournamentApi';
 import { createGame } from '../../services/gamesApi';
 import CreateTournaments from './CreateTournaments/CreateTournaments';
@@ -67,7 +67,7 @@ const AdminsPage: React.FC = () => {
     </div>
   );
 
-  const { data, mutate: addGameMutate } = useMutation(
+  const { data, mutate: addGameMutate } = useMutation<CreatedGame>(
     () => {
       if (
         selectedTournament &&
@@ -93,28 +93,11 @@ const AdminsPage: React.FC = () => {
       }
     },
     {
-      onMutate: () => {
-        console.log('mutate');
-      },
-      onError: (
-        error: Error,
-        variables: {
-          tournamentId: number;
-          teamOneId: number;
-          teamTwoId: number;
-        },
-        context: unknown,
-      ) => {
-        console.log(error, variables, context);
-      },
-      onSuccess: (data: Game) => {
+      onSuccess: (data: CreatedGame) => {
         setSuccessMessage(
           `Game created successfully: ${selectedTeamOne?.name} vs ${selectedTeamTwo?.name} in ${selectedTournament?.name} tournament.`,
         );
         setGameId(data.gameId);
-      },
-      onSettled: () => {
-        console.log('complete');
       },
     },
   );
@@ -122,22 +105,16 @@ const AdminsPage: React.FC = () => {
   useEffect(() => {
     if (data) {
       setGameId(data.gameId);
-      console.log('zustand data.id', data.gameId);
-      console.log('zustand id', gameId);
+      console.log('Zustand data.id', data.gameId);
+      console.log('Zustand id', gameId);
     }
-  }, [data]);
+  }, [data, setGameId]);
 
-  useEffect(() => {
-    console.log('zustand id', gameId);
-  }, [gameId]);
+  useEffect(() => {}, [gameId]);
 
   const handleAddGame = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    addGameMutate({
-      onSuccess: data => {
-        setGameId(data.gameId);
-      },
-    });
+    addGameMutate();
   };
 
   return (

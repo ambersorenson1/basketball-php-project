@@ -36,3 +36,17 @@ export interface Game {
   teamOneScore?: number;
   teamTwoScore?: number;
 }
+
+export interface CreatedGame extends Game {
+  gameId: number;
+}
+
+export interface NewGame {
+  teamOneId: number;
+  teamTwoId: number;
+  tournamentId: number;
+  teamOne: Team;
+  teamTwo: Team;
+  teamOneScore?: number;
+  teamTwoScore?: number;
+}

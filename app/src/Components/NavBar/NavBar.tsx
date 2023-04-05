@@ -14,10 +14,6 @@ const BasketballNavBar: React.FC = () => {
     toggleDropdown();
   };
 
-  const handleTournamentsClick = () => {
-    navigate('/tournaments');
-    toggleDropdown();
-  };
   const handleAdminsClick = () => {
     navigate('/admins-page');
     toggleDropdown();
@@ -63,12 +59,6 @@ const BasketballNavBar: React.FC = () => {
                   onClick={handleHomeClick}
                 >
                   Home
-                </button>
-                <button
-                  className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
-                  onClick={handleTournamentsClick}
-                >
-                  Tournaments
                 </button>
                 <button
                   className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
