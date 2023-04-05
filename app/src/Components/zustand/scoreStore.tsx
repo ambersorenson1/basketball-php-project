@@ -1,19 +1,30 @@
 import { create } from 'zustand';
 
 export interface ScoreState {
-  teamOneScore: number;
-  setTeamOneScore: (score: number) => void;
-  teamTwoScore: number;
-  setTeamTwoScore: (score: number) => void;
+  scores: {
+    [gameId: number]: {
+      teamOneScore: number;
+      teamTwoScore: number;
+    };
+  };
+  setScores: (
+    gameId: number,
+    teamOneScore: number,
+    teamTwoScore: number,
+  ) => void;
   gameId: number;
   setGameId: (id: number) => void;
 }
 
 export const useScoreStore = create<ScoreState>(set => ({
-  teamOneScore: 0,
-  teamTwoScore: 0,
-  setTeamOneScore: (score: number) => set({ teamOneScore: score }),
-  setTeamTwoScore: (score: number) => set({ teamTwoScore: score }),
+  scores: {},
+  setScores: (gameId, teamOneScore, teamTwoScore) =>
+    set(state => ({
+      scores: {
+        ...state.scores,
+        [gameId]: { teamOneScore, teamTwoScore },
+      },
+    })),
   gameId: 0,
   setGameId: (id: number) => set({ gameId: id }),
 }));

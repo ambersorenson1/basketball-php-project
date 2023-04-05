@@ -28,6 +28,7 @@ const GameList: React.FC<GameListProps> = ({ onGameSelected }) => {
     navigate('/actual-game', {
       state: {
         game,
+        gameId: game.gameId,
         teamOne: game.teamOne,
         teamTwo: game.teamTwo,
       },
@@ -47,8 +48,6 @@ const GameList: React.FC<GameListProps> = ({ onGameSelected }) => {
         {games.map(game => {
           const teamOne = game.teamOne;
           const teamTwo = game.teamTwo;
-          console.log('Team One:', teamOne);
-          console.log('Team Two:', teamTwo);
           return (
             <li key={game.gameId} className="mb-2">
               <button

@@ -10,11 +10,6 @@ interface ActualGameProps {
   onGameStarted: () => void;
 }
 
-interface TeamLocationState {
-  teamOne: Team;
-  teamTwo: Team;
-}
-
 const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
   const [gameStarted, setGameStarted] = useState(false);
   const [timer, setTimer] = useState(60);
@@ -24,16 +19,21 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
   const [teamTwoName, setTeamTwoName] = useState('');
   const selectedPlayer = usePlayerStore(state => state.selectedPlayer);
   const location = useLocation();
-  const { teamOne, teamTwo } = location.state as TeamLocationState;
-  const gameId = useScoreStore(state => state.gameId);
+  const { gameId, teamOne, teamTwo } = location.state as {
+    gameId: number;
+    teamOne: Team;
+    teamTwo: Team;
+  };
+  const { scores, setScores } = useScoreStore(state => ({
+    scores: (state as ScoreState).scores,
+    setScores: (state as ScoreState).setScores,
+  }));
+  const { teamOneScore, teamTwoScore } = scores[gameId] || {
+    teamOneScore: 0,
+    teamTwoScore: 0,
+  };
 
-  const { teamOneScore, setTeamOneScore, teamTwoScore, setTeamTwoScore } =
-    useScoreStore(state => ({
-      teamOneScore: (state as ScoreState).teamOneScore,
-      setTeamOneScore: (state as ScoreState).setTeamOneScore,
-      teamTwoScore: (state as ScoreState).teamTwoScore,
-      setTeamTwoScore: (state as ScoreState).setTeamTwoScore,
-    }));
+  const [finishedPlayers, setFinishedPlayers] = useState(new Set<number>());
 
   useEffect(() => {
     setTeamOneName(teamOne?.name ?? '');
@@ -58,37 +58,48 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
     return (
       (selectedPlayer.team.teamId === teamOne?.teamId ||
         selectedPlayer.team.teamId === teamTwo?.teamId) &&
-      !hasPlayed
+      !hasPlayed &&
+      !finishedPlayers.has(selectedPlayer.id)
     );
   };
 
   const playGame = (): void => {
     setGameStarted(true);
-    setHasPlayed(true);
     onGameStarted();
   };
 
-  const saveTheScore = useMutation({
-    mutationFn: () =>
+  const saveTheScore = useMutation(
+    () =>
       selectedPlayer && gameId !== 0
         ? updateScores(gameId, teamOneScore, teamTwoScore)
         : Promise.reject(
             new Error(gameId === 0 ? 'Invalid gameId' : 'No selected player'),
           ),
-    onMutate: () => {
-      console.log(
-        'gameId',
-        gameId,
-        'teamOneScore',
-        teamOneScore,
-        'teamTWOSCORE',
-        teamTwoScore,
-      );
+    {
+      onMutate: () => {
+        console.log(
+          'gameId',
+          gameId,
+          'teamOneScore',
+          teamOneScore,
+          'teamTWOSCORE',
+          teamTwoScore,
+        );
+      },
+      onSuccess: () => {
+        if (selectedPlayer) {
+          setFinishedPlayers(prevFinishedPlayers => {
+            const newFinishedPlayers = new Set(prevFinishedPlayers);
+            newFinishedPlayers.add(selectedPlayer.id);
+            return newFinishedPlayers;
+          });
+        }
+      },
+      onError: (error: Error) => {
+        console.error('Failed to save scores:', error.message);
+      },
     },
-    onError: (error: Error) => {
-      console.error('Failed to save scores:', error.message);
-    },
-  });
+  );
 
   const handleShot = (points: number): void => {
     if (!selectedPlayer) return;
@@ -100,9 +111,9 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
 
     if (shotSuccess) {
       if (team === 'teamOne') {
-        setTeamOneScore(teamOneScore + points);
+        setScores(gameId, teamOneScore + points, teamTwoScore);
       } else {
-        setTeamTwoScore(teamTwoScore + points);
+        setScores(gameId, teamOneScore, teamTwoScore + points);
       }
     } else {
       setMessage(`Player from ${teamName} missed the ${points} point shot.`);
@@ -131,7 +142,9 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
           <button
             className="rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
             onClick={() => playGame()}
-            disabled={!isPlayerInGame()}
+            disabled={
+              !isPlayerInGame() || finishedPlayers.has(selectedPlayer?.id ?? 0)
+            }
           >
             Start Game
           </button>
@@ -167,12 +180,14 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
                 >
                   3 Point Shot
                 </button>
-                <button
-                  className="rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
-                  onClick={() => saveTheScore.mutate()}
-                >
-                  Save Game
-                </button>
+                <div className="mt-5 flex justify-center">
+                  <button
+                    className="rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+                    onClick={() => saveTheScore.mutate()}
+                  >
+                    Save your score
+                  </button>
+                </div>
               </div>
             </div>
           </div>
