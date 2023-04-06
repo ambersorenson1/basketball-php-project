@@ -14,7 +14,6 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
   const [gameStarted, setGameStarted] = useState(false);
   const [timer, setTimer] = useState(60);
   const [message, setMessage] = useState('');
-  const [hasPlayed, setHasPlayed] = useState(false);
   const [teamOneName, setTeamOneName] = useState('');
   const [teamTwoName, setTeamTwoName] = useState('');
   const selectedPlayer = usePlayerStore(state => state.selectedPlayer);
@@ -32,8 +31,6 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
     teamOneScore: 0,
     teamTwoScore: 0,
   };
-
-  const [finishedPlayers, setFinishedPlayers] = useState(new Set<number>());
 
   useEffect(() => {
     setTeamOneName(teamOne?.name ?? '');
@@ -63,7 +60,6 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
 
   const playGame = (): void => {
     setGameStarted(true);
-    setHasPlayed(true);
     onGameStarted();
   };
 
@@ -84,15 +80,6 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
           'teamTWOSCORE',
           teamTwoScore,
         );
-      },
-      onSuccess: () => {
-        if (selectedPlayer) {
-          setFinishedPlayers(prevFinishedPlayers => {
-            const newFinishedPlayers = new Set(prevFinishedPlayers);
-            newFinishedPlayers.add(selectedPlayer.id);
-            return newFinishedPlayers;
-          });
-        }
       },
       onError: (error: Error) => {
         console.error('Failed to save scores:', error.message);
@@ -141,9 +128,7 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
           <button
             className="rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
             onClick={() => playGame()}
-            disabled={
-              !isPlayerInGame() || finishedPlayers.has(selectedPlayer?.id ?? 0)
-            }
+            disabled={!isPlayerInGame()}
           >
             Start Game
           </button>

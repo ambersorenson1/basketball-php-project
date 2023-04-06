@@ -10,6 +10,10 @@ function Homepage() {
       style={{ height: '100vh', overflowY: 'scroll' }}
     >
       <div className="w-full lg:w-1/2 lg:pr-4">
+        <p className="mb-4 text-center">
+          Please either select a player from the dropdown below or visit the
+          Profile Page to create a new player!
+        </p>
         <SelectPlayer />
         <h1 className="mb-4 text-center text-2xl font-bold">Leaderboard</h1>
         <div className="overflow-y-auto">
