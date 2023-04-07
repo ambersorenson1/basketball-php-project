@@ -11,7 +11,6 @@ const GameList: React.FC<GameListProps> = ({ onGameSelected }) => {
   const [games, setGames] = useState<Game[]>([]);
   const navigate = useNavigate();
   const selectedPlayer = usePlayerStore(state => state.selectedPlayer);
-  const backgroundColor = usePlayerStore(state => state.backgroundColor);
 
   useEffect(() => {
     fetch('http://localhost:8000/api/games')
@@ -20,7 +19,7 @@ const GameList: React.FC<GameListProps> = ({ onGameSelected }) => {
         console.log('Fetched games:', data);
         setGames(data);
       });
-  }, []);
+  }, [selectedPlayer]);
 
   const handleGameClick = (game: Game) => {
     console.log(`Entering game with ID: ${game.gameId}`);
@@ -36,7 +35,7 @@ const GameList: React.FC<GameListProps> = ({ onGameSelected }) => {
   };
 
   return (
-    <div className={`container mx-auto p-4 ${backgroundColor}`}>
+    <div className="container mx-auto p-4">
       <h1 className="mb-4 text-2xl font-bold">Games List</h1>
       {selectedPlayer && (
         <p className="text-lg font-medium text-gray-800">

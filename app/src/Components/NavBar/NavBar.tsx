@@ -1,9 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
+// import Avatar from 'react-avatar';
+// import { usePlayerStore } from '../zustand/playerStore';
 
 const BasketballNavBar: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
+  // const selectedPlayer = usePlayerStore(state => state.selectedPlayer);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -39,6 +42,13 @@ const BasketballNavBar: React.FC = () => {
               alt="My App Logo"
             />
             <div className="font-bold text-white">My Basketball App</div>
+            {/*{selectedPlayer && (*/}
+            {/*  <div>*/}
+            {/*    <Avatar className="" size="65"*/}
+            {/*        {playerInfo}*/}
+            {/*        />*/}
+            {/*  </div>*/}
+            {/*)}*/}
           </div>
           <div className="ml-auto">
             <button

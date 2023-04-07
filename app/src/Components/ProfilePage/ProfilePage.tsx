@@ -2,49 +2,21 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { createPlayer, updatePlayer } from '../../services/playerApi';
 import { usePlayerStore } from '../zustand/playerStore';
+import { SketchPicker } from 'react-color';
+import { rgb } from 'polished';
 
 const ProfilePage = () => {
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
-  const [foreground, setForeground] = useState<string>('');
-  // const [background, setBackground] = useState<string>('');
   const [teamName, setTeamName] = useState<string>('');
-  const [foregroundError, setForegroundError] = useState<string | null>(null);
-  const [backgroundError, setBackgroundError] = useState<string | null>(null);
-  const backgroundColor = usePlayerStore(state => state.backgroundColor);
-  const setBackgroundColor = usePlayerStore(state => state.setBackgroundColor);
+  const [foreground, setForeground] = useState<string>('');
+  const [backgroundColor, setBackgroundColor] = useState<string>('');
   const selectedPlayer = usePlayerStore(state => state.selectedPlayer);
   const setSelectedPlayer = usePlayerStore(state => state.setSelectedPlayer);
 
   useEffect(() => {
-    if (backgroundColor) {
-      if (isValidRGB(backgroundColor)) {
-        document.body.style.backgroundColor = `rgb(${backgroundColor})`;
-        setBackgroundError(null);
-      } else {
-        setBackgroundError('Invalid RGB value');
-      }
-    } else {
-      document.body.style.backgroundColor = '';
-    }
-
-    return () => {
-      document.body.style.backgroundColor = '';
-    };
+    document.body.style.backgroundColor = backgroundColor;
   }, [backgroundColor]);
-
-  const isValidRGB = (rgb: string) => {
-    const regex = /^(\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})$/;
-    const match = rgb.match(regex);
-
-    if (!match) return false;
-
-    const r = parseInt(match[1]);
-    const g = parseInt(match[2]);
-    const b = parseInt(match[3]);
-
-    return r >= 0 && r <= 255 && g >= 0 && g <= 255 && b >= 0 && b <= 255;
-  };
 
   const addPlayer = useMutation({
     mutationFn: () =>
@@ -167,31 +139,27 @@ const ProfilePage = () => {
             className="mb-2 block text-sm font-bold text-gray-700"
             htmlFor="foreground"
           >
-            Foreground Color (RGB Numbers):
+            Foreground Color:
           </label>
           <input
             className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
             type="text"
             value={foreground}
-            onChange={e => {
-              setForeground(e.target.value);
-              if (!isValidRGB(e.target.value)) {
-                setForegroundError('Invalid RGB value');
-              } else {
-                setForegroundError(null);
-              }
-            }}
+            onChange={e => setForeground(e.target.value)}
           />
-          {foregroundError && (
-            <p className="text-xs italic text-red-500">{foregroundError}</p>
-          )}
+          <SketchPicker
+            color={foreground}
+            onChangeComplete={(color: {
+              rgb: { r: number; g: number; b: number };
+            }) => setForeground(rgb(color.rgb.r, color.rgb.g, color.rgb.b))}
+          />
         </div>
         <div className="mb-4">
           <label
             className="mb-2 block text-sm font-bold text-gray-700"
             htmlFor="background"
           >
-            Background Color (RGB Numbers):
+            Background Color:
           </label>
           <input
             className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
@@ -199,9 +167,14 @@ const ProfilePage = () => {
             value={backgroundColor}
             onChange={e => setBackgroundColor(e.target.value)}
           />
-          {backgroundError && (
-            <p className="text-xs italic text-red-500">{backgroundError}</p>
-          )}
+          <SketchPicker
+            color={backgroundColor}
+            onChangeComplete={(color: {
+              rgb: { r: number; g: number; b: number };
+            }) =>
+              setBackgroundColor(rgb(color.rgb.r, color.rgb.g, color.rgb.b))
+            }
+          />
         </div>
         <div className="flex justify-center space-x-8">
           <button

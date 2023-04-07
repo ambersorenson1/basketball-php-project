@@ -3,6 +3,7 @@ import { usePlayerStore } from '../zustand/playerStore';
 import { Player } from '../../services/DTOs';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPlayers } from '../../services/playerApi';
+import { Link } from 'react-router-dom';
 
 interface SelectPlayerProps {}
 
@@ -59,6 +60,12 @@ const SelectPlayer: React.FC<SelectPlayerProps> = () => {
           </p>
           <p className="mb-4 text-gray-700">
             Please visit the profile page to update your profile information.
+            <Link
+              to="/profile-page"
+              className="text-blue-500 hover:text-blue-700"
+            >
+              Profile Page
+            </Link>{' '}
           </p>
           <p className="text-lg font-semibold">
             You are on team{' '}

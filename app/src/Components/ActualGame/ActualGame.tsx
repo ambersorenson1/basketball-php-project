@@ -102,7 +102,9 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
         setScores(gameId, teamOneScore, teamTwoScore + points);
       }
     } else {
-      setMessage(`Player from ${teamName} missed the ${points} point shot.`);
+      setMessage(
+        `${selectedPlayer.firstName} from Team ${teamName} missed the ${points} point shot.`,
+      );
     }
   };
 
@@ -118,9 +120,7 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
     <div className="mx-auto max-w-md">
       {selectedPlayer && (
         <p className="mt-4 text-center">
-          You have selected - {selectedPlayer.firstName}{' '}
-          {selectedPlayer.lastName} - who is playing for Team{' '}
-          {selectedPlayer.team.name}
+          Currently playing for Team {selectedPlayer.team.name}
         </p>
       )}
       {!gameStarted && isPlayerInGame() && (
@@ -137,8 +137,7 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
 
       {gameStarted && (
         <div>
-          <h2 className="mt-4 text-center">Game in progress...</h2>
-          <h2 className="mt-4 text-center">May the best player win!!</h2>
+          <h2 className="mt-4 text-center">May the best team win!!</h2>
           <p className="mt-4 text-center">Time remaining: {timer} seconds</p>
           <div className="flex flex-col items-center">
             <div>
