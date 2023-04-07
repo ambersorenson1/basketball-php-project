@@ -6,10 +6,7 @@ import { Link } from 'react-router-dom';
 
 function Homepage() {
   return (
-    <div
-      className="flex flex-col p-8 lg:flex-row"
-      style={{ height: '100vh', overflowY: 'scroll' }}
-    >
+    <div className="flex flex-col p-8 lg:flex-row">
       <div className="w-full lg:w-1/2 lg:pr-4">
         <p className="mb-4 text-center">
           Please either select a player from the dropdown below or visit the{' '}

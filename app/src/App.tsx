@@ -16,7 +16,6 @@ const App: React.FC = () => {
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
   const [gameStarted, setGameStarted] = useState(false);
-  const backgroundColor = usePlayerStore(state => state.backgroundColor);
 
   const handlePlayerSelected = (player: Player | null) => {
     setSelectedPlayer(player);
@@ -36,7 +35,6 @@ const App: React.FC = () => {
   return (
     <BrowserRouter>
       <div className="container mx-auto p-4">
-        {/*{backgroundColor}*/}
         <NavBar />
         <QueryClientProvider client={queryClient}>
           <Routes>

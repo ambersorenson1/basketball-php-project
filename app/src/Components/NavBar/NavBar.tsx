@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
-// import Avatar from 'react-avatar';
+import Avatar from 'react-avatar';
 // import { usePlayerStore } from '../zustand/playerStore';
 
 const BasketballNavBar: React.FC = () => {
@@ -42,13 +42,11 @@ const BasketballNavBar: React.FC = () => {
               alt="My App Logo"
             />
             <div className="font-bold text-white">My Basketball App</div>
-            {/*{selectedPlayer && (*/}
-            {/*  <div>*/}
-            {/*    <Avatar className="" size="65"*/}
-            {/*        {playerInfo}*/}
-            {/*        />*/}
-            {/*  </div>*/}
-            {/*)}*/}
+            <Avatar
+              name="Wim Mostmans"
+              size="65"
+              className="absolute left-0 top-2 h-16 w-16"
+            />
           </div>
           <div className="ml-auto">
             <button
