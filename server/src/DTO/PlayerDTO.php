@@ -8,7 +8,24 @@ class PlayerDTO
     public string $lastName;
     public string $foreground;
     public string $background;
-    public string $teamName;
+   private ?string $teamName = null;
+
+    /**
+     * @return string|null
+     */
+    public function getTeamName(): ?string
+    {
+        return $this->teamName;
+    }
+
+    /**
+     * @param string|null $teamName
+     */
+    public function setTeamName(?string $teamName): void
+    {
+        $this->teamName = $teamName?: null;
+    }
+
 
     /**
      * @return string
@@ -74,20 +91,5 @@ class PlayerDTO
         $this->background = $background;
     }
 
-    /**
-     * @return string
-     */
-    public function getTeamName(): string
-    {
-        return $this->teamName;
-    }
-
-    /**
-     * @param string $teamName
-     */
-    public function setTeamName(string $teamName): void
-    {
-        $this->teamName = $teamName;
-    }
 
 }

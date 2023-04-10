@@ -64,6 +64,21 @@ class PlayerController extends ApiController
      * @throws JsonException
      */
     #[Route('/api/players/{playerId}', methods: ['PUT', 'PATCH'])]
+//    public function updatePlayer(int $playerId, Request $request): Response
+//    {
+//        $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+//        $playerDTO = new PlayerDTO();
+//        $playerDTO->setFirstName($data['firstName'] ?? null);
+//        $playerDTO->setLastName($data['lastName'] ?? null);
+//        $playerDTO->setForeground($data['foreground'] ?? null);
+//        $playerDTO->setBackground($data['background'] ?? null);
+//        $playerDTO->setTeamName($data['team']['name']  ?? null);
+//        var_dump($playerDTO->getTeamName());
+//        $this->playerService->updatePlayer($playerId, $playerDTO);
+//
+//        return $this->json($this->playerService->getPlayer($playerId));
+//    }
+
     public function updatePlayer(int $playerId, Request $request): Response
     {
         $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
@@ -72,7 +87,9 @@ class PlayerController extends ApiController
         $playerDTO->setLastName($data['lastName'] ?? null);
         $playerDTO->setForeground($data['foreground'] ?? null);
         $playerDTO->setBackground($data['background'] ?? null);
-
+        if (isset($data['team'])) {
+            $playerDTO->setTeamName($data['team']['name']);
+        }
         $this->playerService->updatePlayer($playerId, $playerDTO);
 
         return $this->json($this->playerService->getPlayer($playerId));

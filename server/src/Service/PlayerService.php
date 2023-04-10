@@ -73,19 +73,72 @@ class PlayerService
     /**
      * Update a player using the given PlayerDTO.
      */
+//    public function updatePlayer(int $playerId, PlayerDTO $playerDTO): ?Player
+//    {
+//        $player = $this->playerRepository->find($playerId);
+//        $player->setFirstName($playerDTO->getFirstName() ?? $player->getFirstName());
+//        $player->setLastName($playerDTO->getLastName() ?? $player->getLastName());
+//        $player->setBackground($playerDTO->getBackground() ?? $player->getBackground());
+//        $player->setForeground($playerDTO->getForeground() ?? $player->getForeground());
+//
+//        $this->entityManager->persist($player);
+//        $this->entityManager->flush();
+//
+//        return $player;
+//    }
+
+//    public function updatePlayer(int $playerId, PlayerDTO $playerDTO): ?Player
+//    {
+//        $player = $this->playerRepository->find($playerId);
+//            $player->setFirstName($playerDTO->getFirstName());
+//            $player->setLastName($playerDTO->getLastName());
+//            $player->setForeground($playerDTO->getForeground());
+//            $player->setBackground($playerDTO->getBackground());
+//            $team = $this->teamRepository->findOneBy(['name' => $playerDTO->getTeamName()]);
+//            $player->setTeam($team);
+//        $this->entityManager->persist($player);
+//        $this->entityManager->flush();
+//
+//        return $player;
+//    }
+
     public function updatePlayer(int $playerId, PlayerDTO $playerDTO): ?Player
     {
         $player = $this->playerRepository->find($playerId);
-        $player->setFirstName($playerDTO->getFirstName() ?? $player->getFirstName());
-        $player->setLastName($playerDTO->getLastName() ?? $player->getLastName());
-        $player->setBackground($playerDTO->getBackground() ?? $player->getBackground());
-        $player->setForeground($playerDTO->getForeground() ?? $player->getForeground());
+
+        if (!$player) {
+            return null;
+        }
+
+        $player->setFirstName($playerDTO->getFirstName());
+        $player->setLastName($playerDTO->getLastName());
+        $player->setForeground($playerDTO->getForeground());
+        $player->setBackground($playerDTO->getBackground());
+
+        $teamName = $playerDTO->getTeamName();
+        if ($teamName !== null) {
+            $team = $this->teamRepository->findOneBy(['name' => $teamName]);
+            if ($team) {
+                $player->setTeam($team);
+    } else {
+                $newTeam = new Team();
+                $newTeam->setName($teamName);
+                $this->entityManager->persist($newTeam);
+                $player->setTeam($newTeam);
+            }
+        }
 
         $this->entityManager->persist($player);
         $this->entityManager->flush();
 
         return $player;
     }
+
+
+
+
+
+
 
     /**
      * Delete a player by ID.

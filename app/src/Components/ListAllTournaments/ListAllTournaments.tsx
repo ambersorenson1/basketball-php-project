@@ -1,12 +1,12 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useTournamentStore } from '../zustand/tournamentStore';
 import { fetchTournaments } from '../../services/tournamentApi';
+import { useTournamentStore } from '../zustand/tournamentStore';
 
 function ListAllTournaments() {
   const { tournaments, setTournaments } = useTournamentStore();
 
-  const { isLoading, isError } = useQuery(['tournament'], fetchTournaments, {
+  useQuery(['tournament'], fetchTournaments, {
     onSuccess: data => {
       setTournaments(data);
     },
@@ -24,8 +24,6 @@ function ListAllTournaments() {
   return (
     <div className="bg-gray-100 p-4">
       <h1 className="mb-4 text-2xl font-bold">Current Tournaments</h1>
-      {isLoading ? <p>Loading...</p> : null}
-      {isError ? <p>Error loading the Leaderboard!!</p> : null}
       <ul>
         {currentTournaments.map((tournament, index) => (
           <li key={`${index}-${tournament.tournamentId}`} className="mb-2">

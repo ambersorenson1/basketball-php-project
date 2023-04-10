@@ -17,7 +17,14 @@ const GameList: React.FC<GameListProps> = ({ onGameSelected }) => {
       .then(response => response.json())
       .then(data => {
         console.log('Fetched games:', data);
-        setGames(data);
+        const filteredGames = selectedPlayer
+          ? data.filter(
+              game =>
+                game.teamOne.teamId === selectedPlayer.team.teamId ||
+                game.teamTwo.teamId === selectedPlayer.team.teamId,
+            )
+          : data;
+        setGames(filteredGames);
       });
   }, [selectedPlayer]);
 
