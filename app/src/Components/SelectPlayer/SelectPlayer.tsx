@@ -74,7 +74,11 @@ const SelectPlayer: React.FC<SelectPlayerProps> = () => {
             .
           </p>
           <p className="text-bg-gray-200 text-lg font-semibold">
-            Best of luck!!! Navigate to the games portion on the dropdown menu.
+            Best of luck!!! Navigate to the{' '}
+            <Link to="/games" className="text-blue-500 hover:text-blue-700">
+              games
+            </Link>{' '}
+            portion on the dropdown menu.
           </p>
         </div>
       )}
