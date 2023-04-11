@@ -92,7 +92,7 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
 
     const team =
       selectedPlayer.team.teamId === teamOne?.teamId ? 'teamOne' : 'teamTwo';
-    const shotSuccess = Math.random() >= 0.5;
+    const shotSuccess = Math.random() >= 0.9;
     const teamName = team === 'teamOne' ? teamOne?.name : teamTwo?.name;
 
     if (shotSuccess) {

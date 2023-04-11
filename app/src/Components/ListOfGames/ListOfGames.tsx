@@ -19,7 +19,7 @@ const GameList: React.FC<GameListProps> = ({ onGameSelected }) => {
         console.log('Fetched games:', data);
         const filteredGames = selectedPlayer
           ? data.filter(
-              game =>
+              (game: Game) =>
                 game.teamOne.teamId === selectedPlayer.team.teamId ||
                 game.teamTwo.teamId === selectedPlayer.team.teamId,
             )
@@ -42,10 +42,13 @@ const GameList: React.FC<GameListProps> = ({ onGameSelected }) => {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="mb-4 text-2xl font-bold">Games List</h1>
+    <div
+      className="container mx-auto p-4"
+      // style={{ backgroundImage: "url('/basketball.jpg')" }}
+    >
+      <h1 className="mb-4 text-center text-2xl font-bold">Games List</h1>
       {selectedPlayer && (
-        <p className="text-lg font-medium text-gray-800">
+        <p className="text-center text-lg font-medium text-gray-800">
           Player - {selectedPlayer.firstName} {selectedPlayer.lastName} is
           playing for team "{selectedPlayer.team.name}"
         </p>
@@ -56,16 +59,18 @@ const GameList: React.FC<GameListProps> = ({ onGameSelected }) => {
           const teamTwo = game.teamTwo;
           return (
             <li key={game.gameId} className="mb-2">
-              <button
-                onClick={() => handleGameClick(game)}
-                className="focus:shadow-outline rounded bg-blue-500 py-2 px-4 font-bold text-white focus:outline-none"
-              >
-                Enter Game
-              </button>
-              <span className="ml-4">
-                {teamOne ? teamOne.name : 'Unknown'} vs{' '}
-                {teamTwo ? teamTwo.name : 'Unknown'}
-              </span>
+              <div className="m-4 flex flex-col items-center text-center">
+                <button
+                  onClick={() => handleGameClick(game)}
+                  className="focus:shadow-outline mb-4 rounded bg-blue-500 py-2 px-4 font-bold text-white focus:outline-none"
+                >
+                  Enter Game
+                </button>
+                <span>
+                  {teamOne ? teamOne.name : 'Unknown'} vs{' '}
+                  {teamTwo ? teamTwo.name : 'Unknown'}
+                </span>
+              </div>
             </li>
           );
         })}

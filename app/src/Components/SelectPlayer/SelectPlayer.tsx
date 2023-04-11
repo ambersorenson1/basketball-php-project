@@ -59,13 +59,14 @@ const SelectPlayer: React.FC<SelectPlayerProps> = () => {
             {selectedPlayer.lastName}.
           </p>
           <p className="mb-4 text-gray-700">
-            Please visit the profile page to update your profile information.
+            Please visit the{' '}
             <Link
               to="/profile-page"
               className="text-blue-500 hover:text-blue-700"
             >
-              Profile Page
+              profile page
             </Link>{' '}
+            to update your information.
           </p>
           <p className="text-lg font-semibold">
             You are on team{' '}

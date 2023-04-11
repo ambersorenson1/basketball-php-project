@@ -14,7 +14,7 @@ function Homepage() {
             to="/profile-page"
             className="text-blue-500 hover:text-blue-700"
           >
-            Profile Page
+            profile page
           </Link>{' '}
           to create a new player!
         </p>

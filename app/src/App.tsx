@@ -7,28 +7,22 @@ import AdminsPage from './Components/AdminsPage/AdminsPage';
 import GameList from './Components/ListOfGames/ListOfGames';
 import ActualGame from './Components/ActualGame/ActualGame';
 import Homepage from './Components/Homepage/Homepage';
-import { Game, Player } from './services/DTOs';
-import { usePlayerStore } from './Components/zustand/playerStore';
+import { Game } from './services/DTOs';
 
 const queryClient = new QueryClient();
 
 const App: React.FC = () => {
-  const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
   const [gameStarted, setGameStarted] = useState(false);
 
-  const handlePlayerSelected = (player: Player | null) => {
-    setSelectedPlayer(player);
-  };
-
-  const handleGameSelected = (game: Game | null) => {
+  const handleGameSelected = (game: Game | null): void => {
     setSelectedGame(game);
     if (game) {
       setGameStarted(false);
     }
   };
 
-  const handleGameStarted = () => {
+  const handleGameStarted = (): void => {
     setGameStarted(true);
   };
 
