@@ -118,7 +118,7 @@ const AdminsPage: React.FC = () => {
   };
 
   return (
-    <div className="focus:shadow-outline rounded bg-cyan-500 py-2 px-4 font-bold text-white hover:bg-blue-700 focus:outline-none">
+    <div className="focus:shadow-outline rounded py-2 px-4 font-bold text-white hover:bg-blue-700 focus:outline-none">
       <CreateTournaments />
       {tournamentSelect}
       <GetAllTeams
