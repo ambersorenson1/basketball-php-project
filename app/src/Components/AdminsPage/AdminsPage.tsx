@@ -105,8 +105,6 @@ const AdminsPage: React.FC = () => {
   useEffect(() => {
     if (data) {
       setGameId(data.gameId);
-      console.log('Zustand data.id', data.gameId);
-      console.log('Zustand id', gameId);
     }
   }, [data, setGameId]);
 

@@ -31,11 +31,10 @@ const BasketballNavBar: React.FC = () => {
     toggleDropdown();
   };
 
-  const firstName = selectedPlayer?.firstName[0] ?? '';
-  const lastName = selectedPlayer?.lastName[0] ?? '';
+  const firstName = selectedPlayer?.firstName || 'B';
+  const lastName = selectedPlayer?.lastName || 'A';
   const initials = `${firstName[0]}${lastName[0]}`;
 
-  console.log('initials:', initials);
   return (
     <nav className="bg-gray-800">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

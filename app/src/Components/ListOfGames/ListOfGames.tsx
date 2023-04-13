@@ -16,7 +16,6 @@ const GameList: React.FC<GameListProps> = ({ onGameSelected }) => {
     fetch('http://localhost:8000/api/games')
       .then(response => response.json())
       .then(data => {
-        console.log('Fetched games:', data);
         const filteredGames = selectedPlayer
           ? data.filter(
               (game: Game) =>
@@ -29,7 +28,6 @@ const GameList: React.FC<GameListProps> = ({ onGameSelected }) => {
   }, [selectedPlayer]);
 
   const handleGameClick = (game: Game) => {
-    console.log(`Entering game with ID: ${game.gameId}`);
     onGameSelected(game || null);
     navigate('/actual-game', {
       state: {

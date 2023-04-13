@@ -1,7 +1,6 @@
 import { CreatedGame, Game, NewGame } from './DTOs';
 
 export async function createGame(game: NewGame): Promise<CreatedGame> {
-  console.log(game);
   const response = await fetch('http://localhost:8000/api/games', {
     method: 'POST',
     headers: {
@@ -32,10 +31,8 @@ export async function getAllScores(): Promise<Game[]> {
     }
 
     const data: Game[] = await response.json();
-    console.log('Fetched games:', data);
     return data;
   } catch (error) {
-    console.error('Error fetching games:', error);
     throw error;
   }
 }
@@ -54,10 +51,8 @@ export async function updateScores(
   });
 
   if (response.ok) {
-    console.log('Scores updated successfully');
     return response.json();
   } else {
-    console.log('Failed to update scores');
     throw new Error('Failed to update scores');
   }
 }

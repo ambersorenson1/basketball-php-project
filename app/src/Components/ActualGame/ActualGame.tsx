@@ -71,16 +71,7 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
             new Error(gameId === 0 ? 'Invalid gameId' : 'No selected player'),
           ),
     {
-      onMutate: () => {
-        console.log(
-          'gameId',
-          gameId,
-          'teamOneScore',
-          teamOneScore,
-          'teamTWOSCORE',
-          teamTwoScore,
-        );
-      },
+      onMutate: () => {},
       onError: (error: Error) => {
         console.error('Failed to save scores:', error.message);
       },
@@ -92,7 +83,7 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
 
     const team =
       selectedPlayer.team.teamId === teamOne?.teamId ? 'teamOne' : 'teamTwo';
-    const shotSuccess = Math.random() >= 0.75;
+    const shotSuccess = Math.random() >= 0.85;
     const teamName = team === 'teamOne' ? teamOne?.name : teamTwo?.name;
 
     if (shotSuccess) {

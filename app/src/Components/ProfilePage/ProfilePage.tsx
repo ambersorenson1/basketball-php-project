@@ -35,15 +35,9 @@ const ProfilePage = () => {
           name: 'Player',
         },
       }),
-    onMutate: () => {
-      console.log('mutate');
-    },
-    onError: (error, variables, context) => {
-      console.log(error, variables, context);
-    },
-    onSettled: () => {
-      console.log('complete');
-    },
+    onMutate: () => {},
+    onError: (error, variables, context) => {},
+    onSettled: () => {},
   });
 
   const editPlayer = useMutation({
@@ -57,15 +51,11 @@ const ProfilePage = () => {
             teamName: teamName,
           })
         : Promise.reject('No selected player'),
-    onError: (error, variables, context) => {
-      console.log(error, variables, context);
-    },
+    onError: (error, variables, context) => {},
     onSuccess: data => {
       setSelectedPlayer(data);
     },
-    onSettled: () => {
-      console.log('update complete');
-    },
+    onSettled: () => {},
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

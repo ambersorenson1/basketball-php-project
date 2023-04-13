@@ -19,15 +19,9 @@ const CreateTournaments = () => {
         startDate: startDate,
         endDate: endDate,
       }),
-    onMutate: () => {
-      console.log('mutate');
-    },
-    onError: (error, variables, context) => {
-      console.log(error, variables, context);
-    },
-    onSettled: () => {
-      console.log('complete');
-    },
+    onMutate: () => {},
+    onError: (error, variables, context) => {},
+    onSettled: () => {},
   });
 
   const handleAddTournament = async (e: React.FormEvent<HTMLFormElement>) => {
