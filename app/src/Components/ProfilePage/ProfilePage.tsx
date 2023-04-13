@@ -127,26 +127,6 @@ const ProfilePage = () => {
         <div className="mb-4">
           <label
             className="mb-2 block text-sm font-bold text-gray-700"
-            htmlFor="foreground"
-          >
-            Foreground Color:
-          </label>
-          <input
-            className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-            type="text"
-            value={foreground}
-            onChange={e => setForeground(e.target.value)}
-          />
-          <SketchPicker
-            color={foreground}
-            onChangeComplete={(color: {
-              rgb: { r: number; g: number; b: number };
-            }) => setForeground(rgb(color.rgb.r, color.rgb.g, color.rgb.b))}
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            className="mb-2 block text-sm font-bold text-gray-700"
             htmlFor="background"
           >
             Background Color:
@@ -164,6 +144,26 @@ const ProfilePage = () => {
             }) =>
               setBackgroundColor(rgb(color.rgb.r, color.rgb.g, color.rgb.b))
             }
+          />
+        </div>
+        <div className="mb-4">
+          <label
+            className="mb-2 block text-sm font-bold text-gray-700"
+            htmlFor="foreground"
+          >
+            Foreground Color:
+          </label>
+          <input
+            className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+            type="text"
+            value={foreground}
+            onChange={e => setForeground(e.target.value)}
+          />
+          <SketchPicker
+            color={foreground}
+            onChangeComplete={(color: {
+              rgb: { r: number; g: number; b: number };
+            }) => setForeground(rgb(color.rgb.r, color.rgb.g, color.rgb.b))}
           />
         </div>
         <div className="flex justify-center space-x-8">

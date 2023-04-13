@@ -51,7 +51,7 @@ const ActualGame: React.FC<ActualGameProps> = ({ onGameStarted }) => {
   }, [gameStarted, timer, teamOne, teamTwo]);
 
   const isPlayerInGame = (): boolean | null => {
-    if (!selectedPlayer) return null;
+    if (!selectedPlayer) return false;
     return (
       selectedPlayer.team.teamId === teamOne?.teamId ||
       selectedPlayer.team.teamId === teamTwo?.teamId

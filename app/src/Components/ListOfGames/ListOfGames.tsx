@@ -40,13 +40,12 @@ const GameList: React.FC<GameListProps> = ({ onGameSelected }) => {
   };
 
   return (
-    <div
-      className="container mx-auto p-4"
-      // style={{ backgroundImage: "url('/basketball.jpg')" }}
-    >
-      <h1 className="mb-4 text-center text-2xl font-bold">Games List</h1>
+    <div className="container mx-auto bg-[url('https://www.magicmurals.com/media/catalog/product/cache/155d73b570b90ded8a140526fcb8f2da/F/O/FOT-0025479708_1.jpg')] bg-auto p-4">
+      <h1 className="mt-14 mb-4 text-center text-7xl font-bold text-amber-50">
+        *~*~*Games List*~*~*
+      </h1>
       {selectedPlayer && (
-        <p className="text-center text-lg font-medium text-gray-800">
+        <p className="text-center text-2xl font-medium text-gray-800 text-white">
           Player - {selectedPlayer.firstName} {selectedPlayer.lastName} is
           playing for team "{selectedPlayer.team.name}"
         </p>
@@ -64,7 +63,7 @@ const GameList: React.FC<GameListProps> = ({ onGameSelected }) => {
                 >
                   Enter Game
                 </button>
-                <span>
+                <span className="text-7xl text-white">
                   {teamOne ? teamOne.name : 'Unknown'} vs{' '}
                   {teamTwo ? teamTwo.name : 'Unknown'}
                 </span>
@@ -73,6 +72,7 @@ const GameList: React.FC<GameListProps> = ({ onGameSelected }) => {
           );
         })}
       </ul>
+      {games.length === 1 && <div className="h-96"></div>}
     </div>
   );
 };
