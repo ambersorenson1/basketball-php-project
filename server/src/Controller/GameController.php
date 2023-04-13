@@ -31,9 +31,9 @@ class GameController extends ApiController
         $gameDTO->setTournament($data['tournamentId'] ?? null);
         $gameDTO->setTeamOne($data['teamOneId'] ?? null);
         $gameDTO->setTeamTwo($data['teamTwoId'] ?? null);
-        $this->gameService->createGame($gameDTO);
+        $game = $this->gameService->createGame($gameDTO);
 
-        return $this->json($gameDTO);
+        return $this->json($game);
     }
 
     /**
@@ -64,7 +64,28 @@ class GameController extends ApiController
      * @return Response
      */
     #[Route('/api/games/{gameId}', methods: ['DELETE'])]
-    public function deleteInstance(int $gameId): Response {
+    public function deleteInstance(int $gameId): Response
+    {
         return $this->json($this->gameService->deleteGame($gameId));
     }
+
+    /**
+     * @param int $gameId
+     * @param Request $request
+     * @return Response
+     */
+    #[Route('/api/games/{gameId}', methods: ['PUT', 'PATCH'])]
+    public function updateGame(int $gameId, Request $request): Response
+    {
+        $data = json_decode($request->getContent(), true);
+        $gameDTO = new GameDTO();
+        $gameDTO->setTeamOneScore($data['teamOneScore']);
+        $gameDTO->setTeamTwoScore($data['teamTwoScore']);
+
+        $this->gameService->updateGame($gameId, $gameDTO);
+
+
+        return $this->json($this->gameService->getGame($gameId));
+    }
+
 }

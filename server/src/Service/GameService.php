@@ -82,4 +82,13 @@ class GameService
         return $game;
     }
 
+    public function updateGame(int $gameId, GameDTO $gameDTO): Game
+    {
+        $game = $this->gameRepository->find($gameId);
+        $game->setTeamOneScore($gameDTO->getTeamOneScore());
+        $game->setTeamTwoScore($gameDTO->getTeamTwoScore());
+        $this->entityManager->persist($game);
+        $this->entityManager->flush();
+        return $game;
+    }
 }

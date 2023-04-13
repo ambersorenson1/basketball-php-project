@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { usePlayerStore } from './playerStore';
+import { usePlayerStore } from '../zustand/playerStore';
 import { Player } from '../../services/DTOs';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPlayers } from '../../services/playerApi';
+import { Link } from 'react-router-dom';
 
 interface SelectPlayerProps {}
 
@@ -11,7 +12,7 @@ const SelectPlayer: React.FC<SelectPlayerProps> = () => {
   const selectedPlayer = usePlayerStore(state => state.selectedPlayer);
   const setSelectedPlayer = usePlayerStore(state => state.setSelectedPlayer);
 
-  const { isLoading, data, error } = useQuery({
+  const { isLoading, error } = useQuery({
     queryKey: ['players'],
     queryFn: fetchPlayers,
   });
@@ -29,8 +30,17 @@ const SelectPlayer: React.FC<SelectPlayerProps> = () => {
   };
 
   return (
-    <div>
-      <select defaultValue="" onChange={handlePlayerChange}>
+    <div className="p-4">
+      <label
+        className="mb-2 block text-sm font-bold text-gray-700"
+        htmlFor="player"
+      ></label>
+      <select
+        id="player"
+        className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+        defaultValue=""
+        onChange={handlePlayerChange}
+      >
         <option value="" disabled>
           Select a player
         </option>
@@ -43,13 +53,33 @@ const SelectPlayer: React.FC<SelectPlayerProps> = () => {
         ))}
       </select>
       {selectedPlayer && (
-        <div>
-          <p>
+        <div className="mt-8 rounded-lg bg-gray-200 p-6">
+          <p className="mb-2 text-lg font-semibold">
             You have selected {selectedPlayer.firstName}{' '}
-            {selectedPlayer.lastName}. Please visit the profile page to update
-            your profile information.
+            {selectedPlayer.lastName}.
           </p>
-          <p>You are on team {selectedPlayer.team.name}. Best of luck!!!</p>
+          <p className="mb-4 text-gray-700">
+            Please visit the{' '}
+            <Link
+              to="/profile-page"
+              className="text-blue-500 hover:text-blue-700"
+            >
+              profile page
+            </Link>{' '}
+            to update your information.
+          </p>
+          <p className="text-lg font-semibold">
+            You are on team{' '}
+            <span className="text-green-600">"{selectedPlayer.team.name}"</span>
+            .
+          </p>
+          <p className="text-bg-gray-200 text-lg font-semibold">
+            Best of luck!!! Navigate to the{' '}
+            <Link to="/games" className="text-blue-500 hover:text-blue-700">
+              games
+            </Link>{' '}
+            portion on the dropdown menu.
+          </p>
         </div>
       )}
     </div>

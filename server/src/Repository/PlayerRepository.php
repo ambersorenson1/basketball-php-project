@@ -40,7 +40,7 @@ class PlayerRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Player[] Returns an array of Player objects
+     * @return Player[] Returns an array of ProfilePage objects
      */
     public function findByExampleField($value): array
     {

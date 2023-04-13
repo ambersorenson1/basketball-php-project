@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tournament } from '../../../services/DTOs';
+import { Tournament } from '../../services/DTOs';
 
 type TournamentOptionProps = {
   tournament: Tournament;

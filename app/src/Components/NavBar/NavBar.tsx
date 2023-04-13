@@ -1,9 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
+import Avatar from 'react-avatar';
+import { usePlayerStore } from '../zustand/playerStore';
 
 const BasketballNavBar: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
+  const selectedPlayer = usePlayerStore(state => state.selectedPlayer);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -14,10 +17,6 @@ const BasketballNavBar: React.FC = () => {
     toggleDropdown();
   };
 
-  const handleTournamentsClick = () => {
-    navigate('/tournaments');
-    toggleDropdown();
-  };
   const handleAdminsClick = () => {
     navigate('/admins-page');
     toggleDropdown();
@@ -32,6 +31,10 @@ const BasketballNavBar: React.FC = () => {
     toggleDropdown();
   };
 
+  const firstName = selectedPlayer?.firstName || 'B';
+  const lastName = selectedPlayer?.lastName || 'A';
+  const initials = `${firstName[0]}${lastName[0]}`;
+
   return (
     <nav className="bg-gray-800">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -43,6 +46,13 @@ const BasketballNavBar: React.FC = () => {
               alt="My App Logo"
             />
             <div className="font-bold text-white">My Basketball App</div>
+            <Avatar
+              initials={initials}
+              // fgColor={}
+              name={initials}
+              size="65"
+              className="absolute left-0 top-2 h-16 w-16"
+            />
           </div>
           <div className="ml-auto">
             <button
@@ -63,12 +73,6 @@ const BasketballNavBar: React.FC = () => {
                   onClick={handleHomeClick}
                 >
                   Home
-                </button>
-                <button
-                  className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
-                  onClick={handleTournamentsClick}
-                >
-                  Tournaments
                 </button>
                 <button
                   className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"

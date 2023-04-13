@@ -44,10 +44,8 @@ export async function getAllTournaments(): Promise<Tournament[]> {
     }
 
     const data: Tournament[] = await response.json();
-    console.log('Fetched tournaments:', data);
     return data;
   } catch (error) {
-    console.error('Error fetching tournaments:', error);
     throw error;
   }
 }
@@ -65,10 +63,8 @@ export async function getAllTeams(): Promise<Team[]> {
     }
 
     const data: Team[] = await response.json();
-    console.log('Fetched teams:', data);
     return data;
   } catch (error) {
-    console.error('Error fetching teams:', error);
     throw error;
   }
 }
@@ -87,10 +83,8 @@ export const fetchTournaments = async (): Promise<Tournament[]> => {
     }
 
     const data: Tournament[] = await response.json();
-    console.log('Fetched tournaments:', data);
     return data;
   } catch (error) {
-    console.error('Error fetching tournaments:', error);
     return [];
   }
 };

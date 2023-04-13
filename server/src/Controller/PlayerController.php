@@ -72,6 +72,7 @@ class PlayerController extends ApiController
         $playerDTO->setLastName($data['lastName'] ?? null);
         $playerDTO->setForeground($data['foreground'] ?? null);
         $playerDTO->setBackground($data['background'] ?? null);
+        $playerDTO->setTeamName($data['teamName']);
 
         $this->playerService->updatePlayer($playerId, $playerDTO);
 

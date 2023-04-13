@@ -80,7 +80,10 @@ class PlayerService
         $player->setLastName($playerDTO->getLastName() ?? $player->getLastName());
         $player->setBackground($playerDTO->getBackground() ?? $player->getBackground());
         $player->setForeground($playerDTO->getForeground() ?? $player->getForeground());
-
+        $team = $this->teamRepository->findOneBy(array('name' => $player->getTeam()->getName()));
+        $team->setName($playerDTO->getTeamName());
+        $player->setTeam($team);
+        $this->entityManager->persist($team);
         $this->entityManager->persist($player);
         $this->entityManager->flush();
 
